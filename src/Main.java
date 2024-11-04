@@ -51,9 +51,9 @@ public class Main {
         List<Ingrediente> ingredientesPepperoni = Arrays.asList(tomate, queso, harina, pepperoni);
         Producto pizza2 = new Pizza(2, "Pizza Pepperoni", 12.99, ingredientesPepperoni, "GRANDE");
 
-        // Pizza 3: Vegana (pequeña)
+        // Pizza 3: Vegana (PEQUENYA)
         List<Ingrediente> ingredientesVegana = Arrays.asList(tomate, harina);  // Sin queso
-        Producto pizza3 = new Pizza(3, "Pizza Vegana", 9.49, ingredientesVegana, "PEQUEÑA");
+        Producto pizza3 = new Pizza(3, "Pizza Vegana", 9.49, ingredientesVegana, "PEQUENYA");
 
         /**
          * Añadido de linea pedido e instanciado de Controlador Pedido
@@ -128,6 +128,7 @@ public class Main {
 
         try {
             controlCiente.jaxbImport();
+            System.out.println("JAXB Import");
             controlCiente.getListaClientes().forEach(System.out::println);
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
@@ -153,5 +154,41 @@ public class Main {
         }
 
         ingredientListAux.forEach(System.out::println);
+
+        System.out.println(" ");
+        System.out.println(espaciado);
+        System.out.println(" ");
+
+        List<Pizza> importedPizzaList;
+
+        try {
+            importedPizzaList = new ArrayList(controlProducto.importPizzas());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Pizza import");
+        importedPizzaList.forEach(System.out::println);
+
+        controlPedido1 = controlCiente.agregarLineaPedido(pizza1);
+        controlPedido1.agregarLineaPedido(pizza3, controlPedido1.getPedidoActual().getCliente(), 3);
+        try {
+            controlPedido1.lineaPedidoToCsv(controlPedido1.getPedidoActual().getLineaDePedido());
+        } catch (CsvRequiredFieldEmptyException | FileNotFoundException | CsvDataTypeMismatchException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(" ");
+        System.out.println(espaciado);
+        System.out.println(" ");
+
+        List<LineaPedido> lineaPedidoListAux;
+        try {
+            lineaPedidoListAux = controlPedido1.csvToLineaPedido();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Import de Lineas Pedido");
+        lineaPedidoListAux.forEach(System.out::println);
+
     }
 }

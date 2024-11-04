@@ -6,16 +6,17 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD) // Acceso directo a campos
 public class Cliente {
-    @XmlAttribute
     private int id;
     private String dni;
     private String nombre;
     private String direccion;
     private String telefono;
     private String email;
+    @XmlTransient
     private String password;
     @XmlTransient
     private List<Pedido> orderList;
+    @XmlAttribute
     private boolean admin=false;
 
     public Cliente(int id, String direccion, String nombre, String dni, String email, String telefono, String password) {

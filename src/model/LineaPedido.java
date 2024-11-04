@@ -1,10 +1,16 @@
 package model;
 
-public class LineaPedido {
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvIgnore;
 
+public class LineaPedido {
+    @CsvBindByName(column = "IDENTIFICATION")
     private int id;
+    @CsvBindByName(column = "QUANTITY")
     private int cantidad;
+    @CsvIgnore
     private Producto producto;
+    @CsvIgnore
     private float precioDeLinea;
 
     public LineaPedido(int id, int cantidad, Producto producto) {

@@ -12,4 +12,16 @@ public class Pizza extends Producto {
         this.ingredientes = ingredientes;
         this.size=Size.valueOf(size);
     }
+
+    public Pizza(int id, String nombre, double precio, Size size) {
+        super(id, nombre, precio);
+        this.size = size;
+    }
+
+    @Override
+    public String toString() {
+        return "Pizza{" +
+                "size=" + size +
+                "} " + super.toString();
+    }
 }

@@ -1,7 +1,11 @@
 package controller;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import model.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +66,14 @@ public class ControladorPedido {
                 break;
             }
         }
+    }
+
+    public void lineaPedidoToCsv(List<LineaPedido> lineaPedido) throws CsvRequiredFieldEmptyException, FileNotFoundException, CsvDataTypeMismatchException {
+        GestionFicheros.lineaPedidoToCsv(lineaPedido);
+    }
+
+    public List<LineaPedido> csvToLineaPedido() throws IOException {
+        return GestionFicheros.csvToLineaPedido();
     }
 
     public Pedido getPedidoActual() {
