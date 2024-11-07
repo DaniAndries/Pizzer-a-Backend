@@ -25,15 +25,6 @@ Backend: API REST en Java (próximamente con base de datos).
 [Pizzeria-Frontend](https://github.com/DaniAndries/Pizzeria-Frontend.git)
 
 
-## Contribución
-
-Aportaciones son bienvenidas consulta `CONTRIBUTING.md` para detalles.
-
-
-
-Please adhere to this project's `code of conduct`.
-
-
 ## Licencia
 
 [GNU GENERAL PUBLIC LICENSE](https://github.com/DaniAndries/Pizzeria-Frontend/blob/main/LICENSE)
