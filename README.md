@@ -14,17 +14,6 @@ Frontend: Interfaz intuitiva desarrollada en Kotlin.
 
 Backend: API REST en Java (próximamente con base de datos).
 
-
-## Uso y Ejemplos
-
-Ejecuta el backend, luego el frontend para interactuar con la app.
-
-
-## Instalación
-
-Clona el repositorio.
-
-Sigue las instrucciones en Pizzeria-Backend y Pizzeria-Frontend.
     
 ## Documentacion
 
