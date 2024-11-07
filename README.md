@@ -2,36 +2,41 @@
   <img src="src/ruskaromalogo (2).png" alt="LogoRuskaRoma" width="150">
 </div>
 
+<h1 align="center">Pizzeria App</h1>
 
-# Pizzeria App
+<p align="center">
+  <b>Aplicación para gestionar una pizzería, con un frontend en Kotlin y un backend en Java.</b>
+</p>
 
-Aplicación para gestionar una pizzería, con un frontend en Kotlin y un backend en Java. 
+<p align="center">
+  <i>Futuro: Integración con una base de datos y API REST para mejorar la gestión de pedidos y usuarios.</i>
+</p>
 
-Futuro: Integración con una base de datos y API REST para mejorar la gestión de pedidos y usuarios.
+---
 
+## 🚀 Características
 
-## Características
+- **Frontend**: Interfaz intuitiva desarrollada en **Kotlin**.
+- **Backend**: API REST en **Java** (próximamente con integración a base de datos).
+  
+## 📄 Documentación
 
-Frontend: Interfaz intuitiva desarrollada en Kotlin.
+- Consulta la documentación de JavaDoc para obtener detalles técnicos sobre la implementación: [JavaDoc](https://linktodocumentation)
 
-Backend: API REST en Java (próximamente con base de datos).
+## 📂 Proyectos Relacionados
 
-    
-## Documentacion
+- [Pizzeria-Frontend](https://github.com/DaniAndries/Pizzeria-Frontend.git): Repositorio del frontend de la aplicación.
 
-[JavaDoc](https://linktodocumentation)
+## 📜 Licencia
 
+Este proyecto está licenciado bajo la [GNU General Public License](LICENSE).
 
-## Relacionado
+## 👥 Autor
 
-[Pizzeria-Frontend](https://github.com/DaniAndries/Pizzeria-Frontend.git)
+- **[Dani Andries](https://github.com/DaniAndries)**
 
+---
 
-## Licencia
-
-[GNU GENERAL PUBLIC LICENSE](https://github.com/DaniAndries/Pizzeria-Frontend/blob/main/LICENSE)
-
-
-## Authors
-
-- [@DaniAndries](https://github.com/DaniAndries)
+<p align="center">
+  <i>¡Gracias por visitar este repositorio! Si tienes alguna sugerencia o mejora, no dudes en contribuir.</i>
+</p>
