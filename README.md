@@ -22,8 +22,6 @@ Backend: API REST en Java (próximamente con base de datos).
 
 ## Relacionado
 
-Aqui el Frontend: 
-
 [Pizzeria-Frontend](https://github.com/DaniAndries/Pizzeria-Frontend.git)
 
 
