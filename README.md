@@ -1,4 +1,6 @@
-![LogoRuskaRoma](https://github.com/DaniAndries/Pizzeria-Frontend/blob/main/app/src/main/res/drawable/ruskaromalogo.png?raw=true)
+<div align="center">
+  <img src="src/ruskaromalogo (2).png" alt="LogoRuskaRoma" width="150">
+</div>
 
 
 # Pizzeria App
