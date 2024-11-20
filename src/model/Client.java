@@ -35,6 +35,11 @@ public class Client {
         this.admin = true;
     }
 
+    public Client(int id, String dni, String clientName, String direction, String phone, String mail, String password, boolean admin) {
+        this(dni, clientName, direction, phone, mail, password, admin);
+        this.id = id;
+    }
+
     public Client() {}
 
     public void realizeOrder() {

@@ -24,11 +24,10 @@ public class JdbcClientDao implements ClientDao {
      * admin=false;
      */
     private static final String INSERT_CLIENT = "INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)";
-    private static final String UPDATE_CLIENT = "UPDATE Client SET client_name=?, surname=?, phone=? WHERE client.ID=?";
+    private static final String UPDATE_CLIENT = "UPDATE Client SET client.dni=?, client.client_name=?, client.direction=?, client.phone=?, client.mail=?, client.password=?, client.admin=?";
     private static final String DELETE_CLIENT = "DELETE FROM client WHERE client.ID = ?";
     private static final String SELECT_CLIENT = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?";
-    private static final String SELECT_CLIENT_DNI = "SELECT client.id, client.dni, client.client_name, client.surname, client.phone FROM client WHERE client.DNI = ?";
-    private static final String SELECT_JOIN_CLIENT = "SELECT client.id, client.dni, client.client_name, client.surname, client.phone, car.plate, car.brand, car.model, car.plate_date FROM client LEFT JOIN car on client.ID = car.car_owner WHERE client.ID = ?";
+    private static final String SELECT_CLIENT_DNI = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.DNI = ?";
 
     // INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)
     @Override
@@ -54,29 +53,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // INSERT INTO Client (dni, client_name, surname, phone) VALUES (?,?,?,?)
-    public void saveWithCars(Client client) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(INSERT_CLIENT, Statement.RETURN_GENERATED_KEYS)) {
-            stmtClient.setString(1, client.getDni());
-            stmtClient.setString(2, client.getClientName());
-            stmtClient.setString(3, client.getDirection());
-            stmtClient.setString(4, client.getPhone());
-
-
-            stmtClient.executeUpdate();
-
-            try (ResultSet generatedKeys = stmtClient.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    client.setId(generatedKeys.getInt(1));
-                }
-            }
-
-            System.out.println("The client: " + client.getDni() + " has been created");
-        }
-    }
-
-    // UPDATE Client SET client_name=?, surname=?, phone=? WHERE client.DNI=?
+    // UPDATE Client SET client.dni=?, client.client_name=?, client.direction=?, client.phone=?, client.mail=?, client.password=?, client.admin=?
     @Override
     public void update(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -90,7 +67,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // DELETE FROM client WHERE client.DNI = ?
+    // DELETE FROM client WHERE client.ID = ?
     @Override
     public void delete(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -101,7 +78,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // SELECT client.id, client.dni, client.client_name, client.surname, client.phone FROM client WHERE client.id = ?
+    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?
     @Override
     public Client findById(int id) throws SQLException {
         Client client;
@@ -110,12 +87,14 @@ public class JdbcClientDao implements ClientDao {
             try (ResultSet rsClient = stmtclient.executeQuery()) {
                 if (rsClient.next()) {
                     client = new Client(
+                            rsClient.getInt("id"),
                             rsClient.getString("dni"),
                             rsClient.getString("client_name"),
-                            rsClient.getString("surname"),
+                            rsClient.getString("direction"),
                             rsClient.getString("phone"),
-                            rsClient.getString("surname"),
-                            rsClient.getString("phone")
+                            rsClient.getString("mail"),
+                            rsClient.getString("password"),
+                            rsClient.getBoolean("admin")
                     );
                     return client;
                 }
@@ -124,7 +103,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // SELECT client.id, client.dni, client.client_name, client.surname, client.phone FROM client WHERE client.dni= ?
+    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.DNI = ?
     @Override
     public Client findByMail(String dni) throws SQLException {
         Client client;
@@ -133,12 +112,15 @@ public class JdbcClientDao implements ClientDao {
             try (ResultSet rsClient = stmtclient.executeQuery()) {
                 if (rsClient.next()) {
                     client = new Client(
+                            rsClient.getInt("id"),
                             rsClient.getString("dni"),
                             rsClient.getString("client_name"),
-                            rsClient.getString("surname"),
+                            rsClient.getString("direction"),
                             rsClient.getString("phone"),
-                            rsClient.getString("surname"),
-                            rsClient.getString("phone")
+                            rsClient.getString("mail"),
+                            rsClient.getString("password"),
+                            rsClient.getBoolean("admin")
+
                     );
                     return client;
                 }
