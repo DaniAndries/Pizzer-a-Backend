@@ -10,5 +10,8 @@
     <orderEntry type="library" name="javax.xml.bind.jaxb.api" level="project" />
     <orderEntry type="library" name="glassfish.jaxb.runtime" level="project" />
     <orderEntry type="library" name="opencsv" level="project" />
+    <orderEntry type="library" name="mysql.connector.j" level="project" />
+    <orderEntry type="library" name="mockito.core" level="project" />
+    <orderEntry type="library" name="junit.jupiter" level="project" />
   </component>
 </module>
