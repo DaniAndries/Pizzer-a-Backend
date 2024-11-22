@@ -1,16 +1,18 @@
 package controller;
 
+import controller.db.impl.JdbcClientDao;
 import model.Client;
 import model.Product;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientController {
+    JdbcClientDao clientDao = new JdbcClientDao();
     private Client actualClient;
-    private List<Client> clientsList = new ArrayList<>();
 
     public ClientController(String email, String password) {
         loginClient(email, password);
@@ -19,19 +21,37 @@ public class ClientController {
     public ClientController() {
     }
 
-    public void registerClient(String dni, String name, String direction, String phone, String mail, String password) {
-        clientsList.add(new Client(mail, name, dni, mail, phone, password));
-    }
-
     public void loginClient(String email, String password) {
-        for (Client listaClient : clientsList) {
-            if (listaClient.getMail().equals(email) && listaClient.getPassword().equals(password)) {
-                this.actualClient = listaClient;
-            }
-        }
-        if (actualClient == null) System.err.println("Usuario o contraseña incorrecta");
+
     }
 
+    public void registerClient(Client client) throws SQLException {
+        clientDao.save(client);
+    }
+
+    public void delete(Client client) throws SQLException {
+        clientDao.delete(client);
+    };
+
+    public void update(Client client) throws SQLException{
+        clientDao.update(client);
+    };
+
+    public Client findById(int id) throws SQLException{
+        return clientDao.findById(id);
+    };
+
+    public Client findByMail(String mail) throws SQLException{
+        return clientDao.findByMail(mail);
+    };
+
+    public List<Client> findAll() throws SQLException{
+        return clientDao.findAll();
+    };
+
+
+
+    // Import / export files
     public OrderController addOrderLine(Product product) throws IllegalStateException {
         if (this.actualClient != null) {
             OrderController orderController = new OrderController();
@@ -42,23 +62,14 @@ public class ClientController {
 
     public void importAdminClient() throws IOException {
         List<Client> clientList = FileManagement.importClient();
-        clientsList.addAll(clientList);
+        //clientsList.addAll(clientList);
     }
 
     public void jaxbExport() throws JAXBException {
-        FileManagement.clientToXml(this.clientsList);
+        //FileManagement.clientToXml(this.clientsList);
     }
 
     public void jaxbImport() throws IOException, JAXBException {
-        this.clientsList = FileManagement.xmlToClient();
-    }
-
-
-    public List<Client> getClientsList() {
-        return clientsList;
-    }
-
-    public void setClientsList(List<Client> clientsList) {
-        this.clientsList = clientsList;
+        //this.clientsList = FileManagement.xmlToClient();
     }
 }

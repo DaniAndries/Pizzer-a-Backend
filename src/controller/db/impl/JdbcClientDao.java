@@ -6,6 +6,7 @@ import model.Client;
 import utils.DatabaseConf;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
@@ -24,10 +25,11 @@ public class JdbcClientDao implements ClientDao {
      * admin=false;
      */
     private static final String INSERT_CLIENT = "INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)";
-    private static final String UPDATE_CLIENT = "UPDATE Client SET client.dni=?, client.client_name=?, client.direction=?, client.phone=?, client.mail=?, client.password=?, client.admin=?";
+    private static final String UPDATE_CLIENT = "UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?";
     private static final String DELETE_CLIENT = "DELETE FROM client WHERE client.ID = ?";
     private static final String SELECT_CLIENT = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?";
-    private static final String SELECT_CLIENT_DNI = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.DNI = ?";
+    private static final String SELECT_CLIENT_MAIL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?";
+    private static final String SELECT_ALL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client";
 
     // INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)
     @Override
@@ -53,15 +55,17 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // UPDATE Client SET client.dni=?, client.client_name=?, client.direction=?, client.phone=?, client.mail=?, client.password=?, client.admin=?
+    // UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?
     @Override
     public void update(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(UPDATE_CLIENT)) {
             stmtClient.setString(1, client.getClientName());
-            stmtClient.setString(2, client.getMail());
+            stmtClient.setString(2, client.getDirection());
             stmtClient.setString(3, client.getPhone());
-            stmtClient.setString(4, client.getDni());
+            stmtClient.setString(4, client.getPassword());
+            stmtClient.setBoolean(5, client.isAdmin());
+            stmtClient.setInt(6, client.getId());
             stmtClient.execute();
             System.out.println("The client: " + client.getDni() + " has been modified");
         }
@@ -72,7 +76,7 @@ public class JdbcClientDao implements ClientDao {
     public void delete(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(DELETE_CLIENT)) {
-            stmtClient.setString(1, client.getDni());
+            stmtClient.setInt(1, client.getId());
             stmtClient.execute();
             System.out.println("The client: " + client.getDni() + " has been deleted");
         }
@@ -103,12 +107,12 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.DNI = ?
+    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?
     @Override
-    public Client findByMail(String dni) throws SQLException {
+    public Client findByMail(String mail) throws SQLException {
         Client client;
-        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD); PreparedStatement stmtclient = conn.prepareStatement(SELECT_CLIENT_DNI)) {
-            stmtclient.setString(1, dni);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD); PreparedStatement stmtclient = conn.prepareStatement(SELECT_CLIENT_MAIL)) {
+            stmtclient.setString(1, mail);
             try (ResultSet rsClient = stmtclient.executeQuery()) {
                 if (rsClient.next()) {
                     client = new Client(
@@ -130,7 +134,27 @@ public class JdbcClientDao implements ClientDao {
     }
 
     @Override
-    public List<Client> findAll(String dni) throws SQLException {
-        return List.of();
+    public List<Client> findAll() throws SQLException {
+        List<Client> clientList =new ArrayList<>();
+        Client client;
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD); PreparedStatement stmtclient = conn.prepareStatement(SELECT_ALL)) {
+            try (ResultSet rsClient = stmtclient.executeQuery()) {
+                while (rsClient.next()) {
+                    client = new Client(
+                            rsClient.getInt("id"),
+                            rsClient.getString("dni"),
+                            rsClient.getString("client_name"),
+                            rsClient.getString("direction"),
+                            rsClient.getString("phone"),
+                            rsClient.getString("mail"),
+                            rsClient.getString("password"),
+                            rsClient.getBoolean("admin")
+
+                    );
+                    clientList.add(client);
+                }
+                return clientList;
+            }
+        }
     }
 }

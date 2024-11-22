@@ -16,5 +16,5 @@ public interface ClientDao {
 
     Client findByMail(String dni) throws SQLException;
 
-    List<Client> findAll(String dni) throws SQLException;
+    List<Client> findAll() throws SQLException;
 }
