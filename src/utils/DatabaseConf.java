@@ -87,8 +87,8 @@ public class DatabaseConf {
             "amount INT NOT NULL," +
             "line_price DOUBLE NOT NULL ," +
             "product INT NOT NULL," +
-            "order INT NOT NULL," +
-            "FOREIGN KEY (order) REFERENCES order (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
+            "customer_order INT NOT NULL," +
+            "FOREIGN KEY (customer_order) REFERENCES customer_order (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
             "FOREIGN KEY (product) REFERENCES product (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
 
 

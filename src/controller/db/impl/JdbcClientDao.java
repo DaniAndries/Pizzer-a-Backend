@@ -39,9 +39,9 @@ public class JdbcClientDao implements ClientDao {
             stmtClient.setString(1, client.getDni());
             stmtClient.setString(2, client.getClientName());
             stmtClient.setString(3, client.getDirection());
-            stmtClient.setString(6, client.getPhone());
-            stmtClient.setString(4, client.getMail());
-            stmtClient.setString(5, client.getPassword());
+            stmtClient.setString(4, client.getPhone());
+            stmtClient.setString(5, client.getMail());
+            stmtClient.setString(6, client.getPassword());
             stmtClient.setBoolean(7, client.isAdmin());
 
             stmtClient.executeUpdate();

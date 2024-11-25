@@ -101,6 +101,14 @@ public class Client {
         this.password = password;
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
     public boolean isAdmin() {
         return admin;
     }
@@ -114,10 +122,10 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 ", dni='" + dni + '\'' +
-                ", name='" + clientName + '\'' +
+                ", clientName='" + clientName + '\'' +
                 ", direction='" + direction + '\'' +
                 ", phone='" + phone + '\'' +
-                ", email='" + mail + '\'' +
+                ", mail='" + mail + '\'' +
                 ", password='" + password + '\'' +
                 ", admin=" + admin +
                 '}';
