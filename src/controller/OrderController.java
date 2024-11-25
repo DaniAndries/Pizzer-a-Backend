@@ -54,7 +54,7 @@ public class OrderController {
     public void deliverOrder(int id) {
         for (Order listaOrder : ordersList) {
             if (listaOrder.getId() == id) {
-                if (listaOrder.getState() == OrderState.COMPLETED) {
+                if (listaOrder.getState() == OrderState.PAID) {
                     listaOrder.setState(OrderState.DELIVERED);
                 } else {
                     System.err.println("No se puede entregar un Order cancelado o pendiente de pago");

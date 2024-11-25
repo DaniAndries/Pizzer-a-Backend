@@ -28,7 +28,7 @@ public class Order implements Payable {
 
     @Override
     public void pay(double amount) {
-        setState(OrderState.COMPLETED);
+        setState(OrderState.PAID);
         payByCash(amount);
         payByCard(amount);
     }

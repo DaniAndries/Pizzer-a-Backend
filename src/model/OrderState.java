@@ -1,5 +1,5 @@
 package model;
 
 public enum OrderState {
-    PENDING, COMPLETED, DELIVERED, CANCELED;
+    PENDING, PAID, DELIVERED, CANCELED;
 }
