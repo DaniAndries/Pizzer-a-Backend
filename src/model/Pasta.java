@@ -10,4 +10,12 @@ public class Pasta extends Product {
         super(id, name, price);
         this.ingredients = ingredients;
     }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }

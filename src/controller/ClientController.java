@@ -14,15 +14,18 @@ public class ClientController {
     JdbcClientDao clientDao = new JdbcClientDao();
     private Client actualClient;
 
-    public ClientController(String email, String password) {
+    public ClientController(String email, String password) throws SQLException {
         loginClient(email, password);
     }
 
     public ClientController() {
     }
 
-    public void loginClient(String email, String password) {
-
+    public void loginClient(String mail, String password) throws SQLException, IllegalArgumentException {
+        Client client = findByMail(mail);
+        if (client.getPassword().equals(password)) {
+            actualClient = client;
+        } else throw new IllegalArgumentException("Wrong User or Password");
     }
 
     public void registerClient(Client client) throws SQLException {
