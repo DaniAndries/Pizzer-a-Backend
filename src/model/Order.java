@@ -5,20 +5,30 @@ import java.util.Date;
 import java.util.List;
 
 public class Order implements Payable {
-    private OrderState state;
     private int id;
     private Date orderDate;
+    private OrderState state;
+    private String paymentMethod;
     private float totalPrice;
     private List<OrderLine> orderLines = new ArrayList<>();
-    private String paymentMethod;
     private Client client;
+
+    public Order(int id, Date orderDate, OrderState state, String paymentMethod,  float totalPrice, List<OrderLine> orderLines, Client client) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.state = state;
+        this.paymentMethod = paymentMethod;
+        this.totalPrice = totalPrice;
+        this.orderLines = orderLines;
+        this.client = client;
+    }
 
     public Order(int id, Date orderDate, OrderLine orderLine, Client client) {
         this.id = id;
         this.orderDate = orderDate;
+        this.state = OrderState.PENDING;
         this.orderLines.add(orderLine);
         this.client = client;
-        this.state = OrderState.PENDING;
     }
 
     public void finalizar() {

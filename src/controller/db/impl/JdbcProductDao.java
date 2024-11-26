@@ -358,8 +358,7 @@ public class JdbcProductDao implements ProductDao {
             stmtIngredient.setString(1, name);
             try (ResultSet rsAlergen = stmtIngredient.executeQuery()) {
                 if (rsAlergen.next()) {
-                    String alergen = rsAlergen.getString("alergen_name");
-                    return alergen;
+                    return rsAlergen.getString("alergen_name");
                 }
             }
             return null;
@@ -388,6 +387,7 @@ public class JdbcProductDao implements ProductDao {
         }
     }
 
+    // * "SELECT alergen.id, alergen.alergen_name FROM ingredient_alergen INNER JOIN alergen ON ingredient_alergen.alergen = alergen.id WHERE ingredient_alergen.ingredient = ?"
     @Override
     public List<String> findAlergensByIngredient(int id) throws SQLException {
         List<String> alergens = new ArrayList<>();
@@ -403,6 +403,7 @@ public class JdbcProductDao implements ProductDao {
         }
     }
 
+    // * "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product"
     @Override
     public List<Product> findAll() throws SQLException {
         List<Product> products = new ArrayList<>();
