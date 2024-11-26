@@ -18,7 +18,7 @@ public class ProductController {
     private Product product;
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    public ProductController(List<Ingredient> ingredientList) {
+    public ProductController() {
     }
 
     public void saveProduct(Product product) throws SQLException {
@@ -33,12 +33,20 @@ public class ProductController {
         productDao.deleteIngredient(ingredient);
     }
 
-    public void deleteAlergen(String alergen) throws SQLException {
-        productDao.deleteAlergen(alergen);
+    public void deleteAlergen(int id) throws SQLException {
+        productDao.deleteAlergen(id);
     }
 
-    public void update(Product product) throws SQLException {
-        update(product);
+    public void updateProduct(Product product) throws SQLException {
+        productDao.updateProduct(product);
+    }
+
+    public void updateIngredient(Ingredient ingredient) throws SQLException {
+        productDao.updateIngredient(ingredient);
+    }
+
+    public void updateAlergen(String alergen, int id) throws SQLException {
+        productDao.updateAlergen(alergen, id);
     }
 
     public Product findProductById(int id) throws SQLException {

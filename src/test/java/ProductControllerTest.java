@@ -7,9 +7,11 @@ import controller.ProductController;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.DatabaseConf;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,8 @@ class ProductControllerTest {
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
+        DatabaseConf.dropAndCreateTables();
         productDatabase = new ArrayList<>();
         productDatabase.add(pasta1);
         productDatabase.add(pasta2);
@@ -49,7 +52,7 @@ class ProductControllerTest {
         productDatabase.add(pizza1);
         productDatabase.add(drink1);
 
-        productController = new ProductController(new ArrayList<>());
+        productController = new ProductController();
     }
 
     @Test
@@ -101,7 +104,6 @@ class ProductControllerTest {
     void testOpenCsvExport() {
         try {
             FileManagement.ingredientToCsv(List.of(cheese, tomato, pepper, bacon, mushroom));
-            // Si no hay excepción, el test pasa
         } catch (CsvRequiredFieldEmptyException | FileNotFoundException | CsvDataTypeMismatchException e) {
             fail("Excepción inesperada al exportar a CSV: " + e.getMessage());
         }

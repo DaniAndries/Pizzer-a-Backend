@@ -19,7 +19,8 @@ public class Drink extends Product {
     @Override
     public String toString() {
         return "Drink{" +
+                super.toString() +
                 "size=" + size +
-                "} " + super.toString();
+                "} ";
     }
 }

@@ -21,6 +21,11 @@ public class Ingredient {
         this.alergens = alergens;
     }
 
+    public Ingredient(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Ingredient() {
     }
 

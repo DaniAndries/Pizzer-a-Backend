@@ -37,7 +37,9 @@ public class Pizza extends Product {
     @Override
     public String toString() {
         return "Pizza{" +
+                super.toString() +
                 "size=" + size +
-                "} " + super.toString();
+                ", ingredients=" + ingredients +
+                "} " ;
     }
 }

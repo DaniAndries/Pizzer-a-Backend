@@ -47,7 +47,7 @@ public class DatabaseConf {
     // id; ingredient_name;
     public static final String CREATE_TABLE_INGREDIENT = "CREATE TABLE IF NOT EXISTS INGREDIENT ("
             + "id INT PRIMARY KEY AUTO_INCREMENT," +
-            "ingredient_name VARCHAR(255) NOT NULL" + ");";
+            "ingredient_name VARCHAR(255) UNIQUE NOT NULL" + ");";
 
     public static final String DROP_TABLE_INGREDIENT = "DROP TABLE IF EXISTS INGREDIENT";
 
@@ -55,16 +55,16 @@ public class DatabaseConf {
     public static final String CREATE_TABLE_INGREDIENT_ALERGEN = "CREATE TABLE IF NOT EXISTS INGREDIENT_ALERGEN ("
             + "id INT PRIMARY KEY AUTO_INCREMENT," +
             "ingredient INT NOT NULL," +
-            "ALERGEN INT NOT NULL," +
+            "alergen INT NOT NULL," +
             "FOREIGN KEY (ingredient) REFERENCES ingredient (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
-            "FOREIGN KEY (ALERGEN) REFERENCES ALERGEN (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
+            "FOREIGN KEY (alergen) REFERENCES alergen (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
 
     public static final String DROP_TABLE_INGREDIENT_ALERGEN = "DROP TABLE IF EXISTS INGREDIENT_ALERGEN";
 
     // id; alergen_name;
     public static final String CREATE_TABLE_ALERGEN = "CREATE TABLE IF NOT EXISTS ALERGEN ("
             + "id INT PRIMARY KEY AUTO_INCREMENT," +
-            "alergen_name VARCHAR(255) NOT NULL" + ");";
+            "alergen_name VARCHAR(255) UNIQUE NOT NULL" + ");";
 
     public static final String DROP_TABLE_ALERGEN = "DROP TABLE IF EXISTS ALERGEN";
 

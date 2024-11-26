@@ -5,7 +5,10 @@ import model.*;
 import utils.DatabaseConf;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
 
 public class JdbcProductDao implements ProductDao {
     static final JdbcOrderDao jdbcCarDao = new JdbcOrderDao();
@@ -13,6 +16,9 @@ public class JdbcProductDao implements ProductDao {
     private static final String INSERT_PRODUCT = "INSERT INTO product (product_name, price, size, type) VALUES (?,?,?,?)";
     private static final String INSERT_INGREDIENT = "INSERT INTO ingredient (ingredient_name) VALUES (?)";
     private static final String INSERT_ALERGEN = "INSERT INTO alergen (alergen_name) VALUES (?)";
+
+    private static final String INSERT_PRODUCT_INGREDIENT = "INSERT INTO PRODUCT_INGREDIENT (product, ingredient) VALUES (?,?)";
+    private static final String INSERT_INGREDIENT_ALERGEN = "INSERT INTO INGREDIENT_ALERGEN (ingredient, alergen) VALUES (?,?)";
 
     private static final String UPDATE_PRODUCT = "UPDATE product SET product.product_name=?, product.price=?, product.size=?, product.type=? WHERE product.id = ?";
     private static final String UPDATE_INGREDIENT = "UPDATE ingredient SET ingredient.ingredient_name=? WHERE product.id = ?";
@@ -23,16 +29,20 @@ public class JdbcProductDao implements ProductDao {
     private static final String DELETE_ALERGEN = "DELETE FROM alergen WHERE alergen.ID = ?";
 
 
-    private static final String SELECT_PRODUCT = "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product WHERE product.ID = ?";
-    private static final String SELECT_INGREDIENT_BY_ID = "SELECT product.id, product.dni, product.client_name, product.direction, product.phone, product.mail, product.password, product.admin FROM client WHERE product.MAIl = ?";
-    private static final String SELECT_ALERGENS_BY_INGREDIENTS = "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product";
+    private static final String SELECT_PRODUCT_BY_ID = "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product WHERE product.ID = ?";
+    private static final String SELECT_INGREDIENT_BY_ID = "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.id = ?";
+    private static final String SELECT_INGREDIENT_BY_NAME = "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.ingredient_name = ?";
+    private static final String SELECT_ALERGEN_BY_NAME = "SELECT alergen.alergen_name FROM alergen WHERE alergen.alergen_name = ?";
+    private static final String SELECT_INGREDIENTS_BY_PRODUCT = "SELECT ingredient.id, ingredient.ingredient_name FROM product_ingredient INNER JOIN ingredient ON product_ingredient.ingredient = ingredient.id WHERE product_ingredient.product = ?";
+    private static final String SELECT_ALERGENS_BY_INGREDIENT = "SELECT alergen.id, alergen.alergen_name FROM ingredient_alergen INNER JOIN alergen ON ingredient_alergen.alergen = alergen.id WHERE ingredient_alergen.ingredient = ?";
+    private static final String SELECT_ALL = "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product";
 
     // * "INSERT INTO product (product_name, price, size, type) VALUES (?,?,?,?)"
     @Override
     public void saveProduct(Product product) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtProduct = conn.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
-            List<Ingredient> ingredients = List.of();
+            List<Ingredient> ingredients = new ArrayList<>();
 
             stmtProduct.setString(1, product.getName());
             stmtProduct.setDouble(2, product.getPrice());
@@ -44,13 +54,13 @@ public class JdbcProductDao implements ProductDao {
             }
 
             if (product instanceof Pasta pasta) {
-                stmtProduct.setString(3, "NULL");
+                stmtProduct.setNull(3, Types.VARCHAR);
                 stmtProduct.setString(4, "PASTA");
                 ingredients = pasta.getIngredients();
             }
 
             if (product instanceof Drink drink) {
-                stmtProduct.setString(3, drink.getSize().toString());
+                stmtProduct.setString(3, drink.getSize().toString().toUpperCase());
                 stmtProduct.setString(4, "DRINK");
             }
 
@@ -62,23 +72,31 @@ public class JdbcProductDao implements ProductDao {
                 }
             }
 
-            if (ingredients != null && !ingredients.isEmpty()) addIngredient(ingredients);
+            if (ingredients != null && !ingredients.isEmpty()) addIngredient(ingredients, product.getId(), conn);
 
-            System.out.println("The client: " + product.getId() + " has been created");
+            System.out.println("The product: " + product.getId() + " has been created");
         }
     }
 
-    private void addIngredient(List<Ingredient> ingredients) throws SQLException {
+    private void addIngredient(List<Ingredient> ingredients, int productId, Connection conn) throws SQLException {
         for (Ingredient ingredient : ingredients) {
-            saveIngredient(ingredient);
+            saveIngredient(ingredient, productId, conn);
         }
     }
 
     // * "INSERT INTO ingredient (ingredient_name) VALUES (?)"
     @Override
-    public void saveIngredient(Ingredient ingredient) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtIngredient = conn.prepareStatement(INSERT_INGREDIENT, Statement.RETURN_GENERATED_KEYS)) {
+    public void saveIngredient(Ingredient ingredient, int productId, Connection conn) throws SQLException {
+        try (PreparedStatement stmtIngredient = conn.prepareStatement(INSERT_INGREDIENT, Statement.RETURN_GENERATED_KEYS)) {
+            Ingredient existingIngredient = findIngredientsByName(ingredient.getName(), conn);
+
+
+            if (existingIngredient != null) {
+                System.out.println("Ingredient '" + ingredient.getName() + "' already exists.");
+                saveProductIngredient(ingredient.getId(), productId, conn);
+                return;
+            }
+
             stmtIngredient.setString(1, ingredient.getName());
 
             stmtIngredient.executeUpdate();
@@ -89,41 +107,75 @@ public class JdbcProductDao implements ProductDao {
                 }
             }
 
-            addAlergen(ingredient.getAlergens());
+            saveProductIngredient(ingredient.getId(), productId, conn);
+            addAlergen(ingredient.getAlergens(), ingredient.getId(), conn);
 
-            System.out.println("The client: " + ingredient.getId() + " has been created");
+            System.out.println("The ingredient: " + ingredient.getId() + " has been created");
         }
     }
 
-    private void addAlergen(List<String> alergens) throws SQLException {
+    // * "INSERT INTO PRODUCT_INGREDIENT (product, ingredient) VALUES (?,?)"
+    @Override
+    public void saveProductIngredient(int ingredientId, int productId, Connection conn) throws SQLException {
+        try (PreparedStatement stmtIngredient = conn.prepareStatement(INSERT_PRODUCT_INGREDIENT, Statement.RETURN_GENERATED_KEYS)) {
+            stmtIngredient.setInt(1, productId);
+            stmtIngredient.setInt(2, ingredientId);
+
+            stmtIngredient.executeUpdate();
+
+            System.out.println("Product-Ingredient added");
+        }
+    }
+
+    private void addAlergen(List<String> alergens, int ingredientId, Connection conn) throws SQLException {
         for (String alergen : alergens) {
-            saveAlergen(alergen);
+            saveAlergen(alergen, ingredientId, conn);
         }
     }
 
     // * "INSERT INTO alergen (alergen_name) VALUES (?)"
     @Override
-    public void saveAlergen(String alergen) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtAlergen = conn.prepareStatement(INSERT_ALERGEN, Statement.RETURN_GENERATED_KEYS)) {
+    public void saveAlergen(String alergen, int ingredientId, Connection conn) throws SQLException {
+        try (PreparedStatement stmtAlergen = conn.prepareStatement(INSERT_ALERGEN, Statement.RETURN_GENERATED_KEYS)) {
+
+            String alergenAux = findAlergensByName(alergen, conn);
+
+            if (alergenAux != null) {
+                System.out.println("Alergen '" + alergenAux + "' already exists.");
+                return;
+            }
+
             stmtAlergen.setString(1, alergen);
 
             stmtAlergen.executeUpdate();
 
             try (ResultSet generatedKeys = stmtAlergen.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    alergen.setId(generatedKeys.getInt(1));
+                    saveIngredientAlergen(ingredientId, generatedKeys.getInt(1), conn);
                 }
             }
 
-            System.out.println("The client: " + alergen.getId() + " has been created");
+            System.out.println("The alergen: " + alergen + " has been created");
+        }
+    }
+
+    // * "INSERT INTO INGREDIENT_ALERGEN (ingredient, alergen) VALUES (?,?)"
+    @Override
+    public void saveIngredientAlergen(int ingredientId, int alergen, Connection conn) throws SQLException {
+        try (PreparedStatement stmtIngredient = conn.prepareStatement(INSERT_INGREDIENT_ALERGEN, Statement.RETURN_GENERATED_KEYS)) {
+            stmtIngredient.setInt(1, ingredientId);
+            stmtIngredient.setInt(2, alergen);
+
+            stmtIngredient.executeUpdate();
+
+            System.out.println("Ingredient-Alergen added");
         }
     }
 
     // * "UPDATE product SET product.product_name=?, product.price=?, product.size=?, product.type=? WHERE product.id = ?"
     @Override
     public void updateProduct(Product product) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtProduct = conn.prepareStatement(UPDATE_PRODUCT)) {
             stmtProduct.setString(1, product.getName());
             stmtProduct.setDouble(2, product.getPrice());
@@ -145,87 +197,251 @@ public class JdbcProductDao implements ProductDao {
             }
 
             stmtProduct.execute();
-            System.out.println("The client: " + product.getId() + " has been modified");
+            System.out.println("The product: " + product.getId() + " has been modified");
         }
     }
 
     // * "UPDATE ingredient SET ingredient.ingredient_name=? WHERE product.id = ?"
     @Override
     public void updateIngredient(Ingredient ingredient) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(UPDATE_INGREDIENT)) {
             stmtClient.setString(1, ingredient.getName());
             stmtClient.setInt(2, ingredient.getId());
 
             stmtClient.execute();
-            System.out.println("The client: " + ingredient.getId() + " has been modified");
+            System.out.println("The ingredient: " + ingredient.getId() + " has been modified");
         }
     }
 
     // * "UPDATE alergen SET alergen.alergen_name=? WHERE product.id = ?"
     @Override
-    public void updateAlergen(String alergen) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+    public void updateAlergen(String alergen, int id) throws SQLException {
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(UPDATE_ALERGEN)) {
-            stmtClient.setString(1, alergen.getName());
-            stmtClient.setString(2, alergen.getSurname());
+            stmtClient.setString(1, alergen);
+            stmtClient.setInt(2, id);
 
             stmtClient.execute();
-            System.out.println("The client: " + alergen.getDni() + " has been modified");
+            System.out.println("The alergen: " + alergen + " has been modified");
         }
     }
 
     // * "DELETE FROM product WHERE product.ID = ?"
     @Override
     public void deleteProduct(Product product) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(DELETE_PRODUCT)) {
             stmtClient.setInt(1, product.getId());
             stmtClient.execute();
-            System.out.println("The client: " + product.getId() + " has been deleted");
+            System.out.println("The product: " + product.getId() + " has been deleted");
         }
     }
 
     // * "DELETE FROM ingredient WHERE ingredient.ID = ?"
     @Override
     public void deleteIngredient(Ingredient ingredient) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(DELETE_INGREDIENT)) {
             stmtClient.setInt(1, ingredient.getId());
             stmtClient.execute();
-            System.out.println("The client: " + ingredient.getId() + " has been deleted");
+            System.out.println("The ingredient: " + ingredient.getId() + " has been deleted");
         }
     }
 
     // * "DELETE FROM alergen WHERE alergen.ID = ?"
     @Override
-    public void deleteAlergen(String alergen) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+    public void deleteAlergen(int id) throws SQLException {
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(DELETE_ALERGEN)) {
-            stmtClient.setString(1, alergen.getId());
+            stmtClient.setInt(1, id);
             stmtClient.execute();
-            System.out.println("The client: " + alergen.getId() + " has been deleted");
+            System.out.println("The alergen: " + id + " has been deleted");
         }
     }
 
-
+    // * "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product WHERE product.ID = ?"
     @Override
-    public Product findProductById(int id) throws SQLException {
-        return null;
+    public Product findProductById(int id) throws SQLException, IllegalArgumentException {
+        Product product;
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+             PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_INGREDIENT_BY_NAME)) {
+            stmtIngredient.setInt(1, id);
+            try (ResultSet rsProduct = stmtIngredient.executeQuery()) {
+                if (rsProduct.next()) {
+                    switch (rsProduct.getString("type")) {
+                        case "PIZZA":
+                            product = new Pizza(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price"),
+                                    Size.valueOf(rsProduct.getString("size"))
+                            );
+                            Pizza pizza = (Pizza) product;
+                            pizza.setIngredients(findIngredientsByProduct(rsProduct.getInt("id")));
+                            break;
+                        case "PASTA":
+                            product = new Pasta(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price")
+                            );
+                            Pasta pasta = (Pasta) product;
+                            pasta.setIngredients(findIngredientsByProduct(rsProduct.getInt("id")));
+                            break;
+                        case "DRINK":
+                            product = new Drink(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price"),
+                                    Size.valueOf(rsProduct.getString("size"))
+                            );
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unexpected value: " + id);
+                    }
+                    return product;
+                }
+            }
+            return null;
+        }
     }
 
+    // * "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.id = ?"
     @Override
     public Ingredient findIngredientsById(int id) throws SQLException {
-        return null;
+        Ingredient ingredient;
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+             PreparedStatement stmtingredient = conn.prepareStatement(SELECT_INGREDIENT_BY_ID)) {
+            stmtingredient.setInt(1, id);
+            try (ResultSet rsIngredient = stmtingredient.executeQuery()) {
+                if (rsIngredient.next()) {
+                    ingredient = new Ingredient(
+                            rsIngredient.getInt("id"),
+                            rsIngredient.getString("ingredient_name")
+                    );
+                    return ingredient;
+                }
+            }
+            return null;
+        }
+    }
+
+    // * "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.ingredient_name = ?"
+    @Override
+    public Ingredient findIngredientsByName(String name, Connection conn) throws SQLException {
+        Ingredient ingredient;
+        try (PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_INGREDIENT_BY_NAME)) {
+            stmtIngredient.setString(1, name);
+            try (ResultSet rsClient = stmtIngredient.executeQuery()) {
+                if (rsClient.next()) {
+                    ingredient = new Ingredient(
+                            rsClient.getInt("id"),
+                            rsClient.getString("ingredient_name")
+                    );
+
+                    List<String> alergens = findAlergensByIngredient(ingredient.getId());
+
+                    ingredient.setAlergens(alergens);
+
+                    return ingredient;
+                }
+            }
+            return null;
+        }
+    }
+
+    // * "SELECT alergen.alergen_name FROM alergen WHERE alergen.alergen_name = ?"
+    @Override
+    public String findAlergensByName(String name, Connection conn) throws SQLException {
+        try (PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_ALERGEN_BY_NAME)) {
+            stmtIngredient.setString(1, name);
+            try (ResultSet rsAlergen = stmtIngredient.executeQuery()) {
+                if (rsAlergen.next()) {
+                    String alergen = rsAlergen.getString("alergen_name");
+                    return alergen;
+                }
+            }
+            return null;
+        }
+    }
+
+    // * "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE product_ingredient.product=? AND product_ingredient.ingredient=ingredient.id"
+    @Override
+    public List<Ingredient> findIngredientsByProduct(int id) throws SQLException {
+        List<Ingredient> ingredients = new ArrayList<>();
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+             PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_INGREDIENTS_BY_PRODUCT)) {
+            stmtIngredient.setInt(1, id);
+            try (ResultSet rsIngredient = stmtIngredient.executeQuery()) {
+                while (rsIngredient.next()) {
+                    ingredients.add(
+                            new Ingredient(
+                                    rsIngredient.getInt("id"),
+                                    rsIngredient.getString("ingredient_name")
+                            )
+                    );
+                    ingredients.getLast().setAlergens(findAlergensByIngredient(rsIngredient.getInt("id")));
+                }
+            }
+            return ingredients;
+        }
     }
 
     @Override
     public List<String> findAlergensByIngredient(int id) throws SQLException {
-        return null;
+        List<String> alergens = new ArrayList<>();
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+             PreparedStatement stmtAlergen = conn.prepareStatement(SELECT_ALERGENS_BY_INGREDIENT)) {
+            stmtAlergen.setInt(1, id);
+            try (ResultSet rsAlergen = stmtAlergen.executeQuery()) {
+                while (rsAlergen.next()) {
+                    alergens.add(rsAlergen.getString("alergen_name"));
+                }
+            }
+            return alergens;
+        }
     }
 
     @Override
     public List<Product> findAll() throws SQLException {
-        return List.of();
+        List<Product> products = new ArrayList<>();
+        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+             PreparedStatement stmtProduct = conn.prepareStatement(SELECT_ALL)) {
+            try (ResultSet rsProduct = stmtProduct.executeQuery()) {
+                while (rsProduct.next()) {
+                    switch (rsProduct.getString("type")) {
+                        case "PIZZA":
+                            products.add(new Pizza(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price"),
+                                    Size.valueOf(rsProduct.getString("size"))
+                            ));
+                            Pizza pizza = (Pizza) products.getLast();
+                            pizza.setIngredients(findIngredientsByProduct(rsProduct.getInt("id")));
+                            break;
+                        case "PASTA":
+                            products.add(new Pasta(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price")
+                            ));
+                            Pasta pasta = (Pasta) products.getLast();
+                            pasta.setIngredients(findIngredientsByProduct(rsProduct.getInt("id")));
+                            break;
+                        case "DRINK":
+                            products.add(new Drink(
+                                    rsProduct.getInt("id"),
+                                    rsProduct.getString("product_name"),
+                                    rsProduct.getDouble("price"),
+                                    Size.valueOf(rsProduct.getString("size"))
+                            ));
+                            break;
+                    }
+                }
+                return products;
+            }
+        }
     }
 }
