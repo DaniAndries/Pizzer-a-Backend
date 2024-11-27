@@ -8,18 +8,24 @@ public class Order implements Payable {
     private int id;
     private Date orderDate;
     private OrderState state;
-    private String paymentMethod;
-    private float totalPrice;
+    private PaymentMethod paymentMethod;
     private List<OrderLine> orderLines = new ArrayList<>();
     private Client client;
 
-    public Order(int id, Date orderDate, OrderState state, String paymentMethod,  float totalPrice, List<OrderLine> orderLines, Client client) {
+    public Order(int id, Date orderDate, OrderState state, PaymentMethod paymentMethod, List<OrderLine> orderLines, Client client) {
         this.id = id;
         this.orderDate = orderDate;
         this.state = state;
         this.paymentMethod = paymentMethod;
-        this.totalPrice = totalPrice;
         this.orderLines = orderLines;
+        this.client = client;
+    }
+
+    public Order(int id, Date orderDate, OrderState state, PaymentMethod paymentMethod, Client client) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.state = state;
+        this.paymentMethod = paymentMethod;
         this.client = client;
     }
 
@@ -32,8 +38,8 @@ public class Order implements Payable {
     }
 
     public void finalizar() {
-        calcularPrecioTotal();
-        pay(totalPrice);
+        getTotalPrice();
+        pay(getTotalPrice());
     }
 
     @Override
@@ -45,20 +51,20 @@ public class Order implements Payable {
 
     @Override
     public void payByCard(double amount) {
-        this.paymentMethod = "Card";
+        this.paymentMethod = PaymentMethod.CARD;
     }
 
     @Override
     public void payByCash(double amount) {
-        this.paymentMethod = "Cash";
+        this.paymentMethod = PaymentMethod.CASH;
     }
 
-    public void calcularPrecioTotal() {
-        float auxiliaryPrice = 0;
+    public double getTotalPrice() {
+        double auxiliaryPrice = 0;
         for (OrderLine orderLine : orderLines) {
             auxiliaryPrice += orderLine.calculateLinePrice();
         }
-        this.totalPrice = auxiliaryPrice;
+        return auxiliaryPrice;
     }
 
     public int getId() {
@@ -77,10 +83,6 @@ public class Order implements Payable {
         this.orderDate = orderDate;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
-    }
-
     public OrderState getState() {
         return state;
     }
@@ -97,11 +99,11 @@ public class Order implements Payable {
         this.orderLines.add(orderLine);
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

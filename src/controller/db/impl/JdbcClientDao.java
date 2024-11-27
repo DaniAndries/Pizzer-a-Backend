@@ -13,25 +13,19 @@ import static java.sql.DriverManager.getConnection;
 
 public class JdbcClientDao implements ClientDao {
     static final JdbcOrderDao jdbcCarDao = new JdbcOrderDao();
-    /**
-     * id
-     * dni;
-     * clientName;
-     * direction;
-     * phone;
-     * mail;
-     * password;
-     * List<Order> orderList;
-     * admin=false;
-     */
+
+    //* int id; String dni; String clientName; String direction; String phone; String mail; String password; List<Order> orderList; boolean admin;
     private static final String INSERT_CLIENT = "INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)";
+
     private static final String UPDATE_CLIENT = "UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?";
+
     private static final String DELETE_CLIENT = "DELETE FROM client WHERE client.ID = ?";
+
     private static final String SELECT_CLIENT = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?";
     private static final String SELECT_CLIENT_MAIL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?";
     private static final String SELECT_ALL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client";
 
-    // INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)
+    // * INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)
     @Override
     public void save(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -55,7 +49,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?
+    // * UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?
     @Override
     public void update(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -71,7 +65,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // DELETE FROM client WHERE client.ID = ?
+    // * DELETE FROM client WHERE client.ID = ?
     @Override
     public void delete(Client client) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -82,7 +76,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?
+    // * SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?
     @Override
     public Client findById(int id) throws SQLException {
         Client client;
@@ -107,7 +101,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
-    // SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?
+    // * SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?
     @Override
     public Client findByMail(String mail) throws SQLException {
         Client client;
@@ -124,7 +118,6 @@ public class JdbcClientDao implements ClientDao {
                             rsClient.getString("mail"),
                             rsClient.getString("password"),
                             rsClient.getBoolean("admin")
-
                     );
                     return client;
                 }
@@ -133,6 +126,7 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
+    // * "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client"
     @Override
     public List<Client> findAll() throws SQLException {
         List<Client> clientList =new ArrayList<>();

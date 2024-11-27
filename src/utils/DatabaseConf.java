@@ -68,13 +68,12 @@ public class DatabaseConf {
 
     public static final String DROP_TABLE_ALERGEN = "DROP TABLE IF EXISTS ALERGEN";
 
-    // id; state; orderDate; totalPrice; paymentMethod; client;
+    // id; state; orderDate; paymentMethod; client;
     public static final String CREATE_TABLE_ORDER = "CREATE TABLE IF NOT EXISTS customer_order (" +
             "id INT PRIMARY KEY AUTO_INCREMENT," +
             "state ENUM('PENDING', 'PAID', 'DELIVERED', 'CANCELED') NOT NULL DEFAULT 'PENDING'," +
             "order_date DATE NOT NULL," +
-            "total_price DOUBLE NOT NULL ," +
-            "payment_method ENUM('CARD', 'CASH') NULL DEFAULT NULL," +
+            "payment_method ENUM('CARD', 'CASH', 'UNPAID') NOT NULL DEFAULT 'UNPAID'," +
             "client INT NOT NULL," +
             "FOREIGN KEY (client) REFERENCES client (id) ON DELETE NO ACTION ON UPDATE CASCADE" +
             ");";

@@ -54,7 +54,7 @@ public class JdbcProductDao implements ProductDao {
             }
 
             if (product instanceof Pasta pasta) {
-                stmtProduct.setNull(3, Types.VARCHAR);
+                stmtProduct.setNull(3, Types.NULL);
                 stmtProduct.setString(4, "PASTA");
                 ingredients = pasta.getIngredients();
             }
