@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Order implements Payable {
+public class Order {
     private int id;
     private Date orderDate;
     private OrderState state;
@@ -33,30 +33,22 @@ public class Order implements Payable {
         this.id = id;
         this.orderDate = orderDate;
         this.state = OrderState.PENDING;
+        this.paymentMethod = PaymentMethod.UNPAID;
         this.orderLines.add(orderLine);
         this.client = client;
     }
 
-    public void finalizar() {
-        getTotalPrice();
-        pay(getTotalPrice());
+    public Order(Date orderDate, OrderState state, OrderLine orderLine, Client client) {
+        this.orderDate = orderDate;
+        this.state = state;
+        this.paymentMethod = PaymentMethod.UNPAID;
+        this.orderLines.add(orderLine);
+        this.client = client;
     }
 
-    @Override
-    public void pay(double amount) {
-        setState(OrderState.PAID);
-        payByCash(amount);
-        payByCard(amount);
-    }
-
-    @Override
-    public void payByCard(double amount) {
-        this.paymentMethod = PaymentMethod.CARD;
-    }
-
-    @Override
-    public void payByCash(double amount) {
-        this.paymentMethod = PaymentMethod.CASH;
+    public void finalizar(Payable payable, PaymentMethod paymentMethod) {
+        payable.pay(getTotalPrice());
+        setPaymentMethod(paymentMethod);
     }
 
     public double getTotalPrice() {
@@ -93,6 +85,10 @@ public class Order implements Payable {
 
     public List<OrderLine> getOrderLines() {
         return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
     }
 
     public void addOrderLine(OrderLine orderLine) {

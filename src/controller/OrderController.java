@@ -1,15 +1,18 @@
 package controller;
 
+import controller.db.impl.JdbcClientDao;
+import controller.db.impl.JdbcOrderDao;
 import model.*;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderController {
+    JdbcOrderDao orderDao = new JdbcOrderDao();
+    JdbcClientDao clientDao = new JdbcClientDao();
+
     private Order actualOrder;
-    private List<Order> ordersList = new ArrayList<>();
 
     public OrderController(Order actualOrder) {
         this.actualOrder = actualOrder;
@@ -18,59 +21,99 @@ public class OrderController {
     public OrderController() {
     }
 
-    public void addLineaOrder(Product product, Client clienteActual, int cantidad) throws IllegalStateException {
-        if (this.actualOrder == null) {
-            if (clienteActual == null) {
-                throw (new IllegalStateException());
-            }
-            this.actualOrder = new Order(ThreadLocalRandom.current().nextInt(999999), new Date(), new OrderLine(1, cantidad, product), clienteActual);
+    public void saveOrder(Order order) throws SQLException {
+        orderDao.saveOrder(order);
+    }
+
+    public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
+        orderDao.saveOrderLine(orderLine, order);
+    }
+
+    public void updateOrder(Order order) throws SQLException {
+        orderDao.updateOrder(order);
+    }
+
+    public void updateOrderLine(OrderLine orderLine) throws SQLException {
+        orderDao.updateOrderLine(orderLine);
+    }
+
+    public void deleteOrder(Order order) throws SQLException {
+        orderDao.deleteOrder(order);
+    }
+
+    public void deleteOrderLine(OrderLine orderLine) throws SQLException {
+        orderDao.deleteOrderLine(orderLine);
+    }
+
+    public Order selectOrder(int id) throws SQLException {
+        return orderDao.selectOrder(id);
+    }
+
+    public Order selectOrderByClient(Client client) throws SQLException {
+        return orderDao.selectOrderByClient(client);
+    }
+
+    public Order selectOrderByState(OrderState state, Client client) throws SQLException {
+        return orderDao.selectOrderByState(state, client);
+    }
+
+    public OrderLine selectOrderLine(int id) throws SQLException {
+        return orderDao.selectOrderLine(id);
+    }
+
+    public List<OrderLine> selectOrderLinesByOrder(Order order) throws SQLException {
+        return orderDao.selectOrderLinesByOrder(order);
+    }
+
+    public void addToCart(Product product, Client clienteActual, int cantidad) throws IllegalStateException, SQLException {
+        Order order = orderDao.selectOrderByState(OrderState.PENDING, clienteActual);
+        OrderLine orderLine = new OrderLine(cantidad, product);
+
+        if (order.getOrderDate() == null) {
+            orderDao.saveOrder(new Order(new Date(), OrderState.PENDING, orderLine, clienteActual));
         } else {
-            this.actualOrder.addOrderLine(new OrderLine(4, cantidad, product));
+            order.addOrderLine(orderLine);
+            orderDao.updateOrder(order);
+        }
+
+        orderDao.saveOrderLine(orderLine, order);
+    }
+
+    public void finalizeOrder(Client client, PaymentMethod paymentMethod) throws SQLException {
+        Order actualOrder = orderDao.selectOrderByState(OrderState.PENDING, client);
+        Payable payable;
+
+        if (paymentMethod.toString().equals("CARD")){
+            payable = new PayByCard();
+            actualOrder.setPaymentMethod(PaymentMethod.CARD);
+        } else if (paymentMethod.toString().equals("CASH")){
+            payable = new PayByCash();
+            actualOrder.setPaymentMethod(PaymentMethod.CARD);
+        } else {
+            throw new IllegalArgumentException("You cannot finalize an order without a payment method");
+        }
+
+        if (this.actualOrder.getState() == OrderState.PENDING) {
+            this.actualOrder.finalizar(payable, paymentMethod);
+            client.getOrderList().add(actualOrder);
+            actualOrder.setState(OrderState.PAID);
+            orderDao.updateOrder(actualOrder);
+            clientDao.update(client);
+        } else{
+            throw new IllegalArgumentException("You cannot finalize an Order that has already been completed, delivered or canceled");
         }
     }
 
-    public int finalizeOrder() {
-        int idactualOrder = this.actualOrder.getId();
-        if (this.actualOrder.getState() == OrderState.PENDING) {
-            this.actualOrder.finalizar();
-            this.actualOrder.pay(this.actualOrder.getTotalPrice());
-            this.ordersList.add(this.actualOrder);
-            this.actualOrder = null;
-            deliverOrder(idactualOrder);
-        } else System.err.println("No se puede finalizar un Order ya finalizado, entregado o cancelado");
-        return idactualOrder;
+    public void deliverOrder(int id) throws SQLException {
+        Order actualOrder = orderDao.selectOrder(id);
+        actualOrder.setState(OrderState.DELIVERED);
+        orderDao.updateOrder(actualOrder);
     }
 
-    public int cancelOrder() {
-        int idactualOrder = this.actualOrder.getId();
-        if (this.actualOrder.getState() == OrderState.PENDING) {
-            this.actualOrder.setState(OrderState.CANCELED);
-            this.ordersList.add(this.actualOrder);
-            this.actualOrder = null;
-        } else System.err.println("No se puede cancelar un Order ya finalizado, entregado o cancelado");
-        return idactualOrder;
+    public void cancelOrder(Client client) throws SQLException {
+        Order actualOrder = orderDao.selectOrderByState(OrderState.PENDING, client);
+        actualOrder.setState(OrderState.CANCELED);
+        orderDao.updateOrder(actualOrder);
     }
 
-    public void deliverOrder(int id) {
-        for (Order listaOrder : ordersList) {
-            if (listaOrder.getId() == id) {
-                if (listaOrder.getState() == OrderState.PAID) {
-                    listaOrder.setState(OrderState.DELIVERED);
-                } else {
-                    System.err.println("No se puede entregar un Order cancelado o pendiente de pago");
-                }
-                break;
-            }
-        }
-    }
-
-    public Order getactualOrder() {
-        return actualOrder;
-    }
-
-    public List<Order> getordersList() {
-        return ordersList;
-    }
 }
-
-

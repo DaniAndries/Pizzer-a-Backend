@@ -3,6 +3,7 @@ package controller.db;
 import model.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface OrderDao {
 
@@ -20,7 +21,11 @@ public interface OrderDao {
 
     Order selectOrder(int id) throws SQLException;
 
+    Order selectOrderByClient(Client client) throws SQLException;
+
     Order selectOrderByState(OrderState state , Client client) throws SQLException;
 
-    Order selectOrderLine(int id) throws SQLException;
+    OrderLine selectOrderLine(int id) throws SQLException;
+
+    List<OrderLine> selectOrderLinesByOrder(Order order) throws SQLException;
 }

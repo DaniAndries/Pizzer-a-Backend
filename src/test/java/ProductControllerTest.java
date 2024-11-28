@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductControllerTest {
     private ProductController productController;
-    private List<Product> productDatabase;
+    private List<Product> products;
 
     // Ingredientes
     private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
@@ -45,12 +45,12 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() throws SQLException {
         DatabaseConf.dropAndCreateTables();
-        productDatabase = new ArrayList<>();
-        productDatabase.add(pasta1);
-        productDatabase.add(pasta2);
-        productDatabase.add(pasta3);
-        productDatabase.add(pizza1);
-        productDatabase.add(drink1);
+        products = new ArrayList<>();
+        products.add(pasta1);
+        products.add(pasta2);
+        products.add(pasta3);
+        products.add(pizza1);
+        products.add(drink1);
 
         productController = new ProductController();
     }
@@ -58,31 +58,31 @@ class ProductControllerTest {
     @Test
     void testSaveProduct() {
         Pasta newPasta = new Pasta(6, "Alfredo", 12.0, ingredientList4);
-        productDatabase.add(newPasta);
+        products.add(newPasta);
 
-        assertTrue(productDatabase.contains(newPasta));
+        assertTrue(products.contains(newPasta));
     }
 
     @Test
     void testDeleteProduct() {
-        productDatabase.remove(pasta1);
+        products.remove(pasta1);
 
-        assertFalse(productDatabase.contains(pasta1));
+        assertFalse(products.contains(pasta1));
     }
 
     @Test
     void testFindProductById() {
-        Product foundProduct = productDatabase.stream().filter(product -> product.getId() == 4).findFirst().orElse(null);
+        Product foundProduct = products.stream().filter(product -> product.getId() == 4).findFirst().orElse(null);
 
         assertNotNull(foundProduct);
         assertEquals(pizza1, foundProduct);
     }
 
     @Test
-    void testFindAllProducts() {
-        List<Product> allProducts = new ArrayList<>(productDatabase);
+    void testFindAllProducts() throws SQLException {
+        List<Product> allProducts = productController.findAll();
 
-        assertEquals(5, allProducts.size());
+        assertEquals(products.size(), allProducts.size());
     }
 
     @Test

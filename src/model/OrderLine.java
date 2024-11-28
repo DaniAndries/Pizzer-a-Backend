@@ -13,11 +13,23 @@ public class OrderLine {
     @CsvIgnore
     private float linePrice;
 
-    public OrderLine(int id, int amount, Product product) {
+    public OrderLine(int id, int amount, Product product, float linePrice) {
         this.id = id;
         this.amount = amount;
         this.product = product;
     }
+
+    public OrderLine(int id, int amount, float linePrice) {
+        this.id = id;
+        this.amount = amount;
+        this.linePrice = linePrice;
+    }
+
+    public OrderLine( int amount, Product product) {
+        this.amount = amount;
+        this.product = product;
+    }
+
 
     public float calculateLinePrice(){
         return (float) (this.product.getPrice() * amount);

@@ -21,10 +21,10 @@ public class ClientController {
     public ClientController() {
     }
 
-    public void loginClient(String mail, String password) throws SQLException, IllegalArgumentException {
+    public Client loginClient(String mail, String password) throws SQLException, IllegalArgumentException {
         Client client = findByMail(mail);
         if (client.getPassword().equals(password)) {
-            actualClient = client;
+            return client;
         } else throw new IllegalArgumentException("Wrong User or Password");
     }
 
@@ -58,7 +58,7 @@ public class ClientController {
     public OrderController addOrderLine(Product product) throws IllegalStateException {
         if (this.actualClient != null) {
             OrderController orderController = new OrderController();
-            orderController.addLineaOrder(product, this.actualClient, 1);
+            //orderController.addLineaOrder(product, this.actualClient, 1);
             return orderController;
         } else throw (new IllegalStateException());
     }

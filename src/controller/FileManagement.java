@@ -41,9 +41,6 @@ public class FileManagement {
 
     /**
      * Method to add clients from a 2D String array
-     *
-     * @param list
-     * @return list<client></client>
      */
     private static List<Client> addAdminClients(String[][] list) throws NumberFormatException, ArrayIndexOutOfBoundsException {
         List<Client> clientList = new ArrayList<>();
