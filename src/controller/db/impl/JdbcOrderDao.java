@@ -15,7 +15,7 @@ public class JdbcOrderDao implements OrderDao {
     JdbcProductDao jdbcProductDao = new JdbcProductDao();
 
     // * int id; OrderState state; Date orderDate; float totalPrice; String paymentMethod; List<OrderLine> orderLines; Client client;
-    private static final String INSERT_ORDER = "INSERT INTO customer_order (state, order_date, total_price, payment_method, client) VALUES (?,?,?,?,?)";
+    private static final String INSERT_ORDER = "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)";
     // ? int id; int amount; Product product; float line_price;
     private static final String INSERT_ORDER_LINE = "INSERT INTO order_line (amount, product, line_price) VALUES (?,?,?)";
 
@@ -31,7 +31,7 @@ public class JdbcOrderDao implements OrderDao {
     private static final String SELECT_ORDER_LINE = "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.ID=?";
     private static final String SELECT_ORDER_LINE_BY_ORDER = "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.ID=? AND order_line.order=customer_order.id";
 
-    // * "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?,?)"
+    // * "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)"
     @Override
     public void saveOrder(Order order) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -39,7 +39,7 @@ public class JdbcOrderDao implements OrderDao {
             List<OrderLine> orderLines = new ArrayList<>();
 
             stmtOrder.setString(1, order.getState().toString());
-            stmtOrder.setDate(2, (Date) order.getOrderDate());
+            stmtOrder.setDate(2, new Date(order.getOrderDate().getTime()));
             stmtOrder.setString(3, order.getPaymentMethod().toString());
             stmtOrder.setInt(4, order.getClient().getId());
 

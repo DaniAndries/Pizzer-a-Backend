@@ -33,8 +33,8 @@ public class JdbcProductDao implements ProductDao {
     private static final String SELECT_INGREDIENT_BY_ID = "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.id = ?";
     private static final String SELECT_INGREDIENT_BY_NAME = "SELECT ingredient.id, ingredient.ingredient_name FROM ingredient WHERE ingredient.ingredient_name = ?";
     private static final String SELECT_ALERGEN_BY_NAME = "SELECT alergen.alergen_name FROM alergen WHERE alergen.alergen_name = ?";
-    private static final String SELECT_INGREDIENTS_BY_PRODUCT = "SELECT ingredient.id, ingredient.ingredient_name FROM product_ingredient INNER JOIN ingredient ON product_ingredient.ingredient = ingredient.id WHERE product_ingredient.product = ?";
-    private static final String SELECT_ALERGENS_BY_INGREDIENT = "SELECT alergen.id, alergen.alergen_name FROM ingredient_alergen INNER JOIN alergen ON ingredient_alergen.alergen = alergen.id WHERE ingredient_alergen.ingredient = ?";
+    private static final String SELECT_INGREDIENTS_BY_PRODUCT = "SELECT ingredient.id, ingredient.ingredient_name FROM product_ingredient INNER JOIN ingredient ON product_ingredient.ingredient = ingredient.id WHERE product_ingredient.product = ? ORDER BY ingredient.id";
+    private static final String SELECT_ALERGENS_BY_INGREDIENT = "SELECT alergen.id, alergen.alergen_name FROM ingredient_alergen INNER JOIN alergen ON ingredient_alergen.alergen = alergen.id WHERE ingredient_alergen.ingredient = ? ORDER BY alergen.id";
     private static final String SELECT_ALL = "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product";
 
     // * "INSERT INTO product (product_name, price, size, type) VALUES (?,?,?,?)"
@@ -260,12 +260,12 @@ public class JdbcProductDao implements ProductDao {
         }
     }
 
-    // * "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product WHERE product.ID = ?"
+    // * "SELECT product.id, product.product_name, product.price, product.size, product.type FROM product WHERE product.ID = ? ORDER BY product.id"
     @Override
     public Product findProductById(int id) throws SQLException, IllegalArgumentException {
         Product product;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_INGREDIENT_BY_NAME)) {
+             PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_PRODUCT_BY_ID)) {
             stmtIngredient.setInt(1, id);
             try (ResultSet rsProduct = stmtIngredient.executeQuery()) {
                 if (rsProduct.next()) {
@@ -320,6 +320,7 @@ public class JdbcProductDao implements ProductDao {
                             rsIngredient.getInt("id"),
                             rsIngredient.getString("ingredient_name")
                     );
+                    ingredient.setAlergens(findAlergensByIngredient(ingredient));
                     return ingredient;
                 }
             }
@@ -340,7 +341,7 @@ public class JdbcProductDao implements ProductDao {
                             rsClient.getString("ingredient_name")
                     );
 
-                    List<String> alergens = findAlergensByIngredient(ingredient.getId());
+                    List<String> alergens = findAlergensByIngredient(ingredient);
 
                     ingredient.setAlergens(alergens);
 
@@ -380,7 +381,7 @@ public class JdbcProductDao implements ProductDao {
                                     rsIngredient.getString("ingredient_name")
                             )
                     );
-                    ingredients.getLast().setAlergens(findAlergensByIngredient(rsIngredient.getInt("id")));
+                    ingredients.getLast().setAlergens(findAlergensByIngredient(ingredients.getLast()));
                 }
             }
             return ingredients;
@@ -389,11 +390,11 @@ public class JdbcProductDao implements ProductDao {
 
     // * "SELECT alergen.id, alergen.alergen_name FROM ingredient_alergen INNER JOIN alergen ON ingredient_alergen.alergen = alergen.id WHERE ingredient_alergen.ingredient = ?"
     @Override
-    public List<String> findAlergensByIngredient(int id) throws SQLException {
+    public List<String> findAlergensByIngredient(Ingredient ingredient) throws SQLException {
         List<String> alergens = new ArrayList<>();
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtAlergen = conn.prepareStatement(SELECT_ALERGENS_BY_INGREDIENT)) {
-            stmtAlergen.setInt(1, id);
+            stmtAlergen.setInt(1, ingredient.getId());
             try (ResultSet rsAlergen = stmtAlergen.executeQuery()) {
                 while (rsAlergen.next()) {
                     alergens.add(rsAlergen.getString("alergen_name"));

@@ -35,6 +35,22 @@ public class Pizza extends Product {
     }
 
     @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Pizza pizza)) return false;
+        if (!super.equals(o)) return false;
+
+        return getSize() == pizza.getSize() && getIngredients().equals(pizza.getIngredients());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getSize().hashCode();
+        result = 31 * result + getIngredients().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Pizza{" +
                 super.toString() +

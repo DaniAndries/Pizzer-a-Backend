@@ -19,23 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductControllerTest {
     private ProductController productController;
-    private List<Product> products;
 
-    // Ingredientes
+    // Ingredients
     private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
     private Ingredient pepper = new Ingredient(3, "Pepper", new ArrayList<>());
     private Ingredient bacon = new Ingredient(4, "Bacon", List.of("Sulfites"));
     private Ingredient mushroom = new Ingredient(5, "Mushroom", new ArrayList<>());
 
-    // Listas de ingredientes
+    // Lists of ingredients
     private List<Ingredient> ingredientList1 = List.of(cheese, tomato);
     private List<Ingredient> ingredientList2 = List.of(tomato, bacon);
     private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
     private List<Ingredient> ingredientList4 = List.of(cheese, pepper);
     private List<Ingredient> ingredientList5 = List.of(cheese, bacon, tomato);
 
-    // Productos
+    // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
     private Pasta pasta2 = new Pasta(2, "Bolognese", 9.5, ingredientList2);
     private Pasta pasta3 = new Pasta(3, "Pesto", 8.0, ingredientList3);
@@ -45,59 +44,85 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() throws SQLException {
         DatabaseConf.dropAndCreateTables();
-        products = new ArrayList<>();
+        productController = new ProductController();
+    }
+
+    void setUpHelper() throws SQLException {
+        productController.saveProduct(pasta1);
+        productController.saveProduct(pasta2);
+        productController.saveProduct(pasta3);
+        productController.saveProduct(pizza1);
+        productController.saveProduct(drink1);
+    }
+
+    List<Product> setUpProductList() throws SQLException {
+        List<Product> products = new ArrayList<>();
+
         products.add(pasta1);
         products.add(pasta2);
         products.add(pasta3);
         products.add(pizza1);
         products.add(drink1);
 
-        productController = new ProductController();
+        return products;
     }
 
     @Test
-    void testSaveProduct() {
-        Pasta newPasta = new Pasta(6, "Alfredo", 12.0, ingredientList4);
-        products.add(newPasta);
+    void testSaveProduct() throws SQLException {
+        productController.saveProduct(pasta1);
 
-        assertTrue(products.contains(newPasta));
+        Pasta newPasta = (Pasta) productController.findProductById(pasta1.getId());
+
+        assertEquals(pasta1, newPasta);
     }
 
     @Test
-    void testDeleteProduct() {
-        products.remove(pasta1);
+    void testDeleteProduct() throws SQLException {
+        productController.saveProduct(pasta2);
 
-        assertFalse(products.contains(pasta1));
+        Pasta newPasta = (Pasta) productController.findProductById(1);
+
+        productController.deleteProduct(pasta2);
+
+        newPasta = (Pasta) productController.findProductById(1);
+
+        assertNull(newPasta);
     }
 
     @Test
-    void testFindProductById() {
-        Product foundProduct = products.stream().filter(product -> product.getId() == 4).findFirst().orElse(null);
+    void testFindProductById() throws SQLException {
+        productController.saveProduct(pasta3);
 
-        assertNotNull(foundProduct);
-        assertEquals(pizza1, foundProduct);
+        Pasta newPasta = (Pasta) productController.findProductById(1);
+
+        assertEquals(pasta3, newPasta);
     }
 
     @Test
     void testFindAllProducts() throws SQLException {
+        setUpHelper();
+
         List<Product> allProducts = productController.findAll();
 
-        assertEquals(products.size(), allProducts.size());
+        assertEquals(setUpProductList().size(), allProducts.size());
     }
 
     @Test
-    void testFindIngredientsById() {
-        Ingredient foundIngredient = ingredientList1.stream().filter(ingredient -> ingredient.getId() == 1).findFirst().orElse(null);
+    void testFindIngredientsById() throws SQLException {
+        setUpHelper();
 
-        assertNotNull(foundIngredient);
-        assertEquals(cheese, foundIngredient);
+        Ingredient newIngredient = productController.findIngredientsById(2);
+
+        assertEquals(tomato, newIngredient);
     }
 
     @Test
-    void testFindAlergensByIngredient() {
-        List<String> alergens = cheese.getAlergens();
+    void testFindAlergensByIngredient() throws SQLException {
+        setUpHelper();
 
-        assertEquals(List.of("Lactose"), alergens);
+        List<String> newAlergens = productController.findAlergensByIngredient(cheese);
+
+        assertEquals(cheese.getAlergens(), newAlergens);
     }
 
     @Test

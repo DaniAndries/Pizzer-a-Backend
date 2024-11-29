@@ -24,6 +24,21 @@ public class Pasta extends Product {
     }
 
     @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Pasta pasta)) return false;
+        if (!super.equals(o)) return false;
+
+        return getIngredients().equals(pasta.getIngredients());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getIngredients().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Pasta{" +super.toString()+
                 "ingredients=" + ingredients +

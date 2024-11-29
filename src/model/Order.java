@@ -106,4 +106,34 @@ public class Order {
     public Client getClient() {
         return client;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Order order)) return false;
+
+        return getId() == order.getId() && getOrderDate().equals(order.getOrderDate()) && getState() == order.getState() && getPaymentMethod() == order.getPaymentMethod() && getOrderLines().equals(order.getOrderLines()) && getClient().equals(order.getClient());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getOrderDate().hashCode();
+        result = 31 * result + getState().hashCode();
+        result = 31 * result + getPaymentMethod().hashCode();
+        result = 31 * result + getOrderLines().hashCode();
+        result = 31 * result + getClient().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate +
+                ", state=" + state +
+                ", paymentMethod=" + paymentMethod +
+                ", orderLines=" + orderLines +
+                ", client=" + client +
+                '}';
+    }
 }

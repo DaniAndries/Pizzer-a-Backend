@@ -39,8 +39,8 @@ public class DatabaseConf {
             + "id INT PRIMARY KEY AUTO_INCREMENT," +
             "product INT NOT NULL," +
             "ingredient INT NOT NULL," +
-            "FOREIGN KEY (product) REFERENCES product (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
-            "FOREIGN KEY (ingredient) REFERENCES ingredient (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
+            "FOREIGN KEY (product) REFERENCES product (id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+            "FOREIGN KEY (ingredient) REFERENCES ingredient (id) ON DELETE CASCADE ON UPDATE CASCADE" + ");";
 
     public static final String DROP_TABLE_PRODUCT_INGREDIENT = "DROP TABLE IF EXISTS PRODUCT_INGREDIENT";
 
@@ -56,8 +56,8 @@ public class DatabaseConf {
             + "id INT PRIMARY KEY AUTO_INCREMENT," +
             "ingredient INT NOT NULL," +
             "alergen INT NOT NULL," +
-            "FOREIGN KEY (ingredient) REFERENCES ingredient (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
-            "FOREIGN KEY (alergen) REFERENCES alergen (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
+            "FOREIGN KEY (ingredient) REFERENCES ingredient (id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+            "FOREIGN KEY (alergen) REFERENCES alergen (id) ON DELETE CASCADE ON UPDATE CASCADE" + ");";
 
     public static final String DROP_TABLE_INGREDIENT_ALERGEN = "DROP TABLE IF EXISTS INGREDIENT_ALERGEN";
 
@@ -75,7 +75,7 @@ public class DatabaseConf {
             "order_date DATE NOT NULL," +
             "payment_method ENUM('CARD', 'CASH', 'UNPAID') NOT NULL DEFAULT 'UNPAID'," +
             "client INT NOT NULL," +
-            "FOREIGN KEY (client) REFERENCES client (id) ON DELETE NO ACTION ON UPDATE CASCADE" +
+            "FOREIGN KEY (client) REFERENCES client (id) ON DELETE CASCADE ON UPDATE CASCADE" +
             ");";
 
     public static final String DROP_TABLE_ORDER = "DROP TABLE IF EXISTS customer_order";
@@ -87,8 +87,8 @@ public class DatabaseConf {
             "line_price DOUBLE NOT NULL ," +
             "product INT NOT NULL," +
             "customer_order INT NOT NULL," +
-            "FOREIGN KEY (customer_order) REFERENCES customer_order (id) ON DELETE NO ACTION ON UPDATE CASCADE, " +
-            "FOREIGN KEY (product) REFERENCES product (id) ON DELETE NO ACTION ON UPDATE CASCADE" + ");";
+            "FOREIGN KEY (customer_order) REFERENCES customer_order (id) ON DELETE CASCADE ON UPDATE CASCADE, " +
+            "FOREIGN KEY (product) REFERENCES product (id) ON DELETE CASCADE ON UPDATE CASCADE" + ");";
 
 
     public static final String DROP_TABLE_ORDER_LINE = "DROP TABLE IF EXISTS order_line";

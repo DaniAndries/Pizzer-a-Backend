@@ -118,6 +118,27 @@ public class Client {
     }
 
     @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Client client)) return false;
+
+        return getId() == client.getId() && isAdmin() == client.isAdmin() && getDni().equals(client.getDni()) && getClientName().equals(client.getClientName()) && getDirection().equals(client.getDirection()) && getPhone().equals(client.getPhone()) && getMail().equals(client.getMail()) && getPassword().equals(client.getPassword()) && getOrderList().equals(client.getOrderList());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getDni().hashCode();
+        result = 31 * result + getClientName().hashCode();
+        result = 31 * result + getDirection().hashCode();
+        result = 31 * result + getPhone().hashCode();
+        result = 31 * result + getMail().hashCode();
+        result = 31 * result + getPassword().hashCode();
+        result = 31 * result + getOrderList().hashCode();
+        result = 31 * result + Boolean.hashCode(isAdmin());
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Client{" +
                 "id=" + id +

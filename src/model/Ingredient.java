@@ -54,6 +54,21 @@ public class Ingredient {
     }
 
     @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Ingredient that)) return false;
+
+        return getId() == that.getId() && getAlergens().equals(that.getAlergens()) && getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getAlergens().hashCode();
+        result = 31 * result + getId();
+        result = 31 * result + getName().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Ingredient{" +
                 "id=" + id +

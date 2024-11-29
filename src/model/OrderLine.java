@@ -58,4 +58,30 @@ public class OrderLine {
     public void setProducto(Product product) {
         this.product = product;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof OrderLine orderLine)) return false;
+
+        return getId() == orderLine.getId() && getAmount() == orderLine.getAmount() && Float.compare(linePrice, orderLine.linePrice) == 0 && product.equals(orderLine.product);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getAmount();
+        result = 31 * result + product.hashCode();
+        result = 31 * result + Float.hashCode(linePrice);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderLine{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", product=" + product +
+                ", linePrice=" + linePrice +
+                '}';
+    }
 }

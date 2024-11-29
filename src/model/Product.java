@@ -44,4 +44,19 @@ public abstract class Product {
                 ", price=" + price +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Product product)) return false;
+
+        return getId() == product.getId() && Double.compare(getPrice(), product.getPrice()) == 0 && getName().equals(product.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + Double.hashCode(getPrice());
+        return result;
+    }
 }

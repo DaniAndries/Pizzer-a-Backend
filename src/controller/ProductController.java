@@ -57,8 +57,8 @@ public class ProductController {
         return productDao.findIngredientsById(id);
     }
 
-    public List<String> findAlergensByIngredient(int id) throws SQLException {
-        return productDao.findAlergensByIngredient(id);
+    public List<String> findAlergensByIngredient(Ingredient ingredient) throws SQLException {
+        return productDao.findAlergensByIngredient(ingredient);
     }
 
     public List<Product> findAll() throws SQLException {
