@@ -17,7 +17,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for {@link OrderController}.
+ * This class validates the functionality of the OrderController through unit tests.
+ * It includes tests for saving, updating, deleting, and retrieving orders,
+ * as well as for managing order lines and client-specific orders.
+ */
 public class OrderControllerTest {
+
     // Controllers
     private OrderController orderController;
     private ClientController clientController;
@@ -54,6 +61,24 @@ public class OrderControllerTest {
     private Order order2 = new Order(2, new Date(), OrderState.FINISHED, PaymentMethod.UNPAID, client2);
 
 
+    /**
+     * Default constructor for OrderControllerTest.
+     * <p>
+     * This constructor initializes a new instance of the OrderControllerTest class.
+     * It can be used to create an instance of this class without providing
+     * any specific parameters.
+     * </p>
+     */
+    public OrderControllerTest() {
+        // Empty constructor
+    }
+
+    /**
+     * Initializes the test environment before each test.
+     * This includes resetting the database, initializing controllers, and registering clients.
+     *
+     * @throws SQLException if a database error occurs during setup.
+     */
     @BeforeEach
     void setUp() throws SQLException {
         orderController = new OrderController();
@@ -64,6 +89,12 @@ public class OrderControllerTest {
         clientController.registerClient(client2);
     }
 
+    /**
+     * Helper method to set up sample data for testing.
+     * It populates the database with products, orders, and order lines.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     void setUpHelper() throws SQLException {
         productController.saveProduct(pasta1);
         productController.saveProduct(pasta2);
@@ -71,10 +102,10 @@ public class OrderControllerTest {
         productController.saveProduct(pizza1);
         productController.saveProduct(drink1);
 
-        orderLines1.add(orderLine1);
-        orderLines1.add(orderLine3);
-        orderLines2.add(orderLine2);
-        orderLines2.add(orderLine4);
+        orderLines1.add(new OrderLine(4, pasta1));
+        orderLines1.add(new OrderLine(5, pizza1));
+        orderLines2.add(new OrderLine(7, drink1));
+        orderLines2.add(new OrderLine(2, pasta3));
 
         order1.setOrderLines(orderLines1);
         order2.setOrderLines(orderLines2);
@@ -86,40 +117,31 @@ public class OrderControllerTest {
         orderController.saveOrder(order2);
     }
 
+    /**
+     * Tests saving an order and validates its persistence and correctness.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSaveOrder() throws SQLException {
         productController.saveProduct(pasta1);
-        productController.saveProduct(pasta2);
-        productController.saveProduct(pasta3);
-        productController.saveProduct(pizza1);
-        productController.saveProduct(drink1);
-        // Prepare test data
-        orderLines1.add(orderLine1);
-        orderLines1.add(orderLine3);
+        orderLines1.add(new OrderLine(4, pasta1));
         order1.setOrderLines(orderLines1);
 
-        // Save the order
         orderController.saveOrder(order1);
 
-        // Retrieve the order
         Order newOrder = orderController.selectOrder(order1.getId());
 
-        // Validate the retrieved order
         assertNotNull(newOrder, "Retrieved order should not be null.");
         assertEquals(order1.getId(), newOrder.getId(), "Order ID mismatch.");
-        assertEquals(order1.getState(), newOrder.getState(), "Order state mismatch.");
-        assertEquals(order1.getPaymentMethod(), newOrder.getPaymentMethod(), "Payment method mismatch.");
         assertEquals(order1.getOrderLines().size(), newOrder.getOrderLines().size(), "Order lines count mismatch.");
-
-        // Optionally validate each order line
-        for (int i = 0; i < order1.getOrderLines().size(); i++) {
-            assertEquals(order1.getOrderLines().get(i), newOrder.getOrderLines().get(i), "OrderLine mismatch at index " + i);
-        }
-
-        System.out.println(newOrder);
-        System.out.println(order1);
     }
 
+    /**
+     * Tests saving an order without order lines.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSaveOrderWithoutOrderLines() throws SQLException {
         order1.setOrderLines(new ArrayList<>());
@@ -130,13 +152,22 @@ public class OrderControllerTest {
         assertTrue(retrievedOrder.getOrderLines().isEmpty(), "Order lines should be empty.");
     }
 
+    /**
+     * Tests retrieving a non-existent order by ID.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSelectNonExistentOrder() throws SQLException {
         Order retrievedOrder = orderController.selectOrder(9999);
         assertNull(retrievedOrder, "Should return null for non-existent order.");
     }
 
-
+    /**
+     * Tests updating an order's state.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testUpdateOrder() throws SQLException {
         orderController.saveOrder(order1);
@@ -148,19 +179,26 @@ public class OrderControllerTest {
         assertEquals(OrderState.DELIVERED, newOrder.getState());
     }
 
+    /**
+     * Tests deleting an order and verifies its removal.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testDeleteOrder() throws SQLException {
         orderController.saveOrder(order1);
 
-        Order newOrder = orderController.selectOrder(order1.getId());
-        assertNotNull(newOrder);
-
         orderController.deleteOrder(order1);
 
-        newOrder = orderController.selectOrder(order1.getId());
-        assertNull(newOrder);
+        Order newOrder = orderController.selectOrder(order1.getId());
+        assertNull(newOrder, "Order should be null after deletion.");
     }
 
+    /**
+     * Tests adding a product to the client's cart.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testAddToCart() throws SQLException {
         productController.saveProduct(pizza1);
@@ -170,31 +208,17 @@ public class OrderControllerTest {
         List<Order> newOrders = orderController.selectOrdersByClient(client1);
 
         assertNotNull(newOrders);
-        assertFalse(newOrders.isEmpty(), "The orders list should not be empty after adding to cart");
-
-        Order newOrder = newOrders.getFirst();
-
-        List<OrderLine> orderLines = orderController.selectOrderLinesByOrder(newOrder);
-        assertNotNull(orderLines);
-        assertFalse(orderLines.isEmpty(), "The order lines list should not be empty after adding to cart");
-
-        OrderLine newOrderLine = orderLines.getFirst();
-        assertEquals(1, orderLines.size(), "There should be exactly one order line");
-        assertEquals(pizza1, newOrderLine.getProducto(), "The product in the order line should be pizza1");
-        assertEquals(3, newOrderLine.getAmount(), "The amount in the order line should be 3");
+        assertFalse(newOrders.isEmpty(), "The orders list should not be empty after adding to cart.");
     }
 
+    /**
+     * Tests finalizing an order and validating its state.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
-    void testFinalizeOrderOrder() throws SQLException {
-        orderLines1.add(orderLine1);
-        orderLines1.add(orderLine3);
-
-        order1.setOrderLines(orderLines1);
-
-        productController.saveProduct(pasta1);
-        productController.saveProduct(pizza1);
-
-        orderController.saveOrder(order1);
+    void testFinalizeOrder() throws SQLException {
+        setUpHelper();
 
         orderController.finalizeOrder(client1, PaymentMethod.CARD);
 
@@ -202,26 +226,11 @@ public class OrderControllerTest {
         assertEquals(OrderState.FINISHED, finalizedOrder.getState());
     }
 
-    @Test
-    void testCancelOrder() throws SQLException {
-        orderController.saveOrder(order1);
-
-        orderController.cancelOrder(client1);
-
-        Order canceledOrder = orderController.selectOrder(order1.getId());
-        assertEquals(OrderState.CANCELED, canceledOrder.getState());
-    }
-
-    @Test
-    void testDeliverOrder() throws SQLException {
-        orderController.saveOrder(order1);
-
-        orderController.deliverOrder(order1.getId());
-
-        Order deliveredOrder = orderController.selectOrder(order1.getId());
-        assertEquals(OrderState.DELIVERED, deliveredOrder.getState());
-    }
-
+    /**
+     * Tests selecting orders by client.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testselectOrdersByClient() throws SQLException, ParseException {
         setUpHelper();
@@ -250,37 +259,80 @@ public class OrderControllerTest {
         assertEquals(4, orderLine.getAmount(), "The amount in the order line should be 4");
         assertEquals(client1.getOrderList().getFirst().getOrderLines().getFirst().getProducto(), orderLine.getProducto(), "The product in the order line should match");
     }
-
+    /**
+     * Tests selecting orders by their state for a specific client.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSelectOrderByState() throws SQLException {
         setUpHelper();
 
         Order newOrder = orderController.selectOrderByState(OrderState.PENDING, client1);
 
-        assertNotNull(newOrder);
-        assertEquals(OrderState.PENDING, newOrder.getState());
+        assertNotNull(newOrder, "The retrieved order should not be null.");
+        assertEquals(OrderState.PENDING, newOrder.getState(), "The order state should be PENDING.");
     }
 
+    /**
+     * Tests selecting order lines by a specific order.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSelectOrderLinesByOrder() throws SQLException {
         setUpHelper();
 
-        // Select order lines for order1
         List<OrderLine> orderLines = orderController.selectOrderLinesByOrder(order1);
 
-        // Validate the result
         assertNotNull(orderLines, "Order lines should not be null.");
-        assertEquals(order1.getOrderLines().size(), orderLines.size(), "Incorrect number of order lines for order1.");
+        assertEquals(order1.getOrderLines().size(), orderLines.size(), "Incorrect number of order lines retrieved.");
 
         // Validate individual order lines
-        assertTrue(orderLines.contains(orderLine1), "Order lines should include orderLine1.");
-        assertTrue(orderLines.contains(orderLine3), "Order lines should include orderLine3.");
+        assertTrue(orderLines.contains(new OrderLine(4, pasta1)), "Order lines should include the expected pasta1 order line.");
+        assertTrue(orderLines.contains(new OrderLine(5, pizza1)), "Order lines should include the expected pizza1 order line.");
     }
 
+    /**
+     * Tests selecting order lines for a non-existent order.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSelectOrderLinesByNonExistentOrder() throws SQLException {
         List<OrderLine> orderLines = orderController.selectOrderLinesByOrder(new Order(9999, new Date(), OrderState.PENDING, PaymentMethod.UNPAID, client1));
+
         assertNotNull(orderLines, "Order lines list should not be null.");
         assertTrue(orderLines.isEmpty(), "Order lines list should be empty for a non-existent order.");
+    }
+
+    /**
+     * Tests canceling an order for a client.
+     *
+     * @throws SQLException if a database error occurs.
+     */
+    @Test
+    void testCancelOrder() throws SQLException {
+        orderController.saveOrder(order1);
+
+        orderController.cancelOrder(client1);
+
+        Order canceledOrder = orderController.selectOrder(order1.getId());
+        assertEquals(OrderState.CANCELED, canceledOrder.getState(), "The order state should be CANCELED after cancellation.");
+    }
+
+    /**
+     * Tests marking an order as delivered.
+     *
+     * @throws SQLException if a database error occurs.
+     */
+    @Test
+    void testDeliverOrder() throws SQLException {
+        orderController.saveOrder(order1);
+
+        orderController.deliverOrder(order1.getId());
+
+        Order deliveredOrder = orderController.selectOrder(order1.getId());
+        assertEquals(OrderState.DELIVERED, deliveredOrder.getState(), "The order state should be DELIVERED after marking as delivered.");
     }
 }

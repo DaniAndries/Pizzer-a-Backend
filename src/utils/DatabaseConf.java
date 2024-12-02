@@ -108,6 +108,17 @@ public class DatabaseConf {
      */
     public static final String CREATE_TABLE_ORDER_LINE = "CREATE TABLE IF NOT EXISTS order_line (" + "id INT PRIMARY KEY AUTO_INCREMENT," + "amount INT NOT NULL," + "product INT NOT NULL," + "customer_order INT NOT NULL," + "FOREIGN KEY (customer_order) REFERENCES customer_order (id) ON DELETE CASCADE ON UPDATE CASCADE, " + "FOREIGN KEY (product) REFERENCES product (id) ON DELETE CASCADE ON UPDATE CASCADE" + ");";
 
+    /**
+     * Default constructor for DatabaseConf.
+     * <p>
+     * This constructor initializes a new instance of DatabaseConf.
+     * It may be used to create an instance of the class without
+     * any specific configuration parameters.
+     * </p>
+     */
+    public DatabaseConf() {
+        // Empty constructor
+    }
 
     /**
      * SQL query to drop the `order_line` table if it exists.

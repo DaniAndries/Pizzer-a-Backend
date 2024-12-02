@@ -17,6 +17,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for {@link ProductController}.
+ * Provides unit tests to validate the functionality of the ProductController methods,
+ * including operations for managing products, ingredients, and file I/O operations.
+ */
 class ProductControllerTest {
     // Controllers
     private ProductController productController;
@@ -37,12 +42,23 @@ class ProductControllerTest {
     private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, "MEDIUM");
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
 
+
+    /**
+     * Sets up the test environment by initializing the ProductController and resetting the database.
+     *
+     * @throws SQLException if a database error occurs during setup.
+     */
     @BeforeEach
     void setUp() throws SQLException {
         DatabaseConf.dropAndCreateTables();
         productController = new ProductController();
     }
 
+    /**
+     * Helper method to populate the database with sample products.
+     *
+     * @throws SQLException if a database error occurs during setup.
+     */
     void setUpHelper() throws SQLException {
         productController.saveProduct(pasta1);
         productController.saveProduct(pasta2);
@@ -51,6 +67,12 @@ class ProductControllerTest {
         productController.saveProduct(drink1);
     }
 
+    /**
+     * Helper method to create a list of sample products.
+     *
+     * @return a list of sample {@link Product} objects.
+     * @throws SQLException if a database error occurs during product retrieval.
+     */
     List<Product> setUpProductList() throws SQLException {
         List<Product> products = new ArrayList<>();
 
@@ -63,6 +85,11 @@ class ProductControllerTest {
         return products;
     }
 
+    /**
+     * Tests the saveProduct method by saving a product and verifying it is retrievable.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testSaveProduct() throws SQLException {
         productController.saveProduct(pasta1);
@@ -72,6 +99,11 @@ class ProductControllerTest {
         assertEquals(pasta1, newPasta);
     }
 
+    /**
+     * Tests the deleteProduct method by deleting a product and verifying it no longer exists.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testDeleteProduct() throws SQLException {
         productController.saveProduct(pasta2);
@@ -85,6 +117,11 @@ class ProductControllerTest {
         assertNull(newPasta);
     }
 
+    /**
+     * Tests finding a product by its ID.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testFindProductById() throws SQLException {
         productController.saveProduct(pasta3);
@@ -94,6 +131,11 @@ class ProductControllerTest {
         assertEquals(pasta3, newPasta);
     }
 
+    /**
+     * Tests retrieving all products from the database.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testFindAllProducts() throws SQLException {
         setUpHelper();
@@ -103,6 +145,11 @@ class ProductControllerTest {
         assertEquals(setUpProductList().size(), allProducts.size());
     }
 
+    /**
+     * Tests finding an ingredient by its ID.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testFindIngredientsById() throws SQLException {
         setUpHelper();
@@ -112,6 +159,11 @@ class ProductControllerTest {
         assertEquals(tomato, newIngredient);
     }
 
+    /**
+     * Tests retrieving allergens for a specific ingredient.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void testFindAlergensByIngredient() throws SQLException {
         setUpHelper();
@@ -121,6 +173,11 @@ class ProductControllerTest {
         assertEquals(cheese.getAlergens(), newAlergens);
     }
 
+    /**
+     * Tests saving a product and verifies it is saved successfully.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void shouldSaveProductSuccessfully() throws SQLException {
         Pasta originalPasta = new Pasta(1, "Carbonara", 10.5, ingredientList1);
@@ -132,6 +189,11 @@ class ProductControllerTest {
         assertEquals(originalPasta, retrievedPasta, "The retrieved pasta should match the saved pasta");
     }
 
+    /**
+     * Tests deleting a product and verifies it is removed successfully.
+     *
+     * @throws SQLException if a database error occurs.
+     */
     @Test
     void shouldDeleteProductSuccessfully() throws SQLException {
 
@@ -143,6 +205,9 @@ class ProductControllerTest {
         assertNull(deletedPasta, "Expected product to be deleted and not found");
     }
 
+    /**
+     * Tests that deleting a non-existent product throws an exception.
+     */
     @Test
     void shouldThrowExceptionWhenDeletingNonExistentProduct() {
         Pasta nonExistentPasta = new Pasta(99, "Non-Existent", 10.0, ingredientList1);
@@ -151,6 +216,9 @@ class ProductControllerTest {
                 "Expected IllegalArgumentException when attempting to delete a non-existent product");
     }
 
+    /**
+     * Tests exporting ingredients to a CSV file.
+     */
     @Test
     void shouldExportIngredientsToCsv() {
         List<Ingredient> ingredientsToExport = List.of(cheese, tomato, pepper);
@@ -159,6 +227,9 @@ class ProductControllerTest {
                 "Exporting ingredients to CSV should not throw an exception");
     }
 
+    /**
+     * Tests importing ingredients from a CSV file.
+     */
     @Test
     void shouldImportIngredientsFromCsv() {
         List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients,
@@ -168,7 +239,9 @@ class ProductControllerTest {
         assertFalse(importedIngredients.isEmpty(), "Expected imported ingredients list to not be empty");
     }
 
-
+    /**
+     * Tests exporting ingredients to CSV without exceptions.
+     */
     @Test
     void testOpenCsvExport() {
         try {
@@ -178,6 +251,9 @@ class ProductControllerTest {
         }
     }
 
+    /**
+     * Tests importing ingredients from CSV without exceptions.
+     */
     @Test
     void testOpenCsvImport() {
         try {

@@ -1,41 +1,94 @@
 package model;
 
+/**
+ * Abstract class representing a product in the system.
+ * <p>
+ * This class serves as a base class for different types of products such as
+ * food items, drinks, etc. It encapsulates common properties and behaviors
+ * shared among all products.
+ * </p>
+ *
+ * @author DaniAndries
+ * @version 0.1
+ */
 public abstract class Product {
 
     private int id;
     private String name;
     private double price;
 
+    /**
+     * Constructs a Product with the specified id, name, and price.
+     *
+     * @param id    the unique identifier for the product
+     * @param name  the name of the product
+     * @param price the price of the product
+     */
     public Product(int id, String name, double price) {
         this.id = id;
         this.name = name;
         this.price = price;
     }
 
+    /**
+     * Gets the unique identifier of the product.
+     *
+     * @return the id of the product
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets the unique identifier of the product.
+     *
+     * @param id the new id to set for the product
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets the name of the product.
+     *
+     * @return the name of the product
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the product.
+     *
+     * @param name the new name to set for the product
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the price of the product.
+     *
+     * @return the price of the product
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * Sets the price of the product.
+     *
+     * @param price the new price to set for the product
+     */
     public void setPrice(double price) {
         this.price = price;
     }
 
+    /**
+     * Returns a string representation of the product.
+     *
+     * @return a string in the format "{id=..., name='...', price=...}"
+     */
     @Override
     public String toString() {
         return "{" +
@@ -45,13 +98,28 @@ public abstract class Product {
                 '}';
     }
 
+    /**
+     * Compares this product to the specified object for equality.
+     * Two products are considered equal if their ids, names, and prices are the same.
+     *
+     * @param o the object to compare this product against
+     * @return true if the given object is equal to this product, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Product product)) return false;
 
-        return getId() == product.getId() && Double.compare(getPrice(), product.getPrice()) == 0 && getName().equals(product.getName());
+        return getId() == product.getId() &&
+                Double.compare(getPrice(), product.getPrice()) == 0 &&
+                getName().equals(product.getName());
     }
 
+    /**
+     * Returns a hash code value for the product.
+     * The hash code is calculated based on the product's id, name, and price.
+     *
+     * @return a hash code value for this product
+     */
     @Override
     public int hashCode() {
         int result = getId();

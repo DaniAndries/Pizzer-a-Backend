@@ -2,6 +2,7 @@ package controller.db.impl;
 
 
 import controller.db.ClientDao;
+import controller.db.ProductDao;
 import model.Client;
 import utils.DatabaseConf;
 
@@ -11,6 +12,28 @@ import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
 
+/**
+ * JdbcClientDao is an implementation of the {@link ClientDao} interface that provides
+ * data access operations for managing client records in a relational database.
+ * This class facilitates the creation, retrieval, update, and deletion (CRUD)
+ * of client data using JDBC for database interactions.
+ *
+ * <p>It interacts with the database to perform operations such as inserting new clients,
+ * updating existing client details, deleting clients, and fetching client information
+ * based on specific criteria such as ID or email.</p>
+ *
+ * <p>Each method in this class is designed to throw a {@link SQLException} if an error occurs
+ * during database operations.</p>
+ *
+ * <p>This class requires proper initialization of the database connection settings
+ * defined in the DatabaseConf class.</p>
+ *
+ * @see ClientDao
+ * @see Client
+ *
+ * @author DaniAndries
+ * @version 0.1
+ */
 public class JdbcClientDao implements ClientDao {
     static final JdbcOrderDao jdbcCarDao = new JdbcOrderDao();
 
@@ -25,6 +48,22 @@ public class JdbcClientDao implements ClientDao {
     private static final String SELECT_CLIENT_MAIL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?";
     private static final String SELECT_ALL = "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client";
 
+    /**
+     * Default constructor for JdbcClientDao.
+     * <p>
+     * This constructor initializes a new instance of JdbcClientDao.
+     * </p>
+     */
+    public JdbcClientDao() {
+        // Empty constructor
+    }
+
+    /**
+     * Saves a new client record to the database.
+     *
+     * @param client the client object containing details to be saved
+     * @throws SQLException if a database access error occurs
+     */
     // * INSERT INTO Client (dni, client_name, direction, phone, mail, password, admin) VALUES (?,?,?,?,?,?,?)
     @Override
     public void save(Client client) throws SQLException {
@@ -49,6 +88,12 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
+    /**
+     * Updates an existing client record in the database.
+     *
+     * @param client the client object containing updated details
+     * @throws SQLException if a database access error occurs
+     */
     // * UPDATE Client SET client.client_name=?, client.direction=?, client.phone=?, client.password=?, client.admin=? WHERE client.id = ?
     @Override
     public void update(Client client) throws SQLException {
@@ -65,6 +110,12 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
+    /**
+     * Deletes a client record from the database.
+     *
+     * @param client the client object to be deleted
+     * @throws SQLException if a database access error occurs
+     */
     // * DELETE FROM client WHERE client.ID = ?
     @Override
     public void delete(Client client) throws SQLException {
@@ -75,7 +126,13 @@ public class JdbcClientDao implements ClientDao {
             System.out.println("The client: " + client.getDni() + " has been deleted");
         }
     }
-
+    /**
+     * Finds a client by their unique ID.
+     *
+     * @param id the ID of the client to be retrieved
+     * @return the client object if found, or null if no client with the specified ID exists
+     * @throws SQLException if a database access error occurs
+     */
     // * SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.ID = ?
     @Override
     public Client findById(int id) throws SQLException {
@@ -101,6 +158,13 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
+    /**
+     * Finds a client by their email address.
+     *
+     * @param mail the email of the client to be retrieved
+     * @return the client object if found, or null if no client with the specified email exists
+     * @throws SQLException if a database access error occurs
+     */
     // * SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client WHERE client.MAIl = ?
     @Override
     public Client findByMail(String mail) throws SQLException {
@@ -126,6 +190,12 @@ public class JdbcClientDao implements ClientDao {
         }
     }
 
+    /**
+     * Retrieves all clients from the database.
+     *
+     * @return a list of client objects
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT client.id, client.dni, client.client_name, client.direction, client.phone, client.mail, client.password, client.admin FROM client"
     @Override
     public List<Client> findAll() throws SQLException {

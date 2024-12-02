@@ -1,6 +1,7 @@
 package controller.db.impl;
 
 import controller.db.OrderDao;
+import controller.db.ProductDao;
 import model.*;
 import utils.DatabaseConf;
 
@@ -10,6 +11,34 @@ import java.util.List;
 
 import static java.sql.DriverManager.getConnection;
 
+/**
+ * JdbcOrderDao is an implementation of the {@link OrderDao} interface that provides
+ * data access operations for managing orders in a relational database.
+ * This class handles the creation, retrieval, update, and deletion (CRUD)
+ * of orders and their associated order lines, utilizing JDBC for database
+ * interactions.
+ *
+ * <p>This class is responsible for executing SQL statements to manipulate
+ * order data, including inserting new orders, updating existing orders,
+ * deleting orders, and fetching order information based on various criteria.
+ * It uses the JdbcClientDao and JdbcProductDao to manage related client and
+ * product data.</p>
+ *
+ * <p>Each method in this class is designed to throw a {@link SQLException} if an
+ * error occurs while interacting with the database.</p>
+ *
+ * <p>Usage of this class requires proper initialization of the database
+ * connection settings provided in the DatabaseConf class.</p>
+ *
+ * @see OrderDao
+ * @see Order
+ * @see OrderLine
+ * @see Client
+ * @see Product
+ *
+ * @author DaniAndries
+ * @version 0.1
+ */
 public class JdbcOrderDao implements OrderDao {
     // * int id; OrderState state; Date orderDate; String paymentMethod; List<OrderLine> orderLines; Client client;
     private static final String INSERT_ORDER = "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)";
@@ -27,6 +56,22 @@ public class JdbcOrderDao implements OrderDao {
     JdbcClientDao jdbcClientDao = new JdbcClientDao();
     JdbcProductDao jdbcProductDao = new JdbcProductDao();
 
+    /**
+     * Default constructor for JdbcOrderDao.
+     * <p>
+     * This constructor initializes a new instance of JdbcOrderDao.
+     * </p>
+     */
+    public JdbcOrderDao() {
+        // Empty constructor
+    }
+
+    /**
+     * Saves a new order to the database.
+     *
+     * @param order the order to be saved
+     * @throws SQLException if a database access error occurs
+     */
     // * "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)"
     @Override
     public void saveOrder(Order order) throws SQLException {
@@ -53,12 +98,26 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Adds order lines to the specified order.
+     *
+     * @param orderLines the list of order lines to add
+     * @param order      the order to which the lines will be added
+     * @throws SQLException if a database access error occurs
+     */
     private void addOrderLines(List<OrderLine> orderLines, Order order) throws SQLException {
         for (OrderLine orderLine : orderLines) {
             saveOrderLine(orderLine, order);
         }
     }
 
+    /**
+     * Saves a new order line associated with a specified order.
+     *
+     * @param orderLine the order line to be saved
+     * @param order     the order associated with the order line
+     * @throws SQLException if a database access error occurs
+     */
     // * "INSERT INTO order_line (amount, product, customer_order) VALUES (?,?,?)"
     @Override
     public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
@@ -81,6 +140,12 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Updates the details of an existing order.
+     *
+     * @param order the order to be updated
+     * @throws SQLException if a database access error occurs
+     */
     // * "UPDATE customer_order SET customer_order.order_date=?, customer_order.payment_method=?, customer_order.state=? WHERE customer_order.id=?"
     @Override
     public void updateOrder(Order order) throws SQLException {
@@ -97,6 +162,12 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Updates an existing order line.
+     *
+     * @param orderLine the order line to be updated
+     * @throws SQLException if a database access error occurs
+     */
     // * "UPDATE order_line SET order_line.amount=?, order_line.product=? WHERE order_line.id=?"
     @Override
     public void updateOrderLine(OrderLine orderLine) throws SQLException {
@@ -111,6 +182,12 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Deletes an order from the database.
+     *
+     * @param order the order to be deleted
+     * @throws SQLException if a database access error occurs
+     */
     // * "DELETE FROM customer_order WHERE customer_order.ID = ?"
     @Override
     public void deleteOrder(Order order) throws SQLException {
@@ -122,6 +199,12 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Deletes an order line from the database.
+     *
+     * @param orderLine the order line to be deleted
+     * @throws SQLException if a database access error occurs
+     */
     // * "DELETE FROM order_line WHERE order_line.ID = ?"
     @Override
     public void deleteOrderLine(OrderLine orderLine) throws SQLException {
@@ -133,9 +216,16 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Selects an order by its ID.
+     *
+     * @param id the ID of the order to select
+     * @return the selected order, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT customer_order.id, state, customer_order.order_date, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.ID=?"
     @Override
-    public Order selectOrder(int id) throws SQLException {
+    public Order findtOrder(int id) throws SQLException {
         Order order;
         List<OrderLine> orderLines;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -150,7 +240,7 @@ public class JdbcOrderDao implements OrderDao {
                             PaymentMethod.valueOf(rsOrder.getString("payment_method")),
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
-                    orderLines = selectOrderLinesByOrder(order);
+                    orderLines = findOrderLinesByOrder(order);
                     order.setOrderLines(orderLines);
                 } else {
                     order = null;
@@ -160,9 +250,16 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Selects all orders for a specific client.
+     *
+     * @param client the client whose orders are to be selected
+     * @return a list of orders associated with the client
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.client=?"
     @Override
-    public List<Order> selectOrdersByClient(Client client) throws SQLException {
+    public List<Order> findOrdersByClient(Client client) throws SQLException {
         List<Order> orders = new ArrayList<>();
         Order order = null;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
@@ -177,7 +274,7 @@ public class JdbcOrderDao implements OrderDao {
                             PaymentMethod.valueOf(rsOrder.getString("payment_method")),
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
-                    order.setOrderLines(selectOrderLinesByOrder(order));
+                    order.setOrderLines(findOrderLinesByOrder(order));
                     orders.add(order);
                 }
             }
@@ -185,9 +282,17 @@ public class JdbcOrderDao implements OrderDao {
         return orders;
     }
 
+    /**
+     * Selects an order by its state and associated client.
+     *
+     * @param state  the state of the order to select
+     * @param client the client associated with the order
+     * @return the selected order, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.state=? and customer_order.client=?"
     @Override
-    public Order selectOrderByState(OrderState state, Client client) throws SQLException {
+    public Order findOrderByState(OrderState state, Client client) throws SQLException {
         Order order;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(SELECT_ORDER_BY_STATE)) {
@@ -202,7 +307,7 @@ public class JdbcOrderDao implements OrderDao {
                             PaymentMethod.valueOf(rsOrder.getString("payment_method")),
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
-                    order.setOrderLines(selectOrderLinesByOrder(order));
+                    order.setOrderLines(findOrderLinesByOrder(order));
                 } else {
                     order = null;
                 }
@@ -211,9 +316,16 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Selects an order line by its ID.
+     *
+     * @param id the ID of the order line to select
+     * @return the selected order line, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT order_line.id, order_line.amount, order_line.product FROM client WHERE order_line.ID=?"
     @Override
-    public OrderLine selectOrderLine(int id) throws SQLException {
+    public OrderLine findOrderLine(int id) throws SQLException {
         OrderLine orderLine;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrderLine = conn.prepareStatement(SELECT_ORDER_LINE)) {
@@ -233,9 +345,16 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    /**
+     * Selects all order lines associated with a specific order.
+     *
+     * @param order the order whose lines are to be selected
+     * @return a list of order lines associated with the order
+     * @throws SQLException if a database access error occurs
+     */
     // * "SELECT order_line.id, order_line.amount, order_line.product FROM order_line WHERE order_line.customer_order = ?;"
     @Override
-    public List<OrderLine> selectOrderLinesByOrder(Order order) throws SQLException {
+    public List<OrderLine> findOrderLinesByOrder(Order order) throws SQLException {
         OrderLine orderLine;
         List<OrderLine> orderLines = new ArrayList<>();
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
