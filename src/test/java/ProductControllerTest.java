@@ -18,22 +18,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductControllerTest {
+    // Controllers
     private ProductController productController;
-
     // Ingredients
     private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
     private Ingredient pepper = new Ingredient(3, "Pepper", new ArrayList<>());
     private Ingredient bacon = new Ingredient(4, "Bacon", List.of("Sulfites"));
     private Ingredient mushroom = new Ingredient(5, "Mushroom", new ArrayList<>());
-
     // Lists of ingredients
     private List<Ingredient> ingredientList1 = List.of(cheese, tomato);
     private List<Ingredient> ingredientList2 = List.of(tomato, bacon);
     private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
-    private List<Ingredient> ingredientList4 = List.of(cheese, pepper);
-    private List<Ingredient> ingredientList5 = List.of(cheese, bacon, tomato);
-
     // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
     private Pasta pasta2 = new Pasta(2, "Bolognese", 9.5, ingredientList2);
@@ -127,13 +123,10 @@ class ProductControllerTest {
 
     @Test
     void shouldSaveProductSuccessfully() throws SQLException {
-        // Given
         Pasta originalPasta = new Pasta(1, "Carbonara", 10.5, ingredientList1);
 
-        // When
         productController.saveProduct(originalPasta);
 
-        // Then
         Pasta retrievedPasta = (Pasta) productController.findProductById(originalPasta.getId());
         assertNotNull(retrievedPasta, "Expected pasta to be saved and retrieved successfully");
         assertEquals(originalPasta, retrievedPasta, "The retrieved pasta should match the saved pasta");
@@ -141,44 +134,36 @@ class ProductControllerTest {
 
     @Test
     void shouldDeleteProductSuccessfully() throws SQLException {
-        // Given
+
         productController.saveProduct(pasta2);
 
-        // When
         productController.deleteProduct(pasta2);
 
-        // Then
         Pasta deletedPasta = (Pasta) productController.findProductById(pasta2.getId());
         assertNull(deletedPasta, "Expected product to be deleted and not found");
     }
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistentProduct() {
-        // Given
         Pasta nonExistentPasta = new Pasta(99, "Non-Existent", 10.0, ingredientList1);
 
-        // When & Then
         assertThrows(IllegalArgumentException.class, () -> productController.deleteProduct(nonExistentPasta),
                 "Expected IllegalArgumentException when attempting to delete a non-existent product");
     }
 
     @Test
     void shouldExportIngredientsToCsv() {
-        // Given
         List<Ingredient> ingredientsToExport = List.of(cheese, tomato, pepper);
 
-        // When
         assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport),
                 "Exporting ingredients to CSV should not throw an exception");
     }
 
     @Test
     void shouldImportIngredientsFromCsv() {
-        // When
         List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients,
                 "Importing ingredients from CSV should not throw an exception");
 
-        // Then
         assertNotNull(importedIngredients, "Expected imported ingredients list to not be null");
         assertFalse(importedIngredients.isEmpty(), "Expected imported ingredients list to not be empty");
     }

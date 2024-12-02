@@ -18,15 +18,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderControllerTest {
+    // Controllers
+    private OrderController orderController;
+    private ClientController clientController;
+    private ProductController productController;
     // Clients
     Client client1 = new Client("12345678A", "Juan Pérez", "Calle Falsa 123, Madrid", "600123456", "juan.perez@example.com", "password123", false);
     Client client2 = new Client("87654321B", "Ana Gómez", "Av. Siempre Viva 742, Barcelona", "650654321", "ana.gomez@example.com", "securepass456", false);
     // List of OrderLines
     List<OrderLine> orderLines1 = new ArrayList<>();
     List<OrderLine> orderLines2 = new ArrayList<>();
-    private OrderController orderController;
-    private ClientController clientController;
-    private ProductController productController;
     // Ingredients
     private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
@@ -37,8 +38,6 @@ public class OrderControllerTest {
     private List<Ingredient> ingredientList1 = List.of(cheese, tomato);
     private List<Ingredient> ingredientList2 = List.of(tomato, bacon);
     private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
-    private List<Ingredient> ingredientList4 = List.of(cheese, pepper);
-    private List<Ingredient> ingredientList5 = List.of(cheese, bacon, tomato);
     // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
     private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, "MEDIUM");

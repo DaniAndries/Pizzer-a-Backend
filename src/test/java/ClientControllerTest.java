@@ -18,7 +18,7 @@ public class ClientControllerTest {
 
     @BeforeEach
     void setupDatabase() throws SQLException {
-        DatabaseConf.dropAndCreateTables(); // Resetea la base de datos antes de empezar
+        DatabaseConf.dropAndCreateTables();
         clientController = new ClientController();
     }
 
@@ -79,13 +79,10 @@ public class ClientControllerTest {
 
     @Test
     void shouldRegisterClientSuccessfully() throws SQLException {
-        // Given a client
         Client client = new Client("12345678A", "Juan Pérez", "Calle Falsa 123, Madrid", "600123456", "juan.perez@example.com", "password123", false);
 
-        // When registering the client
         clientController.registerClient(client);
 
-        // Then the client should be found by email
         Client foundClient = clientController.findByMail("juan.perez@example.com");
         assertNotNull(foundClient, "Expected client to be found after registration");
         assertEquals("Juan Pérez", foundClient.getClientName(), "Client name should match after registration");
