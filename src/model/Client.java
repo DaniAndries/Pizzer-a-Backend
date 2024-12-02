@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD) // Acceso directo a campos
 public class Client {
@@ -40,7 +41,8 @@ public class Client {
         this.id = id;
     }
 
-    public Client() {}
+    public Client() {
+    }
 
     public void realizeOrder() {
     }
@@ -119,23 +121,22 @@ public class Client {
 
     @Override
     public final boolean equals(Object o) {
+        if (this == o) return true;
         if (!(o instanceof Client client)) return false;
 
-        return getId() == client.getId() && isAdmin() == client.isAdmin() && getDni().equals(client.getDni()) && getClientName().equals(client.getClientName()) && getDirection().equals(client.getDirection()) && getPhone().equals(client.getPhone()) && getMail().equals(client.getMail()) && getPassword().equals(client.getPassword()) && getOrderList().equals(client.getOrderList());
+        return getId() == client.getId() &&
+                Objects.equals(getDni(), client.getDni()) &&
+                Objects.equals(getClientName(), client.getClientName()) &&
+                Objects.equals(getDirection(), client.getDirection()) &&
+                Objects.equals(getPhone(), client.getPhone()) &&
+                Objects.equals(getMail(), client.getMail()) &&
+                Objects.equals(getPassword(), client.getPassword()) &&
+                isAdmin() == client.isAdmin();
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + getDni().hashCode();
-        result = 31 * result + getClientName().hashCode();
-        result = 31 * result + getDirection().hashCode();
-        result = 31 * result + getPhone().hashCode();
-        result = 31 * result + getMail().hashCode();
-        result = 31 * result + getPassword().hashCode();
-        result = 31 * result + getOrderList().hashCode();
-        result = 31 * result + Boolean.hashCode(isAdmin());
-        return result;
+        return Objects.hash(getDni(), getClientName(), getDirection(), getPhone(), getMail(), getPassword(), isAdmin());
     }
 
     @Override

@@ -21,7 +21,7 @@ public interface OrderDao {
 
     Order selectOrder(int id) throws SQLException;
 
-    Order selectOrderByClient(Client client) throws SQLException;
+    List<Order> selectOrdersByClient(Client client) throws SQLException;
 
     Order selectOrderByState(OrderState state , Client client) throws SQLException;
 

@@ -230,6 +230,9 @@ public class JdbcProductDao implements ProductDao {
     // * "DELETE FROM product WHERE product.ID = ?"
     @Override
     public void deleteProduct(Product product) throws SQLException {
+        if (findProductById(product.getId())== null){
+            throw new IllegalArgumentException("Invalid or non-existent product");
+        }
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtClient = conn.prepareStatement(DELETE_PRODUCT)) {
             stmtClient.setInt(1, product.getId());

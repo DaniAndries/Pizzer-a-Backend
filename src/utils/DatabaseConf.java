@@ -71,7 +71,7 @@ public class DatabaseConf {
     // id; state; orderDate; paymentMethod; client;
     public static final String CREATE_TABLE_ORDER = "CREATE TABLE IF NOT EXISTS customer_order (" +
             "id INT PRIMARY KEY AUTO_INCREMENT," +
-            "state ENUM('PENDING', 'PAID', 'DELIVERED', 'CANCELED') NOT NULL DEFAULT 'PENDING'," +
+            "state ENUM('PENDING', 'FINISHED', 'DELIVERED', 'CANCELED') NOT NULL DEFAULT 'PENDING'," +
             "order_date DATE NOT NULL," +
             "payment_method ENUM('CARD', 'CASH', 'UNPAID') NOT NULL DEFAULT 'UNPAID'," +
             "client INT NOT NULL," +
@@ -84,7 +84,6 @@ public class DatabaseConf {
     public static final String CREATE_TABLE_ORDER_LINE = "CREATE TABLE IF NOT EXISTS order_line (" +
             "id INT PRIMARY KEY AUTO_INCREMENT," +
             "amount INT NOT NULL," +
-            "line_price DOUBLE NOT NULL ," +
             "product INT NOT NULL," +
             "customer_order INT NOT NULL," +
             "FOREIGN KEY (customer_order) REFERENCES customer_order (id) ON DELETE CASCADE ON UPDATE CASCADE, " +

@@ -126,6 +126,65 @@ class ProductControllerTest {
     }
 
     @Test
+    void shouldSaveProductSuccessfully() throws SQLException {
+        // Given
+        Pasta originalPasta = new Pasta(1, "Carbonara", 10.5, ingredientList1);
+
+        // When
+        productController.saveProduct(originalPasta);
+
+        // Then
+        Pasta retrievedPasta = (Pasta) productController.findProductById(originalPasta.getId());
+        assertNotNull(retrievedPasta, "Expected pasta to be saved and retrieved successfully");
+        assertEquals(originalPasta, retrievedPasta, "The retrieved pasta should match the saved pasta");
+    }
+
+    @Test
+    void shouldDeleteProductSuccessfully() throws SQLException {
+        // Given
+        productController.saveProduct(pasta2);
+
+        // When
+        productController.deleteProduct(pasta2);
+
+        // Then
+        Pasta deletedPasta = (Pasta) productController.findProductById(pasta2.getId());
+        assertNull(deletedPasta, "Expected product to be deleted and not found");
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistentProduct() {
+        // Given
+        Pasta nonExistentPasta = new Pasta(99, "Non-Existent", 10.0, ingredientList1);
+
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> productController.deleteProduct(nonExistentPasta),
+                "Expected IllegalArgumentException when attempting to delete a non-existent product");
+    }
+
+    @Test
+    void shouldExportIngredientsToCsv() {
+        // Given
+        List<Ingredient> ingredientsToExport = List.of(cheese, tomato, pepper);
+
+        // When
+        assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport),
+                "Exporting ingredients to CSV should not throw an exception");
+    }
+
+    @Test
+    void shouldImportIngredientsFromCsv() {
+        // When
+        List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients,
+                "Importing ingredients from CSV should not throw an exception");
+
+        // Then
+        assertNotNull(importedIngredients, "Expected imported ingredients list to not be null");
+        assertFalse(importedIngredients.isEmpty(), "Expected imported ingredients list to not be empty");
+    }
+
+
+    @Test
     void testOpenCsvExport() {
         try {
             FileManagement.ingredientToCsv(List.of(cheese, tomato, pepper, bacon, mushroom));

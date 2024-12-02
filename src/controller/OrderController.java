@@ -5,6 +5,7 @@ import controller.db.impl.JdbcOrderDao;
 import model.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class OrderController {
     }
 
     public void saveOrder(Order order) throws SQLException {
+        if (order == null || order.getClient() == null || order.getOrderDate() == null || order.getState() == null || order.getPaymentMethod() == null) {
+            throw new IllegalArgumentException("Invalid order or missing fields.");
+        }
         orderDao.saveOrder(order);
     }
 
@@ -49,8 +53,11 @@ public class OrderController {
         return orderDao.selectOrder(id);
     }
 
-    public Order selectOrderByClient(Client client) throws SQLException {
-        return orderDao.selectOrderByClient(client);
+    public List<Order> selectOrdersByClient(Client client) throws SQLException {
+        if (client == null) {
+            throw new IllegalArgumentException("Client cannot be null");
+        }
+        return orderDao.selectOrdersByClient(client);
     }
 
     public Order selectOrderByState(OrderState state, Client client) throws SQLException {
@@ -69,35 +76,41 @@ public class OrderController {
         Order order = orderDao.selectOrderByState(OrderState.PENDING, clienteActual);
         OrderLine orderLine = new OrderLine(cantidad, product);
 
-        if (order.getOrderDate() == null) {
-            orderDao.saveOrder(new Order(new Date(), OrderState.PENDING, orderLine, clienteActual));
+        if (order == null) {
+            order = new Order(new Date(), OrderState.PENDING, orderLine, clienteActual);
+            orderDao.saveOrder(order);
         } else {
-            order.addOrderLine(orderLine);
             orderDao.updateOrder(order);
+            order.addOrderLine(orderLine);
+            orderDao.saveOrderLine(orderLine, order);
         }
-
-        orderDao.saveOrderLine(orderLine, order);
     }
 
+
+
     public void finalizeOrder(Client client, PaymentMethod paymentMethod) throws SQLException {
-        Order actualOrder = orderDao.selectOrderByState(OrderState.PENDING, client);
+        Order newOrder = orderDao.selectOrderByState(OrderState.PENDING, client);
         Payable payable;
 
         if (paymentMethod.toString().equals("CARD")){
             payable = new PayByCard();
-            actualOrder.setPaymentMethod(PaymentMethod.CARD);
+            newOrder.setPaymentMethod(PaymentMethod.CARD);
         } else if (paymentMethod.toString().equals("CASH")){
             payable = new PayByCash();
-            actualOrder.setPaymentMethod(PaymentMethod.CARD);
+            newOrder.setPaymentMethod(PaymentMethod.CARD);
         } else {
             throw new IllegalArgumentException("You cannot finalize an order without a payment method");
         }
 
-        if (this.actualOrder.getState() == OrderState.PENDING) {
-            this.actualOrder.finalizar(payable, paymentMethod);
-            client.getOrderList().add(actualOrder);
-            actualOrder.setState(OrderState.PAID);
-            orderDao.updateOrder(actualOrder);
+        if (newOrder.getState() == OrderState.PENDING) {
+            newOrder.finalizar(payable, paymentMethod);
+            newOrder.setState(OrderState.FINISHED);
+            orderDao.updateOrder(newOrder);
+            if (client.getOrderList() == null) {
+                List<Order> newOrders = new ArrayList<>();
+                newOrders.add(newOrder);
+                client.setOrderList(newOrders);
+            } else client.getOrderList().add(newOrder);
             clientDao.update(client);
         } else{
             throw new IllegalArgumentException("You cannot finalize an Order that has already been completed, delivered or canceled");

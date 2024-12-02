@@ -11,25 +11,21 @@ import java.util.List;
 import static java.sql.DriverManager.getConnection;
 
 public class JdbcOrderDao implements OrderDao {
-    JdbcClientDao jdbcClientDao = new JdbcClientDao();
-    JdbcProductDao jdbcProductDao = new JdbcProductDao();
-
     // * int id; OrderState state; Date orderDate; float totalPrice; String paymentMethod; List<OrderLine> orderLines; Client client;
     private static final String INSERT_ORDER = "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)";
     // ? int id; int amount; Product product; float line_price;
-    private static final String INSERT_ORDER_LINE = "INSERT INTO order_line (amount, product, line_price) VALUES (?,?,?)";
-
-    private static final String UPDATE_ORDER = "UPDATE customer_order SET customer_order.order_date=?, customer_order.payment_method=?, customer_order.client=? WHERE customer_order.id=?";
+    private static final String INSERT_ORDER_LINE = "INSERT INTO order_line (amount, product, line_price, customer_order) VALUES (?,?,?,?)";
+    private static final String UPDATE_ORDER = "UPDATE customer_order SET customer_order.order_date=?, customer_order.payment_method=?, customer_order.state=? WHERE customer_order.id=?";
     private static final String UPDATE_ORDER_LINE = "UPDATE order_line SET order_line.amount=?, order_line.product=?, order_line.line_price=? WHERE order_line.id=?";
-
     private static final String DELETE_ORDER = "DELETE FROM customer_order WHERE customer_order.ID = ?";
     private static final String DELETE_ORDER_LINE = "DELETE FROM order_line WHERE order_line.ID = ?";
-
-    private static final String SELECT_ORDER = "SELECT customer_order.id, state, customer_order.order_date, customer_order.total_price, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.ID=?";
+    private static final String SELECT_ORDER = "SELECT customer_order.id, state, customer_order.order_date, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.ID=?";
     private static final String SELECT_ORDER_BY_CLIENT = "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.client=?";
     private static final String SELECT_ORDER_BY_STATE = "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.state=? and customer_order.client=?";
     private static final String SELECT_ORDER_LINE = "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.ID=?";
-    private static final String SELECT_ORDER_LINE_BY_ORDER = "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.ID=? AND order_line.order=customer_order.id";
+    private static final String SELECT_ORDER_LINE_BY_ORDER = "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.customer_order = ?";
+    JdbcClientDao jdbcClientDao = new JdbcClientDao();
+    JdbcProductDao jdbcProductDao = new JdbcProductDao();
 
     // * "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)"
     @Override
@@ -51,26 +47,34 @@ public class JdbcOrderDao implements OrderDao {
                 }
             }
 
+            addOrderLines(order.getOrderLines(), order);
+
             System.out.println("The Order: " + order.getId() + " has been created");
         }
     }
 
-    // * "INSERT INTO order_line (amount, product, line_price) VALUES (?,?,?)"
+    private void addOrderLines(List<OrderLine> orderLines, Order order) throws SQLException {
+        for (OrderLine orderLine : orderLines) {
+            saveOrderLine(orderLine, order);
+        }
+    }
+
+    // * "INSERT INTO order_line (amount, product, line_price, customer_order) VALUES (?,?,?,?)"
     @Override
     public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER_LINE, Statement.RETURN_GENERATED_KEYS)) {
-            List<OrderLine> orderLines = new ArrayList<>();
 
             stmtOrder.setInt(1, orderLine.getAmount());
-            stmtOrder.setInt(2, order.getId());
+            stmtOrder.setInt(2, orderLine.getProducto().getId());
             stmtOrder.setDouble(3, orderLine.getProducto().getPrice() * orderLine.getAmount());
+            stmtOrder.setInt(4, order.getId());
 
             stmtOrder.executeUpdate();
 
             try (ResultSet generatedKeys = stmtOrder.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    order.setId(generatedKeys.getInt(1));
+                    orderLine.setId(generatedKeys.getInt(1));
                 }
             }
 
@@ -78,28 +82,30 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
-    // * "UPDATE customer_order SET customer_order.order_date=?, customer_order.payment_method=?WHERE customer_order.id=?"
+    // * "UPDATE customer_order SET customer_order.order_date=?, customer_order.payment_method=?, customer_order.state=? WHERE customer_order.id=?"
     @Override
     public void updateOrder(Order order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(UPDATE_ORDER)) {
-            stmtOrder.setDate(1, (Date) order.getOrderDate());
-            stmtOrder.setString(2, order.getPaymentMethod().toString());
-            stmtOrder.setInt(3, order.getId());
 
-            stmtOrder.execute();
+            stmtOrder.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
+            stmtOrder.setString(2, order.getPaymentMethod().toString());
+            stmtOrder.setString(3, order.getState().toString()); // Asegúrate de que el estado se establezca aquí
+            stmtOrder.setInt(4, order.getId());
+
+            stmtOrder.executeUpdate(); // Usa executeUpdate para operaciones de modificación
             System.out.println("The order: " + order.getId() + " has been modified");
         }
     }
 
-    // * "UPDATE order_line SET order_line.amount=?, order_line.product=?, order_line.line_price=? WHERE order_line.id=?"
+    // * "UPDATE order_line SET order_line.amount=?, order_line.product=? WHERE order_line.id=?"
     @Override
     public void updateOrderLine(OrderLine orderLine) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrderLine = conn.prepareStatement(UPDATE_ORDER_LINE)) {
             stmtOrderLine.setInt(1, orderLine.getAmount());
             stmtOrderLine.setInt(2, orderLine.getProducto().getId());
-            stmtOrderLine.setDouble(3, orderLine.getProducto().getPrice() * orderLine.getAmount());
+            stmtOrderLine.setInt(3, orderLine.getId());
 
             stmtOrderLine.execute();
             System.out.println("The orderLine: " + orderLine.getId() + " has been modified");
@@ -128,7 +134,7 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
-    // * "SELECT customer_order.id, state, customer_order.order_date, customer_order.total_price, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.ID=?"
+    // * "SELECT customer_order.id, state, customer_order.order_date, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.ID=?"
     @Override
     public Order selectOrder(int id) throws SQLException {
         Order order;
@@ -145,7 +151,8 @@ public class JdbcOrderDao implements OrderDao {
                             PaymentMethod.valueOf(rsOrder.getString("payment_method")),
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
-                    order.setOrderLines(selectOrderLinesByOrder(order));
+                    orderLines = selectOrderLinesByOrder(order);
+                    order.setOrderLines(orderLines);
                 } else {
                     order = null;
                 }
@@ -156,8 +163,9 @@ public class JdbcOrderDao implements OrderDao {
 
     // * "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.client=?"
     @Override
-    public Order selectOrderByClient(Client client) throws SQLException {
-        Order order;
+    public List<Order> selectOrdersByClient(Client client) throws SQLException {
+        List<Order> orders = new ArrayList<>();
+        Order order = null;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(SELECT_ORDER_BY_CLIENT)) {
             stmtOrder.setInt(1, client.getId());
@@ -171,12 +179,11 @@ public class JdbcOrderDao implements OrderDao {
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
                     order.setOrderLines(selectOrderLinesByOrder(order));
-                } else {
-                    order = null;
+                    orders.add(order);
                 }
             }
-            return order;
         }
+        return orders;
     }
 
     // * "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.state=? and customer_order.client=?"
@@ -185,8 +192,8 @@ public class JdbcOrderDao implements OrderDao {
         Order order;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(SELECT_ORDER_BY_STATE)) {
-            stmtOrder.setInt(1, client.getId());
-            stmtOrder.setString(2, state.toString());
+            stmtOrder.setString(1, state.toString());
+            stmtOrder.setInt(2, client.getId());
             try (ResultSet rsOrder = stmtOrder.executeQuery()) {
                 if (rsOrder.next()) {
                     order = new Order(
@@ -229,7 +236,7 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
-    // * "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.ID=? AND order_line.order=customer_order.id"
+    // * "SELECT order_line.id, order_line.amount, order_line.product, order_line.line_price FROM order_line WHERE order_line.customer_order = ?;"
     @Override
     public List<OrderLine> selectOrderLinesByOrder(Order order) throws SQLException {
         OrderLine orderLine;
@@ -237,18 +244,21 @@ public class JdbcOrderDao implements OrderDao {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(SELECT_ORDER_LINE_BY_ORDER)) {
             stmtOrder.setInt(1, order.getId());
-            try (ResultSet rsOrder = stmtOrder.executeQuery()) {
-                while (rsOrder.next()) {
+            try (ResultSet rsOrderLine = stmtOrder.executeQuery()) {
+                while (rsOrderLine.next()) {
                     orderLine = new OrderLine(
-                            rsOrder.getInt("id"),
-                            rsOrder.getInt("amount"),
-                            rsOrder.getFloat("line_price")
+                            rsOrderLine.getInt("id"),
+                            rsOrderLine.getInt("amount"),
+                            rsOrderLine.getFloat("line_price")
                     );
-                    orderLine.setProducto(jdbcProductDao.findProductById(rsOrder.getInt("product")));
+                    Product product = jdbcProductDao.findProductById(rsOrderLine.getInt("product"));
+                    if (product != null) {
+                        orderLine.setProducto(product);
+                    }
                     orderLines.add(orderLine);
                 }
             }
-            return orderLines;
         }
+        return orderLines;
     }
 }

@@ -8,6 +8,9 @@ import utils.DatabaseConf;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ClientControllerTest {
 
@@ -25,8 +28,8 @@ public class ClientControllerTest {
         clientController.registerClient(client);
 
         Client foundClient = clientController.findByMail("juan.perez@example.com");
-        Assertions.assertNotNull(foundClient);
-        Assertions.assertEquals("Juan Pérez", foundClient.getClientName());
+        assertNotNull(foundClient);
+        assertEquals("Juan Pérez", foundClient.getClientName());
     }
 
     @Test
@@ -38,7 +41,7 @@ public class ClientControllerTest {
         clientController.update(client);
 
         Client updatedClient = clientController.findByMail("ana.gomez@example.com");
-        Assertions.assertEquals("Ana González", updatedClient.getClientName());
+        assertEquals("Ana González", updatedClient.getClientName());
     }
 
     @Test
@@ -58,8 +61,8 @@ public class ClientControllerTest {
         clientController.registerClient(client);
 
         Client foundClient = clientController.findById(1);
-        Assertions.assertNotNull(foundClient);
-        Assertions.assertEquals("Marta López", foundClient.getClientName());
+        assertNotNull(foundClient);
+        assertEquals("Marta López", foundClient.getClientName());
     }
 
     @Test
@@ -71,6 +74,20 @@ public class ClientControllerTest {
         clientController.registerClient(client2);
 
         List<Client> clients = clientController.findAll();
-        Assertions.assertEquals(2, clients.size());
+        assertEquals(2, clients.size());
+    }
+
+    @Test
+    void shouldRegisterClientSuccessfully() throws SQLException {
+        // Given a client
+        Client client = new Client("12345678A", "Juan Pérez", "Calle Falsa 123, Madrid", "600123456", "juan.perez@example.com", "password123", false);
+
+        // When registering the client
+        clientController.registerClient(client);
+
+        // Then the client should be found by email
+        Client foundClient = clientController.findByMail("juan.perez@example.com");
+        assertNotNull(foundClient, "Expected client to be found after registration");
+        assertEquals("Juan Pérez", foundClient.getClientName(), "Client name should match after registration");
     }
 }

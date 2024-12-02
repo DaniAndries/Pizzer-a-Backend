@@ -10,19 +10,16 @@ public class OrderLine {
     private int amount;
     @CsvIgnore
     private Product product;
-    @CsvIgnore
-    private float linePrice;
 
-    public OrderLine(int id, int amount, Product product, float linePrice) {
+    public OrderLine(int id, int amount, Product product) {
         this.id = id;
         this.amount = amount;
         this.product = product;
     }
 
-    public OrderLine(int id, int amount, float linePrice) {
+    public OrderLine(int id, int amount) {
         this.id = id;
         this.amount = amount;
-        this.linePrice = linePrice;
     }
 
     public OrderLine( int amount, Product product) {
@@ -63,25 +60,25 @@ public class OrderLine {
     public final boolean equals(Object o) {
         if (!(o instanceof OrderLine orderLine)) return false;
 
-        return getId() == orderLine.getId() && getAmount() == orderLine.getAmount() && Float.compare(linePrice, orderLine.linePrice) == 0 && product.equals(orderLine.product);
+        return getAmount() == orderLine.getAmount() && Float.compare(calculateLinePrice(), orderLine.calculateLinePrice()) == 0 && product.equals(orderLine.product);
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + getAmount();
+        int result = getAmount();
         result = 31 * result + product.hashCode();
-        result = 31 * result + Float.hashCode(linePrice);
+        result = 31 * result + Float.hashCode(calculateLinePrice());
         return result;
     }
 
     @Override
     public String toString() {
+        calculateLinePrice();
         return "OrderLine{" +
                 "id=" + id +
                 ", amount=" + amount +
                 ", product=" + product +
-                ", linePrice=" + linePrice +
+                ", linePrice=" + calculateLinePrice() +
                 '}';
     }
 }

@@ -111,13 +111,12 @@ public class Order {
     public final boolean equals(Object o) {
         if (!(o instanceof Order order)) return false;
 
-        return getId() == order.getId() && getOrderDate().equals(order.getOrderDate()) && getState() == order.getState() && getPaymentMethod() == order.getPaymentMethod() && getOrderLines().equals(order.getOrderLines()) && getClient().equals(order.getClient());
+        return getOrderDate().equals(order.getOrderDate()) && getState() == order.getState() && getPaymentMethod() == order.getPaymentMethod() && getOrderLines().equals(order.getOrderLines()) && getClient().equals(order.getClient());
     }
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + getOrderDate().hashCode();
+        int result = getOrderDate().hashCode();
         result = 31 * result + getState().hashCode();
         result = 31 * result + getPaymentMethod().hashCode();
         result = 31 * result + getOrderLines().hashCode();
