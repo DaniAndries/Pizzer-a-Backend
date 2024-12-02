@@ -46,7 +46,7 @@ public class Order {
         this.client = client;
     }
 
-    public void finalizar(Payable payable, PaymentMethod paymentMethod) {
+    public void finalizeOrder(Payable payable, PaymentMethod paymentMethod) {
         payable.pay(getTotalPrice());
         setPaymentMethod(paymentMethod);
     }
@@ -58,6 +58,7 @@ public class Order {
         }
         return auxiliaryPrice;
     }
+
 
     public int getId() {
         return id;

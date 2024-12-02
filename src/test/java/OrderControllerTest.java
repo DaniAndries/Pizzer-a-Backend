@@ -186,7 +186,15 @@ public class OrderControllerTest {
     }
 
     @Test
-    void testFinalizeOrder() throws SQLException {
+    void testFinalizeOrderOrder() throws SQLException {
+        orderLines1.add(orderLine1);
+        orderLines1.add(orderLine3);
+
+        order1.setOrderLines(orderLines1);
+
+        productController.saveProduct(pasta1);
+        productController.saveProduct(pizza1);
+
         orderController.saveOrder(order1);
 
         orderController.finalizeOrder(client1, PaymentMethod.CARD);

@@ -86,35 +86,38 @@ public class OrderController {
         }
     }
 
-
-
     public void finalizeOrder(Client client, PaymentMethod paymentMethod) throws SQLException {
         Order newOrder = orderDao.selectOrderByState(OrderState.PENDING, client);
-        Payable payable;
 
-        if (paymentMethod.toString().equals("CARD")){
-            payable = new PayByCard();
-            newOrder.setPaymentMethod(PaymentMethod.CARD);
-        } else if (paymentMethod.toString().equals("CASH")){
-            payable = new PayByCash();
-            newOrder.setPaymentMethod(PaymentMethod.CARD);
+        if (newOrder == null) {
+            throw new IllegalArgumentException("No pending order found for the client to finalize.");
+        }
+
+        Payable payable = getPayableForMethod(paymentMethod);
+        newOrder.setPaymentMethod(paymentMethod);
+        newOrder.finalizeOrder(payable, paymentMethod);
+        newOrder.setState(OrderState.FINISHED);
+
+        orderDao.updateOrder(newOrder);
+        addOrderToClient(client, newOrder);
+    }
+
+    private Payable getPayableForMethod(PaymentMethod paymentMethod) {
+        if (paymentMethod == PaymentMethod.CARD) {
+            return new PayByCard();
+        } else if (paymentMethod == PaymentMethod.CASH) {
+            return new PayByCash();
         } else {
-            throw new IllegalArgumentException("You cannot finalize an order without a payment method");
+            throw new IllegalArgumentException("Invalid payment method: " + paymentMethod);
         }
+    }
 
-        if (newOrder.getState() == OrderState.PENDING) {
-            newOrder.finalizar(payable, paymentMethod);
-            newOrder.setState(OrderState.FINISHED);
-            orderDao.updateOrder(newOrder);
-            if (client.getOrderList() == null) {
-                List<Order> newOrders = new ArrayList<>();
-                newOrders.add(newOrder);
-                client.setOrderList(newOrders);
-            } else client.getOrderList().add(newOrder);
-            clientDao.update(client);
-        } else{
-            throw new IllegalArgumentException("You cannot finalize an Order that has already been completed, delivered or canceled");
+    private void addOrderToClient(Client client, Order newOrder) throws SQLException {
+        if (client.getOrderList() == null) {
+            client.setOrderList(new ArrayList<>());
         }
+        client.getOrderList().add(newOrder);
+        clientDao.update(client);
     }
 
     public void deliverOrder(int id) throws SQLException {
