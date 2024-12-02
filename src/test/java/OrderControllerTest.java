@@ -6,7 +6,6 @@ import controller.ProductController;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Or;
 import utils.DatabaseConf;
 
 import java.sql.SQLException;
