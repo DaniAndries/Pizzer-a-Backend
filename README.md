@@ -21,7 +21,7 @@
 
 ## 📄 Documentation
 
-- Explore the technical implementation through the JavaDoc documentation: [JavaDoc](https://linktodocumentation)
+- Explore the technical implementation through the JavaDoc documentation: [JavaDoc](https://daniandries.github.io/Pizzeria-Backend/)
 
 ## 📂 Related Projects
 
