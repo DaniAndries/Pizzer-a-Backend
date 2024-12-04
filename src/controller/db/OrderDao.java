@@ -5,6 +5,7 @@ import model.Order;
 import model.OrderLine;
 import model.OrderState;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public interface OrderDao {
      * @throws SQLException If there is a database access error.
      */
     void saveOrderLine(OrderLine orderLine, Order order) throws SQLException;
+
+
+    void saveOrderLine(OrderLine orderLine, Order order, Connection conn) throws SQLException;
 
     /**
      * Deletes an existing order from the database.

@@ -75,8 +75,11 @@ public class JdbcOrderDao implements OrderDao {
     // * "INSERT INTO customer_order (state, order_date, payment_method, client) VALUES (?,?,?,?)"
     @Override
     public void saveOrder(Order order) throws SQLException {
-        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS)) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+            conn.setAutoCommit(false);
+            PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
             List<OrderLine> orderLines = new ArrayList<>();
 
             stmtOrder.setString(1, order.getState().toString());
@@ -92,9 +95,22 @@ public class JdbcOrderDao implements OrderDao {
                 }
             }
 
-            addOrderLines(order.getOrderLines(), order);
+            addOrderLines(order.getOrderLines(), order, conn);
 
             System.out.println("The Order: " + order.getId() + " has been created");
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null){
+                conn.rollback();
+            }
+
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            } else {
+                System.out.println("sex");
+            }
         }
     }
 
@@ -105,14 +121,17 @@ public class JdbcOrderDao implements OrderDao {
      * @param order      the order to which the lines will be added
      * @throws SQLException if a database access error occurs
      */
-    private void addOrderLines(List<OrderLine> orderLines, Order order) throws SQLException {
+    private void addOrderLines(List<OrderLine> orderLines, Order order, Connection conn ) throws SQLException {
         for (OrderLine orderLine : orderLines) {
-            saveOrderLine(orderLine, order);
+            saveOrderLine(orderLine, order, conn);
         }
     }
 
     /**
-     * Saves a new order line associated with a specified order.
+     * Saves a new order line to the database and associates it with a specified order.
+     * The method inserts a new record into the `order_line` table with the provided details.
+     * If the operation is successful, the generated ID for the new order line is set on the
+     * provided {@link OrderLine} object.
      *
      * @param orderLine the order line to be saved
      * @param order     the order associated with the order line
@@ -123,6 +142,38 @@ public class JdbcOrderDao implements OrderDao {
     public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER_LINE, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmtOrder.setInt(1, orderLine.getAmount());
+            stmtOrder.setInt(2, orderLine.getProducto().getId());
+            stmtOrder.setInt(3, order.getId());
+
+            stmtOrder.executeUpdate();
+
+            try (ResultSet generatedKeys = stmtOrder.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    orderLine.setId(generatedKeys.getInt(1));
+                }
+            }
+
+            System.out.println("The OrderLine: " + order.getId() + " has been created");
+        }
+    }
+
+    /**
+     * Saves a new order line to the database and associates it with a specified order.
+     * The method inserts a new record into the `order_line` table with the provided details.
+     * If the operation is successful, the generated ID for the new order line is set on the
+     * provided {@link OrderLine} object.
+     *
+     * @param orderLine the order line to be saved, containing the details of the line item
+     * @param order     the order to which the order line will be associated
+     * @param conn      the database connection used for executing the insert statement
+     * @throws SQLException if a database access error occurs or the insert operation fails
+     */
+    // * "INSERT INTO order_line (amount, product, customer_order) VALUES (?,?,?)"
+    @Override
+    public void saveOrderLine(OrderLine orderLine, Order order, Connection conn) throws SQLException {
+        try (PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER_LINE, Statement.RETURN_GENERATED_KEYS)) {
 
             stmtOrder.setInt(1, orderLine.getAmount());
             stmtOrder.setInt(2, orderLine.getProducto().getId());

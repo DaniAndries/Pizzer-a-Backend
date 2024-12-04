@@ -78,10 +78,14 @@ public class JdbcProductDao implements ProductDao {
     // * "INSERT INTO product (product_name, price, size, type) VALUES (?,?,?,?)"
     @Override
     public void saveProduct(Product product) throws SQLException {
-        try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtProduct = conn.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
-            List<Ingredient> ingredients = new ArrayList<>();
+        Connection conn = null;
+        try  {
+            conn = DriverManager.getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
+            conn.setAutoCommit(false);
+            PreparedStatement stmtProduct = conn.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
 
+            List<Ingredient> ingredients = new ArrayList<>();
+            getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
             stmtProduct.setString(1, product.getName());
             stmtProduct.setDouble(2, product.getPrice());
 
@@ -113,6 +117,20 @@ public class JdbcProductDao implements ProductDao {
             if (ingredients != null && !ingredients.isEmpty()) addIngredient(ingredients, product.getId(), conn);
 
             System.out.println("The product: " + product.getId() + " has been created");
+
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null){
+                conn.rollback();
+            }
+
+            throw new RuntimeException(e);
+        } finally {
+            if (conn != null) {
+                conn.close();
+            } else {
+                System.out.println("sex");
+            }
         }
     }
 

@@ -19,7 +19,7 @@ public class Order {
     private OrderState state;
     private PaymentMethod paymentMethod;
     private List<OrderLine> orderLines = new ArrayList<>();
-    private Client client;
+    private final Client client;
 
     /**
      * Constructs an Order with the specified parameters.
@@ -91,13 +91,19 @@ public class Order {
     }
 
     /**
-     * Finalizes the order by processing the payment and setting the payment method.
+     * Completes the order by processing the payment and recording the payment method.
      *
-     * @param payable        the payment strategy to use for the payment
-     * @param paymentMethod  the method used for payment
+     * This method uses the provided {@code Payable} strategy to handle the payment
+     * for the total price of the order. Once the payment is successfully processed,
+     * the order's state is updated to {@code FINISHED}, and the specified payment
+     * method is recorded.
+     *
+     * @param payable       the payment strategy used to process the order's payment
+     * @param paymentMethod the method of payment to associate with the order
      */
     public void finalizeOrder(Payable payable, PaymentMethod paymentMethod) {
         payable.pay(getTotalPrice());
+        setState(OrderState.FINISHED);
         setPaymentMethod(paymentMethod);
     }
 
