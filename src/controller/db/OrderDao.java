@@ -97,7 +97,7 @@ public interface OrderDao {
      * @return The Order object matching the specified state and client, or null if not found.
      * @throws SQLException If there is a database access error.
      */
-    Order findOrderByState(OrderState state, Client client) throws SQLException;
+    List<Order> findOrdersByState(OrderState state, Client client) throws SQLException;
 
     /**
      * Retrieves an order line by its ID.

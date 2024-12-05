@@ -343,14 +343,15 @@ public class JdbcOrderDao implements OrderDao {
      */
     // * "SELECT customer_order.id, customer_order.order_date, customer_order.state, customer_order.payment_method, customer_order.client FROM customer_order WHERE customer_order.state=? and customer_order.client=?"
     @Override
-    public Order findOrderByState(OrderState state, Client client) throws SQLException {
+    public List<Order> findOrdersByState(OrderState state, Client client) throws SQLException {
+        List<Order> orders = null;
         Order order;
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(SELECT_ORDER_BY_STATE)) {
             stmtOrder.setString(1, state.toString());
             stmtOrder.setInt(2, client.getId());
             try (ResultSet rsOrder = stmtOrder.executeQuery()) {
-                if (rsOrder.next()) {
+                while (rsOrder.next()) {
                     order = new Order(
                             rsOrder.getInt("id"),
                             rsOrder.getDate("order_date"),
@@ -359,11 +360,13 @@ public class JdbcOrderDao implements OrderDao {
                             jdbcClientDao.findById(rsOrder.getInt("client"))
                     );
                     order.setOrderLines(findOrderLinesByOrder(order));
-                } else {
-                    order = null;
+                    if (orders == null) {
+                        orders = new ArrayList<>();
+                    }
+                    orders.add(order);
                 }
             }
-            return order;
+            return orders;
         }
     }
 

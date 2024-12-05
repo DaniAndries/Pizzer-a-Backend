@@ -240,13 +240,17 @@ public class OrderControllerTest {
         assertNotNull(orders, "The orders list should not be null");
         assertFalse(orders.isEmpty(), "The orders list should not be empty");
 
-        Order order = orders.get(0);
+        Order order = orders.getFirst();
 
         assertEquals(1, order.getId(), "The order ID should match");
         assertEquals(OrderState.PENDING, order.getState(), "The order state should be PENDING");
         assertEquals(client1, order.getClient(), "The client should match");
 
-        Date expectedDate = new SimpleDateFormat("yyyy-MM-dd").parse("2024-12-02");
+        Date orderDate = client1.getOrderList().getFirst().getOrderDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(orderDate);
+        Date expectedDate = sdf.parse(formattedDate);
+
         assertEquals(expectedDate, order.getOrderDate(), "The order date should match");
 
         List<OrderLine> orderLines = order.getOrderLines();
@@ -265,10 +269,11 @@ public class OrderControllerTest {
      * @throws SQLException if a database error occurs.
      */
     @Test
-    void testSelectOrderByState() throws SQLException {
+    void testSelectOrdersByState() throws SQLException {
         setUpHelper();
 
-        Order newOrder = orderController.selectOrderByState(OrderState.PENDING, client1);
+        List<Order> orders = orderController.selectOrdersByState(OrderState.PENDING, client1);
+        Order newOrder = orders.getFirst();
 
         assertNotNull(newOrder, "The retrieved order should not be null.");
         assertEquals(OrderState.PENDING, newOrder.getState(), "The order state should be PENDING.");

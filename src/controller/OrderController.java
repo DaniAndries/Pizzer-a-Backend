@@ -42,12 +42,11 @@ public class OrderController {
      * Saves a new order to the database.
      *
      * @param order the order to be saved
-     * @throws SQLException if a database access error occurs
+     * @throws SQLException             if a database access error occurs
      * @throws IllegalArgumentException if the order is null or has missing required fields
      */
     public void saveOrder(Order order) throws SQLException {
-        if (order == null || order.getClient() == null || order.getOrderDate() == null ||
-                order.getState() == null || order.getPaymentMethod() == null) {
+        if (order == null || order.getClient() == null || order.getOrderDate() == null || order.getState() == null || order.getPaymentMethod() == null) {
             throw new IllegalArgumentException("Invalid order or missing fields.");
         }
         orderDao.saveOrder(order);
@@ -120,7 +119,7 @@ public class OrderController {
      *
      * @param client the client whose orders are to be retrieved
      * @return a list of orders associated with the client
-     * @throws SQLException if a database access error occurs
+     * @throws SQLException             if a database access error occurs
      * @throws IllegalArgumentException if the client is null
      */
     public List<Order> selectOrdersByClient(Client client) throws SQLException {
@@ -138,8 +137,8 @@ public class OrderController {
      * @return the order associated with the specified state and client, or null if not found
      * @throws SQLException if a database access error occurs
      */
-    public Order selectOrderByState(OrderState state, Client client) throws SQLException {
-        return orderDao.findOrderByState(state, client);
+    public List<Order> selectOrdersByState(OrderState state, Client client) throws SQLException {
+        return orderDao.findOrdersByState(state, client);
     }
 
     /**
@@ -167,20 +166,22 @@ public class OrderController {
     /**
      * Adds a product to the client's cart. If no pending order exists, a new order is created.
      *
-     * @param product      the product to be added to the cart
+     * @param product       the product to be added to the cart
      * @param clienteActual the client who is adding the product
-     * @param cantidad     the quantity of the product to be added
+     * @param cantidad      the quantity of the product to be added
      * @throws IllegalStateException if there is an issue with the current state of the order
-     * @throws SQLException if a database access error occurs
+     * @throws SQLException          if a database access error occurs
      */
     public void addToCart(Product product, Client clienteActual, int cantidad) throws IllegalStateException, SQLException {
-        Order order = orderDao.findOrderByState(OrderState.PENDING, clienteActual);
+        List<Order> orders = orderDao.findOrdersByState(OrderState.PENDING, clienteActual);
         OrderLine orderLine = new OrderLine(cantidad, product);
+        Order order;
 
-        if (order == null) {
+        if (orders == null || orders.isEmpty()) {
             order = new Order(new Date(), OrderState.PENDING, orderLine, clienteActual);
             orderDao.saveOrder(order);
         } else {
+            order = orders.getFirst();
             order.addOrderLine(orderLine);
             orderDao.updateOrder(order);
             orderDao.saveOrderLine(orderLine, order);
@@ -192,15 +193,18 @@ public class OrderController {
      *
      * @param client        the client who is finalizing the order
      * @param paymentMethod the payment method used for the order
-     * @throws SQLException if a database access error occurs
+     * @throws SQLException             if a database access error occurs
      * @throws IllegalArgumentException if no pending order is found for the client
      */
     public void finalizeOrder(Client client, PaymentMethod paymentMethod) throws SQLException {
-        Order newOrder = orderDao.findOrderByState(OrderState.PENDING, client);
+        List<Order> orders = orderDao.findOrdersByState(OrderState.PENDING, client);
+        Order newOrder;
 
-        if (newOrder == null) {
+        if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("No pending order found for the client to finalize.");
         }
+
+        newOrder = orders.getFirst();
 
         Payable payable = getPayableForMethod(paymentMethod);
         newOrder.setPaymentMethod(paymentMethod);
@@ -277,8 +281,11 @@ public class OrderController {
      * @throws SQLException if a database access error occurs
      */
     public void cancelOrder(Client client) throws SQLException {
-        Order actualOrder = orderDao.findOrderByState(OrderState.PENDING, client);
-        if (actualOrder != null) {
+        List<Order> orders = orderDao.findOrdersByState(OrderState.PENDING, client);
+        Order actualOrder;
+
+        if (orders != null || !orders.isEmpty()) {
+            actualOrder = orders.getFirst();
             actualOrder.setState(OrderState.CANCELED);
             orderDao.updateOrder(actualOrder);
         } else {
