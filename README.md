@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <i>Future Goals: Database integration and a REST API to enhance order and user management.</i>
+  <i>Future Goals: REST API to enhance order and user management.</i>
 </p>
 
 ---
