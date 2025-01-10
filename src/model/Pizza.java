@@ -1,5 +1,7 @@
 package model;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
 /**
@@ -13,8 +15,9 @@ import java.util.List;
  * @version 0.1
  */
 public class Pizza extends Product {
-
+    @Enumerated(EnumType.STRING)
     private Size size;
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ingredient> ingredients;
 
     /**

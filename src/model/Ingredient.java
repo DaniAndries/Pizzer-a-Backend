@@ -2,6 +2,10 @@ package model;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 
 import java.util.List;
 
@@ -14,15 +18,15 @@ import java.util.List;
  * @version 0.1
  */
 public class Ingredient {
-
-    @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
-    private List<String> alergens; // List of allergens associated with the ingredient
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
+    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
     @CsvBindByName
     private int id; // Unique identifier for the ingredient
-
     @CsvBindByName
     private String name; // Name of the ingredient
+    @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
+    private List<String> alergens; // List of allergens associated with the ingredient
 
     /**
      * Constructs an Ingredient with the specified id, name, and allergens.

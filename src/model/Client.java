@@ -1,5 +1,7 @@
 package model;
 
+import jakarta.persistence.*;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -17,15 +19,20 @@ import java.util.Objects;
  */
 @XmlAccessorType(XmlAccessType.FIELD) // Direct access to fields
 public class Client {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
+    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
     private int id; // Unique identifier for the client
+    @Column(unique = true, nullable = false)
     private String dni; // National identification number of the client
     private String clientName; // Name of the client
     private String direction; // Address of the client
     private String phone; // Phone number of the client
+    @Column(unique = true, nullable = false)
     private String mail; // Email address of the client
     @XmlTransient // Exclude password from XML serialization
     private String password; // Password for the client's account
+    @OneToMany(mappedBy = "Order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @XmlTransient // Exclude order list from XML serialization
     private List<Order> orderList; // List of orders made by the client
     @XmlAttribute // Indicates that this field is an XML attribute

@@ -1,5 +1,9 @@
 package model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+
 import java.util.List;
 
 /**
@@ -13,7 +17,7 @@ import java.util.List;
  * @version 0.1
  */
 public class Pasta extends Product {
-
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ingredient> ingredients;
 
     /**

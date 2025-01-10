@@ -2,6 +2,7 @@ package model;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
+import jakarta.persistence.*;
 
 /**
  * Represents a line item in an order, including the product and its quantity.
@@ -11,13 +12,15 @@ import com.opencsv.bean.CsvIgnore;
  * @version 0.1
  */
 public class OrderLine {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
+    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
     @CsvBindByName(column = "IDENTIFICATION")
     private int id;
-
     @CsvBindByName(column = "QUANTITY")
     private int amount;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order")
     @CsvIgnore
     private Product product;
 

@@ -1,5 +1,7 @@
 package model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,12 +15,21 @@ import java.util.List;
  * @version 0.1
  */
 public class Order {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
+    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
     private int id;
+    @Column(name = "order_date")
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
+    @Enumerated(EnumType.STRING)
     private OrderState state;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    @OneToMany(mappedBy = "order_line", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderLine> orderLines = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Client")
     private final Client client;
 
     /**

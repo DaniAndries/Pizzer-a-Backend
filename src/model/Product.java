@@ -1,5 +1,7 @@
 package model;
 
+import jakarta.persistence.*;
+
 /**
  * Abstract class representing a product in the system.
  * <p>
@@ -12,8 +14,11 @@ package model;
  * @version 0.1
  */
 public abstract class Product {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
+    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
     private int id;
+    @Column(unique = true, nullable = false)
     private String name;
     private double price;
 

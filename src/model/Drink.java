@@ -1,5 +1,8 @@
 package model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 /**
  * Represents a drink product with a specific size. This class extends the
  * {@link Product} class and includes additional information relevant to drinks.
@@ -8,7 +11,7 @@ package model;
  * @version 0.1
  */
 public class Drink extends Product {
-
+    @Enumerated(EnumType.STRING)
     private Size size; // The size of the drink (e.g., BIG, MEDIUM, SMALL)
 
     /**
