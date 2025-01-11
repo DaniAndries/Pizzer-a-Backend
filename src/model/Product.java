@@ -13,6 +13,7 @@ import jakarta.persistence.*;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public abstract class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")

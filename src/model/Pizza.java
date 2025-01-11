@@ -48,6 +48,10 @@ public class Pizza extends Product {
         this.size = size;
     }
 
+    public Pizza(int id, String name, double price) {
+        super(id, name, price);
+    }
+
     /**
      * Gets the size of the pizza.
      *

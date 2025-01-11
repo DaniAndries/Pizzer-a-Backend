@@ -11,6 +11,7 @@ import jakarta.persistence.*;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
@@ -59,6 +60,9 @@ public class OrderLine {
     public OrderLine(int amount, Product product) {
         this.amount = amount;
         this.product = product;
+    }
+
+    public OrderLine() {
     }
 
     /**

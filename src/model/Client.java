@@ -17,6 +17,7 @@ import java.util.Objects;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 @XmlAccessorType(XmlAccessType.FIELD) // Direct access to fields
 public class Client {
     @Id

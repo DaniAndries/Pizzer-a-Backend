@@ -2,10 +2,7 @@ package model;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -17,6 +14,7 @@ import java.util.List;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")

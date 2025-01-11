@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 0.1
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ClientControllerTest {
+public class JdbcClientControllerTest {
 
     private ClientController clientController;
 
@@ -34,7 +34,7 @@ public class ClientControllerTest {
      * providing any specific parameters.
      * </p>
      */
-    public ClientControllerTest() {
+    public JdbcClientControllerTest() {
         // Empty constructor
     }
 

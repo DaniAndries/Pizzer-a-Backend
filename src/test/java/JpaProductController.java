@@ -17,12 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for {@link ProductController}.
- * Provides unit tests to validate the functionality of the ProductController methods,
- * including operations for managing products, ingredients, and file I/O operations.
- */
-class ProductControllerTest {
+public class JpaProductController {
+
     // Controllers
     private ProductController productController;
     // Ingredients

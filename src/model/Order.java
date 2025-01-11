@@ -14,6 +14,7 @@ import java.util.List;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
@@ -30,7 +31,7 @@ public class Order {
     private List<OrderLine> orderLines = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Client")
-    private final Client client;
+    private Client client;
 
     /**
      * Constructs an Order with the specified parameters.
@@ -99,6 +100,9 @@ public class Order {
         this.paymentMethod = PaymentMethod.UNPAID;
         this.orderLines.add(orderLine);
         this.client = client;
+    }
+
+    public Order() {
     }
 
     /**

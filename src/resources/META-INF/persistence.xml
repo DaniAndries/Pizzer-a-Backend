@@ -10,9 +10,7 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
         <class>src.model.Ingredient</class>
         <class>src.model.Order</class>
         <class>src.model.OrderLine</class>
-        <class>src.model.Pasta</class>
-        <class>src.model.Drink</class>
-        <class>src.model.Pizza</class>
+        <class>src.model.Product</class>
         <class>src.model.PayByCard</class>
         <class>src.model.PayByCash</class>
         <properties>

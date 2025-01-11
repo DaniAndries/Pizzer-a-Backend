@@ -27,6 +27,10 @@ public class Drink extends Product {
         this.size = size;
     }
 
+    public Drink(int id, String name, double price) {
+        super(id, name, price);
+    }
+
     /**
      * Gets the size of this drink.
      *

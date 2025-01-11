@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * It includes tests for saving, updating, deleting, and retrieving orders,
  * as well as for managing order lines and client-specific orders.
  */
-public class OrderControllerTest {
+public class JdbcOrderControllerTest {
 
     // Controllers
     private OrderController orderController;
@@ -69,7 +69,7 @@ public class OrderControllerTest {
      * any specific parameters.
      * </p>
      */
-    public OrderControllerTest() {
+    public JdbcOrderControllerTest() {
         // Empty constructor
     }
 
