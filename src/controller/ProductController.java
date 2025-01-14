@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import com.opencsv.exceptions.CsvValidationException;
 import controller.db.impl.JdbcProductDao;
+import controller.db.impl.JpaProductDao;
 import model.Ingredient;
 import model.Product;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * @version 0.1
  */
 public class ProductController {
-    private JdbcProductDao productDao = new JdbcProductDao(); // DAO for product-related database operations
+    private JpaProductDao productDao = new JpaProductDao(); // DAO for product-related database operations
     private Product product; // Currently managed product (if any)
     private List<Ingredient> ingredients = new ArrayList<>(); // List of ingredients associated with the product
 

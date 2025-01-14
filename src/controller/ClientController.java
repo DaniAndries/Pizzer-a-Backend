@@ -1,6 +1,7 @@
 package controller;
 
 import controller.db.impl.JdbcClientDao;
+import controller.db.impl.JpaClientDao;
 import model.Client;
 import model.Product;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @version 0.1
  */
 public class ClientController {
-    private JdbcClientDao clientDao; // Data Access Object for Client
+    private JpaClientDao clientDao; // Data Access Object for Client
     private Client actualClient; // Currently logged-in client
     private List<Client> clients; // List of all clients
 
@@ -30,7 +31,7 @@ public class ClientController {
      * @throws SQLException If there is a database access error.
      */
     public ClientController(String email, String password) throws SQLException {
-        this.clientDao = new JdbcClientDao();
+        this.clientDao = new JpaClientDao();
         this.clients = new ArrayList<>();
         loginClient(email, password);
     }
@@ -39,7 +40,7 @@ public class ClientController {
      * Default constructor for ClientController.
      */
     public ClientController() {
-        this.clientDao = new JdbcClientDao();
+        this.clientDao = new JpaClientDao();
         this.clients = new ArrayList<>();
     }
 

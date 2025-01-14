@@ -2,6 +2,8 @@ package controller;
 
 import controller.db.impl.JdbcClientDao;
 import controller.db.impl.JdbcOrderDao;
+import controller.db.impl.JpaClientDao;
+import controller.db.impl.JpaOrderDao;
 import model.*;
 
 import java.sql.SQLException;
@@ -18,8 +20,8 @@ import java.util.List;
  * @version 0.1
  */
 public class OrderController {
-    private JdbcOrderDao orderDao = new JdbcOrderDao(); // DAO for order-related database operations
-    private JdbcClientDao clientDao = new JdbcClientDao(); // DAO for client-related database operations
+    private JpaOrderDao orderDao = new JpaOrderDao(); // DAO for order-related database operations
+    private JpaClientDao clientDao = new JpaClientDao(); // DAO for client-related database operations
 
     private Order actualOrder; // Currently active order (if any)
 
