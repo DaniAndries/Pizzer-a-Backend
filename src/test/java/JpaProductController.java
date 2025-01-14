@@ -1,5 +1,3 @@
-package test.java;
-
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import controller.FileManagement;

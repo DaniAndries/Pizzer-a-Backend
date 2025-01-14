@@ -1,5 +1,3 @@
-package test.java;
-
 import controller.ClientController;
 import controller.OrderController;
 import controller.ProductController;
@@ -16,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JpaOrderController {
 

@@ -1,5 +1,3 @@
-package test.java;
-
 import controller.ClientController;
 import controller.OrderController;
 import controller.ProductController;

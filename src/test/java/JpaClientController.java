@@ -1,5 +1,3 @@
-package test.java;
-
 import controller.ClientController;
 import model.Client;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +8,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JpaClientController {
     private ClientController clientController;
@@ -34,7 +31,7 @@ public class JpaClientController {
      */
     @BeforeEach
     void setupDatabase() throws SQLException {
-        DatabaseConf.dropTables();
+        clientController = new ClientController();
     }
 
     /**

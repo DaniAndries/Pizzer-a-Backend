@@ -1,8 +1,8 @@
-package test.java;
-
 import controller.ClientController;
 import model.Client;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import utils.DatabaseConf;
 
 import java.sql.SQLException;
