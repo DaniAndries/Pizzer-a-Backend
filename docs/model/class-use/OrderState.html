@@ -76,9 +76,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">OrderController.</span><code><a href="../../controller/OrderController.html#selectOrderByState(model.OrderState,model.Client)" class="member-name-link">selectOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Retrieves an order by its state for a specific client.</div>
+<div class="block">Retrieves an order by its state for a specific customer.</div>
 </div>
 </div>
 </section>
@@ -93,9 +93,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">OrderDao.</span><code><a href="../../controller/db/OrderDao.html#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Retrieves an order by its state and associated client.</div>
+<div class="block">Retrieves an order by its state and associated customer.</div>
 </div>
 </div>
 </section>
@@ -110,9 +110,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">JdbcOrderDao.</span><code><a href="../../controller/db/impl/JdbcOrderDao.html#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Selects an order by its state and associated client.</div>
+<div class="block">Selects an order by its state and associated customer.</div>
 </div>
 </div>
 </section>
@@ -164,7 +164,7 @@ the order they are declared.</div>
  <a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="../PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../OrderLine.html" title="class in model">OrderLine</a>&gt;&nbsp;orderLines,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructs an Order with the specified parameters.</div>
 </div>
@@ -173,7 +173,7 @@ the order they are declared.</div>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="../PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Constructs an Order with the specified parameters, without initial order lines.</div>
 </div>
@@ -181,7 +181,7 @@ the order they are declared.</div>
 <div class="col-second even-row-color"><code><a href="../Order.html#%3Cinit%3E(java.util.Date,model.OrderState,model.OrderLine,model.Client)" class="member-name-link">Order</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="../OrderLine.html" title="class in model">OrderLine</a>&nbsp;orderLine,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructs an Order with a single order line and a specific state, defaulting to unpaid method.</div>
 </div>

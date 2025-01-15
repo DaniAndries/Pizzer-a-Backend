@@ -1,4 +1,4 @@
-import controller.ClientController;
+import controller.CustomerController;
 import controller.OrderController;
 import controller.ProductController;
 import model.*;
@@ -19,11 +19,11 @@ public class JpaOrderController {
 
     // Controllers
     private OrderController orderController;
-    private ClientController clientController;
+    private CustomerController customerController;
     private ProductController productController;
-    // Clients
-    Client client1 = new Client("12345678A", "Juan Pérez", "Calle Falsa 123, Madrid", "600123456", "juan.perez@example.com", "password123", false);
-    Client client2 = new Client("87654321B", "Ana Gómez", "Av. Siempre Viva 742, Barcelona", "650654321", "ana.gomez@example.com", "securepass456", false);
+    // Customers
+    Customer customer1 = new Customer("12345678A", "Juan Pérez", "Calle Falsa 123, Madrid", "600123456", "juan.perez@example.com", "password123", false);
+    Customer customer2 = new Customer("87654321B", "Ana Gómez", "Av. Siempre Viva 742, Barcelona", "650654321", "ana.gomez@example.com", "securepass456", false);
     // List of OrderLines
     List<OrderLine> orderLines1 = new ArrayList<>();
     List<OrderLine> orderLines2 = new ArrayList<>();
@@ -39,7 +39,7 @@ public class JpaOrderController {
     private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
     // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
-    private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, "MEDIUM");
+    private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, Size.MEDIUM);
     private Pasta pasta2 = new Pasta(2, "Bolognese", 9.5, ingredientList2);
     private Pasta pasta3 = new Pasta(3, "Pesto", 8.0, ingredientList3);
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
@@ -49,8 +49,8 @@ public class JpaOrderController {
     private OrderLine orderLine4 = new OrderLine(2, pasta3);
     private OrderLine orderLine2 = new OrderLine(7, drink1);
     // Orders
-    private Order order1 = new Order(1, new Date(), OrderState.PENDING, PaymentMethod.UNPAID, client1);
-    private Order order2 = new Order(2, new Date(), OrderState.FINISHED, PaymentMethod.UNPAID, client2);
+    private Order order1 = new Order(1, new Date(), OrderState.PENDING, PaymentMethod.UNPAID, customer1);
+    private Order order2 = new Order(2, new Date(), OrderState.FINISHED, PaymentMethod.UNPAID, customer2);
 
 
     /**
@@ -74,11 +74,10 @@ public class JpaOrderController {
     @BeforeEach
     void setUp() throws SQLException {
         orderController = new OrderController();
-        clientController = new ClientController();
+        customerController = new CustomerController();
         productController = new ProductController();
-        DatabaseConf.dropAndCreateTables();
-        clientController.registerClient(client1);
-        clientController.registerClient(client2);
+        customerController.registerCustomer(customer1);
+        customerController.registerCustomer(customer2);
     }
 
     /**
@@ -102,8 +101,8 @@ public class JpaOrderController {
         order1.setOrderLines(orderLines1);
         order2.setOrderLines(orderLines2);
 
-        client1.setOrderList(List.of(order1));
-        client2.setOrderList(List.of(order2));
+        customer1.setOrderList(List.of(order1));
+        customer2.setOrderList(List.of(order2));
 
         orderController.saveOrder(order1);
         orderController.saveOrder(order2);
@@ -195,9 +194,9 @@ public class JpaOrderController {
     void testAddToCart() throws SQLException {
         productController.saveProduct(pizza1);
 
-        orderController.addToCart(pizza1, client1, 3);
+        orderController.addToCart(pizza1, customer1, 3);
 
-        List<Order> newOrders = orderController.selectOrdersByClient(client1);
+        List<Order> newOrders = orderController.selectOrdersByCustomer(customer1);
 
         assertNotNull(newOrders);
         assertFalse(newOrders.isEmpty(), "The orders list should not be empty after adding to cart.");
@@ -212,7 +211,7 @@ public class JpaOrderController {
     void testFinalizeOrder() throws SQLException {
         setUpHelper();
 
-        orderController.finalizeOrder(client1, PaymentMethod.CARD);
+        orderController.finalizeOrder(customer1, PaymentMethod.CARD);
 
         Order finalizedOrder = orderController.selectOrder(order1.getId());
         assertEquals(OrderState.FINISHED, finalizedOrder.getState());
@@ -224,9 +223,9 @@ public class JpaOrderController {
      * @throws SQLException if a database error occurs.
      */
     @Test
-    void testselectOrdersByClient() throws SQLException, ParseException {
+    void testselectOrdersByCustomer() throws SQLException, ParseException {
         setUpHelper();
-        List<Order> orders = orderController.selectOrdersByClient(client1);
+        List<Order> orders = orderController.selectOrdersByCustomer(customer1);
 
 
         assertNotNull(orders, "The orders list should not be null");
@@ -236,9 +235,9 @@ public class JpaOrderController {
 
         assertEquals(1, order.getId(), "The order ID should match");
         assertEquals(OrderState.PENDING, order.getState(), "The order state should be PENDING");
-        assertEquals(client1, order.getClient(), "The client should match");
+        assertEquals(customer1, order.getCustomer(), "The client should match");
 
-        Date orderDate = client1.getOrderList().getFirst().getOrderDate();
+        Date orderDate = customer1.getOrderList().getFirst().getOrderDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = sdf.format(orderDate);
         Date expectedDate = sdf.parse(formattedDate);
@@ -253,7 +252,7 @@ public class JpaOrderController {
         OrderLine orderLine = orderLines.getFirst();
         assertEquals(1, orderLine.getId(), "The order line ID should match");
         assertEquals(4, orderLine.getAmount(), "The amount in the order line should be 4");
-        assertEquals(client1.getOrderList().getFirst().getOrderLines().getFirst().getProducto(), orderLine.getProducto(), "The product in the order line should match");
+        assertEquals(customer1.getOrderList().getFirst().getOrderLines().getFirst().getProducto(), orderLine.getProducto(), "The product in the order line should match");
     }
     /**
      * Tests selecting orders by their state for a specific client.
@@ -264,7 +263,7 @@ public class JpaOrderController {
     void testSelectOrdersByState() throws SQLException {
         setUpHelper();
 
-        List<Order> orders = orderController.selectOrdersByState(OrderState.PENDING, client1);
+        List<Order> orders = orderController.selectOrdersByState(OrderState.PENDING, customer1);
         Order newOrder = orders.getFirst();
 
         assertNotNull(newOrder, "The retrieved order should not be null.");
@@ -297,7 +296,7 @@ public class JpaOrderController {
      */
     @Test
     void testSelectOrderLinesByNonExistentOrder() throws SQLException {
-        List<OrderLine> orderLines = orderController.selectOrderLinesByOrder(new Order(9999, new Date(), OrderState.PENDING, PaymentMethod.UNPAID, client1));
+        List<OrderLine> orderLines = orderController.selectOrderLinesByOrder(new Order(9999, new Date(), OrderState.PENDING, PaymentMethod.UNPAID, customer1));
 
         assertNotNull(orderLines, "Order lines list should not be null.");
         assertTrue(orderLines.isEmpty(), "Order lines list should be empty for a non-existent order.");
@@ -312,7 +311,7 @@ public class JpaOrderController {
     void testCancelOrder() throws SQLException {
         orderController.saveOrder(order1);
 
-        orderController.cancelOrder(client1);
+        orderController.cancelOrder(customer1);
 
         Order canceledOrder = orderController.selectOrder(order1.getId());
         assertEquals(OrderState.CANCELED, canceledOrder.getState(), "The order state should be CANCELED after cancellation.");

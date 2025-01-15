@@ -128,9 +128,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../model/Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves an order by its state and associated client.</div>
+<div class="block">Retrieves an order by its state and associated customer.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../model/OrderLine.html" title="class in model">OrderLine</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findOrderLine(int)" class="member-name-link">findOrderLine</a><wbr>(int&nbsp;id)</code></div>
@@ -143,9 +143,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieves a list of order lines associated with a specific order.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../model/Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../model/Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findtOrder(int)" class="member-name-link">findtOrder</a><wbr>(int&nbsp;id)</code></div>
@@ -292,14 +292,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findOrdersByClient(model.Client)">
 <h3>findOrdersByClient</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">findOrdersByClient</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">findOrdersByClient</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client whose orders are to be retrieved.</dd>
+<dd><code>customer</code> - The Client whose orders are to be retrieved.</dd>
 <dt>Returns:</dt>
-<dd>A list of Order objects associated with the client.</dd>
+<dd>A list of Order objects associated with the customer.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>
@@ -309,15 +309,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="findOrderByState(model.OrderState,model.Client)">
 <h3>findOrderByState</h3>
 <div class="member-signature"><span class="return-type"><a href="../../model/Order.html" title="class in model">Order</a></span>&nbsp;<span class="element-name">findOrderByState</span><wbr><span class="parameters">(<a href="../../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+ <a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves an order by its state and associated client.</div>
+<div class="block">Retrieves an order by its state and associated customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>state</code> - The OrderState to filter by.</dd>
-<dd><code>client</code> - The Client associated with the order.</dd>
+<dd><code>customer</code> - The Client associated with the order.</dd>
 <dt>Returns:</dt>
-<dd>The Order object matching the specified state and client, or null if not found.</dd>
+<dd>The Order object matching the specified state and customer, or null if not found.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>

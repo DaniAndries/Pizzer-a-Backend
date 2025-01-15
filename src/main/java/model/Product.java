@@ -23,6 +23,29 @@ public abstract class Product {
     private String name;
     private double price;
 
+    @Enumerated(EnumType.STRING)
+    private TYPE type;
+    @Enumerated(EnumType.STRING)
+    private Size size;
+
+    public Product() {
+    }
+
+    /**
+     * Constructs a Product with the specified id, name, and price.
+     *
+     * @param id    the unique identifier for the product
+     * @param name  the name of the product
+     * @param price the price of the product
+     * @param size  the size of the pizza as a string
+     */
+    public Product(int id, String name, double price, Size size) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.size= size;
+    }
+
     /**
      * Constructs a Product with the specified id, name, and price.
      *
@@ -72,6 +95,14 @@ public abstract class Product {
         this.name = name;
     }
 
+    public TYPE getType() {
+        return type;
+    }
+
+    public void setType(TYPE type) {
+        this.type = type;
+    }
+
     /**
      * Gets the price of the product.
      *
@@ -79,6 +110,24 @@ public abstract class Product {
      */
     public double getPrice() {
         return price;
+    }
+
+    /**
+     * Gets the size of the pizza.
+     *
+     * @return the size of the pizza
+     */
+    public Size getSize() {
+        return size;
+    }
+
+    /**
+     * Sets the size of the pizza.
+     *
+     * @param size the new size to set for the pizza
+     */
+    public void setSize(Size size) {
+        this.size = size;
     }
 
     /**
@@ -100,6 +149,7 @@ public abstract class Product {
         return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", size='" + size + '\'' +
                 ", price=" + price +
                 '}';
     }

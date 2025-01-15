@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class JdbcClientDao" class="title">Class JdbcClientDao</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">controller.db.impl.JdbcClientDao</div>
+<div class="inheritance">controller.db.impl.JdbcCustomerDao</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -99,12 +99,12 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></span></div>
 <div class="block">JdbcClientDao is an implementation of the <a href="../ClientDao.html" title="interface in controller.db"><code>ClientDao</code></a> interface that provides
- data access operations for managing client records in a relational database.
+ data access operations for managing customer records in a relational database.
  This class facilitates the creation, retrieval, update, and deletion (CRUD)
- of client data using JDBC for database interactions.
+ of customer data using JDBC for database interactions.
 
- <p>It interacts with the database to perform operations such as inserting new clients,
- updating existing client details, deleting clients, and fetching client information
+ <p>It interacts with the database to perform operations such as inserting new customers,
+ updating existing customer details, deleting customers, and fetching customer information
  based on specific criteria such as ID or email.</p>
 
  <p>Each method in this class is designed to throw a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link"><code>SQLException</code></a> if an error occurs
@@ -155,34 +155,34 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Deletes a client record from the database.</div>
+<div class="block">Deletes a customer record from the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../model/Client.html" title="class in model">Client</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAll()" class="member-name-link">findAll</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves all clients from the database.</div>
+<div class="block">Retrieves all customers from the database.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findById(int)" class="member-name-link">findById</a><wbr>(int&nbsp;id)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Finds a client by their unique ID.</div>
+<div class="block">Finds a customer by their unique ID.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findByMail(java.lang.String)" class="member-name-link">findByMail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mail)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Finds a client by their email address.</div>
+<div class="block">Finds a customer by their email address.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(model.Client)" class="member-name-link">save</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(model.Client)" class="member-name-link">save</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Saves a new client record to the database.</div>
+<div class="block">Saves a new customer record to the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Updates an existing client record in the database.</div>
+<div class="block">Updates an existing customer record in the database.</div>
 </div>
 </div>
 </div>
@@ -222,14 +222,14 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <li>
 <section class="detail" id="save(model.Client)">
 <h3>save</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Saves a new client record to the database.</div>
+<div class="block">Saves a new customer record to the database.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#save(model.Client)">save</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client object containing details to be saved</dd>
+<dd><code>customer</code> - the customer object containing details to be saved</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -238,14 +238,14 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <li>
 <section class="detail" id="update(model.Client)">
 <h3>update</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Updates an existing client record in the database.</div>
+<div class="block">Updates an existing customer record in the database.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#update(model.Client)">update</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client object containing updated details</dd>
+<dd><code>customer</code> - the customer object containing updated details</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -254,14 +254,14 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <li>
 <section class="detail" id="delete(model.Client)">
 <h3>delete</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Deletes a client record from the database.</div>
+<div class="block">Deletes a customer record from the database.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#delete(model.Client)">delete</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client object to be deleted</dd>
+<dd><code>customer</code> - the customer object to be deleted</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -272,14 +272,14 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <h3>findById</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findById</span><wbr><span class="parameters">(int&nbsp;id)</span>
                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their unique ID.</div>
+<div class="block">Finds a customer by their unique ID.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#findById(int)">findById</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>id</code> - the ID of the client to be retrieved</dd>
+<dd><code>id</code> - the ID of the customer to be retrieved</dd>
 <dt>Returns:</dt>
-<dd>the client object if found, or null if no client with the specified ID exists</dd>
+<dd>the customer object if found, or null if no customer with the specified ID exists</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -290,14 +290,14 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <h3>findByMail</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findByMail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mail)</span>
                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their email address.</div>
+<div class="block">Finds a customer by their email address.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#findByMail(java.lang.String)">findByMail</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>mail</code> - the email of the client to be retrieved</dd>
+<dd><code>mail</code> - the email of the customer to be retrieved</dd>
 <dt>Returns:</dt>
-<dd>the client object if found, or null if no client with the specified email exists</dd>
+<dd>the customer object if found, or null if no customer with the specified email exists</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -308,12 +308,12 @@ implements <a href="../ClientDao.html" title="interface in controller.db">Client
 <h3>findAll</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../model/Client.html" title="class in model">Client</a>&gt;</span>&nbsp;<span class="element-name">findAll</span>()
                      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves all clients from the database.</div>
+<div class="block">Retrieves all customers from the database.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../ClientDao.html#findAll()">findAll</a></code>&nbsp;in interface&nbsp;<code><a href="../ClientDao.html" title="interface in controller.db">ClientDao</a></code></dd>
 <dt>Returns:</dt>
-<dd>a list of client objects</dd>
+<dd>a list of customer objects</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>

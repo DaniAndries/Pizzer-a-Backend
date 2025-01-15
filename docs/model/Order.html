@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Order</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Represents an order in the system, containing details about the client,
+<div class="block">Represents an order in the system, containing details about the customer,
  order lines, payment method, and order state. This class manages the
  details of an order and allows for the calculation of the total order price.</div>
 <dl class="notes">
@@ -116,7 +116,7 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,java.util.Date,model.OrderLine,model.Client)" class="member-name-link">Order</a><wbr>(int&nbsp;id,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderLine.html" title="class in model">OrderLine</a>&nbsp;orderLine,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructs an Order with a single order line, defaulting to pending state and unpaid method.</div>
 </div>
@@ -125,7 +125,7 @@ loadScripts(document, 'script');</script>
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OrderLine.html" title="class in model">OrderLine</a>&gt;&nbsp;orderLines,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Constructs an Order with the specified parameters.</div>
 </div>
@@ -133,14 +133,14 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructs an Order with the specified parameters, without initial order lines.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.Date,model.OrderState,model.OrderLine,model.Client)" class="member-name-link">Order</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="OrderLine.html" title="class in model">OrderLine</a>&nbsp;orderLine,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Constructs an Order with a single order line and a specific state, defaulting to unpaid method.</div>
 </div>
@@ -177,7 +177,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Client.html" title="class in model">Client</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClient()" class="member-name-link">getClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets the client associated with this order.</div>
+<div class="block">Gets the customer associated with this order.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getId()" class="member-name-link">getId</a>()</code></div>
@@ -243,7 +243,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this order, including the id, order date,
- state, payment method, order lines, and client details.</div>
+ state, payment method, order lines, and customer details.</div>
 </div>
 </div>
 </div>
@@ -270,7 +270,7 @@ loadScripts(document, 'script');</script>
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="OrderLine.html" title="class in model">OrderLine</a>&gt;&nbsp;orderLines,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</span></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</span></div>
 <div class="block">Constructs an Order with the specified parameters.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -279,7 +279,7 @@ loadScripts(document, 'script');</script>
 <dd><code>state</code> - the current state of the order</dd>
 <dd><code>paymentMethod</code> - the method used for payment</dd>
 <dd><code>orderLines</code> - the list of order lines associated with this order</dd>
-<dd><code>client</code> - the client who placed the order</dd>
+<dd><code>customer</code> - the customer who placed the order</dd>
 </dl>
 </section>
 </li>
@@ -290,7 +290,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</span></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</span></div>
 <div class="block">Constructs an Order with the specified parameters, without initial order lines.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -298,7 +298,7 @@ loadScripts(document, 'script');</script>
 <dd><code>orderDate</code> - the date when the order was placed</dd>
 <dd><code>state</code> - the current state of the order</dd>
 <dd><code>paymentMethod</code> - the method used for payment</dd>
-<dd><code>client</code> - the client who placed the order</dd>
+<dd><code>customer</code> - the customer who placed the order</dd>
 </dl>
 </section>
 </li>
@@ -308,14 +308,14 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Order</span><wbr><span class="parameters">(int&nbsp;id,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderLine.html" title="class in model">OrderLine</a>&nbsp;orderLine,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</span></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</span></div>
 <div class="block">Constructs an Order with a single order line, defaulting to pending state and unpaid method.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>id</code> - the unique identifier for this order</dd>
 <dd><code>orderDate</code> - the date when the order was placed</dd>
 <dd><code>orderLine</code> - the initial order line for this order</dd>
-<dd><code>client</code> - the client who placed the order</dd>
+<dd><code>customer</code> - the customer who placed the order</dd>
 </dl>
 </section>
 </li>
@@ -325,14 +325,14 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Order</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;orderDate,
  <a href="OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
  <a href="OrderLine.html" title="class in model">OrderLine</a>&nbsp;orderLine,
- <a href="Client.html" title="class in model">Client</a>&nbsp;client)</span></div>
+ <a href="Client.html" title="class in model">Client</a>&nbsp;customer)</span></div>
 <div class="block">Constructs an Order with a single order line and a specific state, defaulting to unpaid method.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>orderDate</code> - the date when the order was placed</dd>
 <dd><code>state</code> - the current state of the order</dd>
 <dd><code>orderLine</code> - the initial order line for this order</dd>
-<dd><code>client</code> - the client who placed the order</dd>
+<dd><code>customer</code> - the customer who placed the order</dd>
 </dl>
 </section>
 </li>
@@ -493,10 +493,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getClient()">
 <h3>getClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">getClient</span>()</div>
-<div class="block">Gets the client associated with this order.</div>
+<div class="block">Gets the customer associated with this order.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the client who placed the order</dd>
+<dd>the customer who placed the order</dd>
 </dl>
 </section>
 </li>
@@ -506,7 +506,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
 <div class="block">Compares this order to another object for equality.
  Two Order objects are considered equal if they have the same order date,
- state, payment method, order lines, and associated client.</div>
+ state, payment method, order lines, and associated customer.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
@@ -523,7 +523,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
 <div class="block">Returns a hash code value for this order.
  The hash code is calculated based on the order date, state, payment method,
- order lines, and client.</div>
+ order lines, and customer.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
@@ -537,7 +537,7 @@ loadScripts(document, 'script');</script>
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">Returns a string representation of this order, including the id, order date,
- state, payment method, order lines, and client details.</div>
+ state, payment method, order lines, and customer details.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>

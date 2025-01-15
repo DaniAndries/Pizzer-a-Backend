@@ -1,9 +1,11 @@
 package model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,9 +18,10 @@ import java.util.List;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class Pasta extends Product {
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Ingredient> ingredients;
+    @OneToMany(mappedBy = "pasta", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     /**
      * Constructs a Pasta object with the specified id, name, and price.
@@ -30,6 +33,8 @@ public class Pasta extends Product {
     public Pasta(int id, String name, double price) {
         super(id, name, price);
     }
+
+    public Pasta() {}
 
     /**
      * Constructs a Pasta object with the specified id, name, price, and ingredients.

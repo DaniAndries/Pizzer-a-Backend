@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <h1 title="Class ClientController" class="title">Class ClientController</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">controller.ClientController</div>
+<div class="inheritance">controller.CustomerController</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
@@ -119,7 +119,7 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">ClientController</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Constructor for ClientController that attempts to log in a client with provided credentials.</div>
+<div class="block">Constructor for ClientController that attempts to log in a customer with provided credentials.</div>
 </div>
 </div>
 </section>
@@ -138,58 +138,58 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="OrderController.html" title="class in controller">OrderController</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOrderLine(model.Product)" class="member-name-link">addOrderLine</a><wbr>(<a href="../model/Product.html" title="class in model">Product</a>&nbsp;product)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Adds a product to the current client's order.</div>
+<div class="block">Adds a product to the current customer's order.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Deletes a client from the system.</div>
+<div class="block">Deletes a customer from the system.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAll()" class="member-name-link">findAll</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves all clients from the database.</div>
+<div class="block">Retrieves all customers from the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findById(int)" class="member-name-link">findById</a><wbr>(int&nbsp;id)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Finds a client by their ID.</div>
+<div class="block">Finds a customer by their ID.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findByMail(java.lang.String)" class="member-name-link">findByMail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mail)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Finds a client by their email address.</div>
+<div class="block">Finds a customer by their email address.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#importAdminClient()" class="member-name-link">importAdminClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Imports clients from an external file and adds them to the clients list.</div>
+<div class="block">Imports customers from an external file and adds them to the customers list.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#jaxbExport()" class="member-name-link">jaxbExport</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Exports the current list of clients to an XML file using JAXB.</div>
+<div class="block">Exports the current list of customers to an XML file using JAXB.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#jaxbImport()" class="member-name-link">jaxbImport</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Imports clients from an XML file using JAXB.</div>
+<div class="block">Imports customers from an XML file using JAXB.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#loginClient(java.lang.String,java.lang.String)" class="member-name-link">loginClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mail,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Logs in a client using their email and password.</div>
+<div class="block">Logs in a customer using their email and password.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerClient(model.Client)" class="member-name-link">registerClient</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerClient(model.Client)" class="member-name-link">registerClient</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Registers a new client in the system.</div>
+<div class="block">Registers a new customer in the system.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Updates the information of an existing client.</div>
+<div class="block">Updates the information of an existing customer.</div>
 </div>
 </div>
 </div>
@@ -214,11 +214,11 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ClientController</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;email,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Constructor for ClientController that attempts to log in a client with provided credentials.</div>
+<div class="block">Constructor for ClientController that attempts to log in a customer with provided credentials.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>email</code> - The email of the client attempting to log in.</dd>
-<dd><code>password</code> - The password of the client attempting to log in.</dd>
+<dd><code>email</code> - The email of the customer attempting to log in.</dd>
+<dd><code>password</code> - The password of the customer attempting to log in.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>
@@ -246,11 +246,11 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a>,
 <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
-<div class="block">Logs in a client using their email and password.</div>
+<div class="block">Logs in a customer using their email and password.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>mail</code> - The email of the client.</dd>
-<dd><code>password</code> - The password of the client.</dd>
+<dd><code>mail</code> - The email of the customer.</dd>
+<dd><code>password</code> - The password of the customer.</dd>
 <dt>Returns:</dt>
 <dd>The authenticated Client object.</dd>
 <dt>Throws:</dt>
@@ -262,12 +262,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="registerClient(model.Client)">
 <h3>registerClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerClient</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerClient</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                     throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Registers a new client in the system.</div>
+<div class="block">Registers a new customer in the system.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object to be registered.</dd>
+<dd><code>customer</code> - The Client object to be registered.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>
@@ -276,12 +276,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="delete(model.Client)">
 <h3>delete</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Deletes a client from the system.</div>
+<div class="block">Deletes a customer from the system.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object to be deleted.</dd>
+<dd><code>customer</code> - The Client object to be deleted.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>
@@ -290,12 +290,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="update(model.Client)">
 <h3>update</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Updates the information of an existing client.</div>
+<div class="block">Updates the information of an existing customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object with updated information.</dd>
+<dd><code>customer</code> - The Client object with updated information.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is a database access error.</dd>
 </dl>
@@ -306,10 +306,10 @@ loadScripts(document, 'script');</script>
 <h3>findById</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findById</span><wbr><span class="parameters">(int&nbsp;id)</span>
                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their ID.</div>
+<div class="block">Finds a customer by their ID.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>id</code> - The ID of the client to find.</dd>
+<dd><code>id</code> - The ID of the customer to find.</dd>
 <dt>Returns:</dt>
 <dd>The found Client object, or null if not found.</dd>
 <dt>Throws:</dt>
@@ -322,10 +322,10 @@ loadScripts(document, 'script');</script>
 <h3>findByMail</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findByMail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mail)</span>
                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their email address.</div>
+<div class="block">Finds a customer by their email address.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>mail</code> - The email address of the client to find.</dd>
+<dd><code>mail</code> - The email address of the customer to find.</dd>
 <dt>Returns:</dt>
 <dd>The found Client object, or null if not found.</dd>
 <dt>Throws:</dt>
@@ -338,7 +338,7 @@ loadScripts(document, 'script');</script>
 <h3>findAll</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</span>&nbsp;<span class="element-name">findAll</span>()
                      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves all clients from the database.</div>
+<div class="block">Retrieves all customers from the database.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>A list of all Client objects.</dd>
@@ -352,14 +352,14 @@ loadScripts(document, 'script');</script>
 <h3>addOrderLine</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="OrderController.html" title="class in controller">OrderController</a></span>&nbsp;<span class="element-name">addOrderLine</span><wbr><span class="parameters">(<a href="../model/Product.html" title="class in model">Product</a>&nbsp;product)</span>
                              throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></span></div>
-<div class="block">Adds a product to the current client's order.</div>
+<div class="block">Adds a product to the current customer's order.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>product</code> - The Product to be added to the order.</dd>
 <dt>Returns:</dt>
 <dd>An OrderController object for managing the order.</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If no client is logged in.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - If no customer is logged in.</dd>
 </dl>
 </section>
 </li>
@@ -368,7 +368,7 @@ loadScripts(document, 'script');</script>
 <h3>importAdminClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">importAdminClient</span>()
                        throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Imports clients from an external file and adds them to the clients list.</div>
+<div class="block">Imports customers from an external file and adds them to the customers list.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - If there is an error reading the file.</dd>
@@ -380,7 +380,7 @@ loadScripts(document, 'script');</script>
 <h3>jaxbExport</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">jaxbExport</span>()
                 throws <span class="exceptions">javax.xml.bind.JAXBException</span></div>
-<div class="block">Exports the current list of clients to an XML file using JAXB.</div>
+<div class="block">Exports the current list of customers to an XML file using JAXB.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code>javax.xml.bind.JAXBException</code> - If there is an error during XML processing.</dd>
@@ -393,7 +393,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">jaxbImport</span>()
                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
 javax.xml.bind.JAXBException</span></div>
-<div class="block">Imports clients from an XML file using JAXB.</div>
+<div class="block">Imports customers from an XML file using JAXB.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - If there is an error reading the file.</dd>

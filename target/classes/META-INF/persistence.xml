@@ -6,11 +6,14 @@
 https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
     <persistence-unit name="default">
-        <class>src.model.Client</class>
-        <class>src.model.Ingredient</class>
+        <class>src.model.Customer</class>
+        <class>src.model.Product</class>
+        <class>src.model.Pizza</class>
+        <class>src.model.Pasta</class>
+        <class>src.model.Drink</class>
         <class>src.model.Order</class>
         <class>src.model.OrderLine</class>
-        <class>src.model.Product</class>
+        <class>src.model.Ingredient</class>
         <class>src.model.PayByCard</class>
         <class>src.model.PayByCash</class>
         <properties>
@@ -23,7 +26,7 @@ https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
                       value="root"/>
             <property name="hibernate.dialect"
                       value="org.hibernate.dialect.MySQLDialect" />
-            <property name="hibernate.hbm2ddl.auto" value="drop-and-create"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
 </persistence>

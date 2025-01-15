@@ -107,7 +107,7 @@ implements <a href="../OrderDao.html" title="interface in controller.db">OrderDa
  <p>This class is responsible for executing SQL statements to manipulate
  order data, including inserting new orders, updating existing orders,
  deleting orders, and fetching order information based on various criteria.
- It uses the JdbcClientDao and JdbcProductDao to manage related client and
+ It uses the JdbcClientDao and JdbcProductDao to manage related customer and
  product data.</p>
 
  <p>Each method in this class is designed to throw a <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link"><code>SQLException</code></a> if an
@@ -172,9 +172,9 @@ implements <a href="../OrderDao.html" title="interface in controller.db">OrderDa
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../model/Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../../../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Selects an order by its state and associated client.</div>
+<div class="block">Selects an order by its state and associated customer.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../model/OrderLine.html" title="class in model">OrderLine</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findOrderLine(int)" class="member-name-link">findOrderLine</a><wbr>(int&nbsp;id)</code></div>
@@ -187,9 +187,9 @@ implements <a href="../OrderDao.html" title="interface in controller.db">OrderDa
 <div class="block">Selects all order lines associated with a specific order.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../model/Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Selects all orders for a specific client.</div>
+<div class="block">Selects all orders for a specific customer.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../model/Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findtOrder(int)" class="member-name-link">findtOrder</a><wbr>(int&nbsp;id)</code></div>
@@ -371,16 +371,16 @@ implements <a href="../OrderDao.html" title="interface in controller.db">OrderDa
 <li>
 <section class="detail" id="findOrdersByClient(model.Client)">
 <h3>findOrdersByClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">findOrdersByClient</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">findOrdersByClient</span><wbr><span class="parameters">(<a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Selects all orders for a specific client.</div>
+<div class="block">Selects all orders for a specific customer.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../OrderDao.html#findOrdersByClient(model.Client)">findOrdersByClient</a></code>&nbsp;in interface&nbsp;<code><a href="../OrderDao.html" title="interface in controller.db">OrderDao</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client whose orders are to be selected</dd>
+<dd><code>customer</code> - the customer whose orders are to be selected</dd>
 <dt>Returns:</dt>
-<dd>a list of orders associated with the client</dd>
+<dd>a list of orders associated with the customer</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -390,15 +390,15 @@ implements <a href="../OrderDao.html" title="interface in controller.db">OrderDa
 <section class="detail" id="findOrderByState(model.OrderState,model.Client)">
 <h3>findOrderByState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../model/Order.html" title="class in model">Order</a></span>&nbsp;<span class="element-name">findOrderByState</span><wbr><span class="parameters">(<a href="../../../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+ <a href="../../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                        throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Selects an order by its state and associated client.</div>
+<div class="block">Selects an order by its state and associated customer.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../OrderDao.html#findOrderByState(model.OrderState,model.Client)">findOrderByState</a></code>&nbsp;in interface&nbsp;<code><a href="../OrderDao.html" title="interface in controller.db">OrderDao</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>state</code> - the state of the order to select</dd>
-<dd><code>client</code> - the client associated with the order</dd>
+<dd><code>customer</code> - the customer associated with the order</dd>
 <dt>Returns:</dt>
 <dd>the selected order, or null if not found</dd>
 <dt>Throws:</dt>

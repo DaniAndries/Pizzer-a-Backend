@@ -4,6 +4,8 @@ import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvIgnore;
 import jakarta.persistence.*;
 
+import javax.lang.model.element.Name;
+
 /**
  * Represents a line item in an order, including the product and its quantity.
  * This class calculates the total price for the product line based on the quantity ordered.
@@ -12,18 +14,21 @@ import jakarta.persistence.*;
  * @version 0.1
  */
 @Entity
+@Table(name = "order_line")
 public class OrderLine {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
-    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
+    @SequenceGenerator(name = "orderline_seq", sequenceName = "orderline_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderline_seq")
     @CsvBindByName(column = "IDENTIFICATION")
     private int id;
     @CsvBindByName(column = "QUANTITY")
     private int amount;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @CsvIgnore
     private Product product;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", nullable = false) // Explicit join column
+    private Order order;
 
     /**
      * Constructs an OrderLine with the specified identifier, quantity, and product.

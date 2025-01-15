@@ -6,7 +6,7 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import model.Client;
+import model.Customer;
 import model.Ingredient;
 
 import javax.xml.bind.*;
@@ -19,14 +19,14 @@ import java.util.List;
 
 /**
  * The FileManagement class provides methods for importing and exporting
- * client and ingredient data to and from various file formats, including
+ * customer and ingredient data to and from various file formats, including
  * XML and CSV.
  *
  * @author DaniAndries
  * @version 0.1
  */
 public class FileManagement {
-    private static final String FILEXML = "clients.xml";  // File path for XML storage
+    private static final String FILEXML = "customers.xml";  // File path for XML storage
     private static final String FILECSV = "ingredients.csv"; // File path for CSV storage
 
     // Private constructor to prevent instantiation
@@ -34,50 +34,50 @@ public class FileManagement {
     }
 
     /**
-     * Imports client data from a specified text file. Each line in the file
+     * Imports customer data from a specified text file. Each line in the file
      * is split using various delimiters (semicolon, comma, or pipe)
-     * and parsed into Client objects.
+     * and parsed into Customer objects.
      *
-     * @return a list of imported Client objects
+     * @return a list of imported Customer objects
      * @throws IOException if an error occurs while reading the file
      */
-    public static List<Client> importClient() throws IOException {
+    public static List<Customer> importCustomer() throws IOException {
         // Read all lines from the file into a List and convert it to a String[]
         String[] lines = Files.readAllLines(Path.of("admin.txt")).toArray(new String[0]);
 
-        // Convert each line into a String array using split, and then add clients
+        // Convert each line into a String array using split, and then add customers
         String[][] dataList = Arrays.stream(lines)
                 .map(line -> line.split("[;,|]")) // Split by multiple delimiters
                 .toArray(String[][]::new); // Convert to 2D array
 
-        return addAdminClients(dataList);
+        return addAdminCustomers(dataList);
     }
 
     /**
-     * Adds clients from a 2D String array to a list of Client objects.
+     * Adds customers from a 2D String array to a list of Customer objects.
      *
-     * @param list a 2D String array containing client data
-     * @return a list of Client objects created from the provided data
+     * @param list a 2D String array containing customer data
+     * @return a list of Customer objects created from the provided data
      * @throws NumberFormatException if an error occurs while parsing integers
      * @throws ArrayIndexOutOfBoundsException if the data array does not contain enough elements
      */
-    private static List<Client> addAdminClients(String[][] list) throws NumberFormatException, ArrayIndexOutOfBoundsException {
-        List<Client> clientList = new ArrayList<>();
+    private static List<Customer> addAdminCustomers(String[][] list) throws NumberFormatException, ArrayIndexOutOfBoundsException {
+        List<Customer> customerList = new ArrayList<>();
         for (String[] data : list) {
-            Client client = getClient(data);
-            clientList.add(client);
+            Customer customer = getCustomer(data);
+            customerList.add(customer);
         }
-        return clientList;
+        return customerList;
     }
 
     /**
-     * Creates a Client object from an array of client data.
+     * Creates a Customer object from an array of customer data.
      *
-     * @param data a String array containing the client's data
-     * @return a Client object populated with the provided data
+     * @param data a String array containing the customer's data
+     * @return a Customer object populated with the provided data
      */
-    private static Client getClient(String[] data) {
-        Client client = new Client(
+    private static Customer getCustomer(String[] data) {
+        Customer customer = new Customer(
                 Integer.parseInt(data[0].trim()),  // ID
                 data[3].trim(),                    // Address
                 data[2].trim(),                    // Name
@@ -87,34 +87,34 @@ public class FileManagement {
                 data[6].trim(),                    // Password
                 true                               // Admin flag
         );
-        client.setAdmin(true);
-        return client;
+        customer.setAdmin(true);
+        return customer;
     }
 
     /**
-     * Exports a list of Client objects to an XML file using JAXB.
+     * Exports a list of Customer objects to an XML file using JAXB.
      *
-     * @param list the list of Client objects to be exported
+     * @param list the list of Customer objects to be exported
      * @throws JAXBException if an error occurs during the marshalling process
      */
-    public static void clientToXml(List<Client> list) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(ClientWrapper.class);
+    public static void customerToXml(List<Customer> list) throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(CustomerWrapper.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(new ClientWrapper(list), new File(FILEXML));
+        marshaller.marshal(new CustomerWrapper(list), new File(FILEXML));
     }
 
     /**
-     * Imports client data from an XML file using JAXB.
+     * Imports customer data from an XML file using JAXB.
      *
-     * @return a list of Client objects imported from the XML file
+     * @return a list of Customer objects imported from the XML file
      * @throws JAXBException if an error occurs during the unmarshalling process
      */
-    public static List<Client> xmlToClient() throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(ClientWrapper.class);
+    public static List<Customer> xmlToCustomer() throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(CustomerWrapper.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        ClientWrapper clientList = (ClientWrapper) unmarshaller.unmarshal(new File(FILEXML));
-        return clientList.getClientList();
+        CustomerWrapper customerList = (CustomerWrapper) unmarshaller.unmarshal(new File(FILEXML));
+        return customerList.getCustomerList();
     }
 
     /**

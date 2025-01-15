@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">The OrderController class handles operations related to orders and order lines.
  It provides methods for creating, updating, deleting, and retrieving orders,
- as well as managing the relationship between clients and their orders.</div>
+ as well as managing the relationship between customers and their orders.</div>
 <dl class="notes">
 <dt>Version:</dt>
 <dd>0.1</dd>
@@ -140,12 +140,12 @@ loadScripts(document, 'script');</script>
  <a href="../model/Client.html" title="class in model">Client</a>&nbsp;clienteActual,
  int&nbsp;cantidad)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Adds a product to the client's cart.</div>
+<div class="block">Adds a product to the customer's cart.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelOrder(model.Client)" class="member-name-link">cancelOrder</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelOrder(model.Client)" class="member-name-link">cancelOrder</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Cancels a pending order for a specific client.</div>
+<div class="block">Cancels a pending order for a specific customer.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteOrder(model.Order)" class="member-name-link">deleteOrder</a><wbr>(<a href="../model/Order.html" title="class in model">Order</a>&nbsp;order)</code></div>
@@ -163,10 +163,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Marks an order as delivered in the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#finalizeOrder(model.Client,model.PaymentMethod)" class="member-name-link">finalizeOrder</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#finalizeOrder(model.Client,model.PaymentMethod)" class="member-name-link">finalizeOrder</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer,
  <a href="../model/PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Finalizes an order for a client and sets its state to FINISHED.</div>
+<div class="block">Finalizes an order for a customer and sets its state to FINISHED.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveOrder(model.Order)" class="member-name-link">saveOrder</a><wbr>(<a href="../model/Order.html" title="class in model">Order</a>&nbsp;order)</code></div>
@@ -186,9 +186,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Order.html" title="class in model">Order</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#selectOrderByState(model.OrderState,model.Client)" class="member-name-link">selectOrderByState</a><wbr>(<a href="../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves an order by its state for a specific client.</div>
+<div class="block">Retrieves an order by its state for a specific customer.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/OrderLine.html" title="class in model">OrderLine</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#selectOrderLine(int)" class="member-name-link">selectOrderLine</a><wbr>(int&nbsp;id)</code></div>
@@ -201,9 +201,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieves a list of order lines associated with a specific order.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#selectOrdersByClient(model.Client)" class="member-name-link">selectOrdersByClient</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#selectOrdersByClient(model.Client)" class="member-name-link">selectOrdersByClient</a><wbr>(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateOrder(model.Order)" class="member-name-link">updateOrder</a><wbr>(<a href="../model/Order.html" title="class in model">Order</a>&nbsp;order)</code></div>
@@ -364,17 +364,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="selectOrdersByClient(model.Client)">
 <h3>selectOrdersByClient</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">selectOrdersByClient</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Order.html" title="class in model">Order</a>&gt;</span>&nbsp;<span class="element-name">selectOrdersByClient</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client whose orders are to be retrieved</dd>
+<dd><code>customer</code> - the customer whose orders are to be retrieved</dd>
 <dt>Returns:</dt>
-<dd>a list of orders associated with the client</dd>
+<dd>a list of orders associated with the customer</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the client is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the customer is null</dd>
 </dl>
 </section>
 </li>
@@ -382,15 +382,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="selectOrderByState(model.OrderState,model.Client)">
 <h3>selectOrderByState</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../model/Order.html" title="class in model">Order</a></span>&nbsp;<span class="element-name">selectOrderByState</span><wbr><span class="parameters">(<a href="../model/OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+ <a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves an order by its state for a specific client.</div>
+<div class="block">Retrieves an order by its state for a specific customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>state</code> - the state of the order to be retrieved</dd>
-<dd><code>client</code> - the client associated with the order</dd>
+<dd><code>customer</code> - the customer associated with the order</dd>
 <dt>Returns:</dt>
-<dd>the order associated with the specified state and client, or null if not found</dd>
+<dd>the order associated with the specified state and customer, or null if not found</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>
@@ -436,11 +436,11 @@ loadScripts(document, 'script');</script>
  int&nbsp;cantidad)</span>
                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a>,
 <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Adds a product to the client's cart. If no pending order exists, a new order is created.</div>
+<div class="block">Adds a product to the customer's cart. If no pending order exists, a new order is created.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>product</code> - the product to be added to the cart</dd>
-<dd><code>clienteActual</code> - the client who is adding the product</dd>
+<dd><code>clienteActual</code> - the customer who is adding the product</dd>
 <dd><code>cantidad</code> - the quantity of the product to be added</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if there is an issue with the current state of the order</dd>
@@ -451,17 +451,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="finalizeOrder(model.Client,model.PaymentMethod)">
 <h3>finalizeOrder</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">finalizeOrder</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">finalizeOrder</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer,
  <a href="../model/PaymentMethod.html" title="enum class in model">PaymentMethod</a>&nbsp;paymentMethod)</span>
                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finalizes an order for a client and sets its state to FINISHED.</div>
+<div class="block">Finalizes an order for a customer and sets its state to FINISHED.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client who is finalizing the order</dd>
+<dd><code>customer</code> - the customer who is finalizing the order</dd>
 <dd><code>paymentMethod</code> - the payment method used for the order</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no pending order is found for the client</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no pending order is found for the customer</dd>
 </dl>
 </section>
 </li>
@@ -482,12 +482,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="cancelOrder(model.Client)">
 <h3>cancelOrder</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cancelOrder</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cancelOrder</span><wbr><span class="parameters">(<a href="../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Cancels a pending order for a specific client.</div>
+<div class="block">Cancels a pending order for a specific customer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - the client whose pending order is to be canceled</dd>
+<dd><code>customer</code> - the customer whose pending order is to be canceled</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - if a database access error occurs</dd>
 </dl>

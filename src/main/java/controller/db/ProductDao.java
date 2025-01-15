@@ -1,6 +1,5 @@
 package controller.db;
 
-import model.Client;
 import model.Ingredient;
 import model.Product;
 

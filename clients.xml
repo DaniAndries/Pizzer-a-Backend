@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <clientWrapper>
-    <clientList admin="false">
+    <customerList admin="false">
         <id>183006</id>
         <dni>654654654C</dni>
         <nombre>Pepe</nombre>
         <direccion>Calle 13</direccion>
         <telefono>+34 624653846</telefono>
         <email>ejemplo@ejemplo.ej</email>
-    </clientList>
-    <clientList admin="true">
+    </customerList>
+    <customerList admin="true">
         <id>1</id>
         <dni>12345678A</dni>
         <nombre>Juan Pérez</nombre>
         <direccion>Calle Falsa 123</direccion>
         <telefono>600123456</telefono>
         <email>juan@example.com</email>
-    </clientList>
-    <clientList admin="true">
+    </customerList>
+    <customerList admin="true">
         <id>2</id>
         <dni>98765432B</dni>
         <nombre>Ana García</nombre>
         <direccion>Avenida del Sol 45</direccion>
         <telefono>650987654</telefono>
         <email>ana@example.com</email>
-    </clientList>
-    <clientList admin="true">
+    </customerList>
+    <customerList admin="true">
         <id>3</id>
         <dni>45612378C</dni>
         <nombre>Carlos López</nombre>
         <direccion>Plaza Mayor 10</direccion>
         <telefono>612345678</telefono>
         <email>carlos@example.com</email>
-    </clientList>
+    </customerList>
 </clientWrapper>

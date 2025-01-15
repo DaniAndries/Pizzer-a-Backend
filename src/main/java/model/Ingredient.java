@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,19 +25,31 @@ public class Ingredient {
     @CsvBindByName
     private String name; // Name of the ingredient
     @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
-    private List<String> alergens; // List of allergens associated with the ingredient
+    @ElementCollection
+    @CollectionTable(name = "allergen")
+    private List<String> allergens = new ArrayList<>(); // List of allergens associated with the ingredient
+
+    @ManyToOne
+    @JoinColumn(name = "pizza_id") // This column will store the relationship
+    private Pizza pizza; // The pizza this ingredient belongs to
+    @ManyToOne
+    @JoinColumn(name = "pasta_id") // This column will store the relationship
+    private Pasta pasta; // The pizza this ingredient belongs to
+    @ManyToOne
+    @JoinColumn(name = "drink_id") // This column will store the relationship
+    private Drink drink; // The pizza this ingredient belongs to
 
     /**
      * Constructs an Ingredient with the specified id, name, and allergens.
      *
      * @param id       the unique identifier for this ingredient
      * @param name     the name of the ingredient
-     * @param alergens the list of allergens associated with this ingredient
+     * @param allergens the list of allergens associated with this ingredient
      */
-    public Ingredient(int id, String name, List<String> alergens) {
+    public Ingredient(int id, String name, List<String> allergens) {
         this.id = id;
         this.name = name;
-        this.alergens = alergens;
+        this.allergens = allergens;
     }
 
     /**
@@ -98,8 +111,8 @@ public class Ingredient {
      *
      * @return the list of allergens
      */
-    public List<String> getAlergens() {
-        return alergens;
+    public List<String> getAllergens() {
+        return allergens;
     }
 
     /**
@@ -107,8 +120,8 @@ public class Ingredient {
      *
      * @param alergens the new list of allergens
      */
-    public void setAlergens(List<String> alergens) {
-        this.alergens = alergens;
+    public void setAllergens(List<String> alergens) {
+        this.allergens = allergens;
     }
 
     /**
@@ -124,7 +137,7 @@ public class Ingredient {
         if (!(o instanceof Ingredient that)) return false;
 
         return getId() == that.getId() &&
-                getAlergens().equals(that.getAlergens()) &&
+                getAllergens().equals(that.getAllergens()) &&
                 getName().equals(that.getName());
     }
 
@@ -136,7 +149,7 @@ public class Ingredient {
      */
     @Override
     public int hashCode() {
-        int result = getAlergens().hashCode();
+        int result = getAllergens().hashCode();
         result = 31 * result + getId();
         result = 31 * result + getName().hashCode();
         return result;
@@ -153,7 +166,7 @@ public class Ingredient {
         return "Ingredient{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", alergens=" + alergens +
+                ", allergens=" + allergens +
                 '}';
     }
 }

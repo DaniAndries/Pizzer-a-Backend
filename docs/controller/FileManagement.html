@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FileManagement</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">The FileManagement class provides methods for importing and exporting
- client and ingredient data to and from various file formats, including
+ customer and ingredient data to and from various file formats, including
  XML and CSV.</div>
 <dl class="notes">
 <dt>Version:</dt>
@@ -129,7 +129,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#importClient()" class="member-name-link">importClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Imports client data from a specified text file.</div>
+<div class="block">Imports customer data from a specified text file.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#ingredientToCsv(java.util.List)" class="member-name-link">ingredientToCsv</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Ingredient.html" title="class in model">Ingredient</a>&gt;&nbsp;ingredientList)</code></div>
@@ -139,7 +139,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#xmlToClient()" class="member-name-link">xmlToClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Imports client data from an XML file using JAXB.</div>
+<div class="block">Imports customer data from an XML file using JAXB.</div>
 </div>
 </div>
 </div>
@@ -163,7 +163,7 @@ loadScripts(document, 'script');</script>
 <h3>importClient</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</span>&nbsp;<span class="element-name">importClient</span>()
                                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Imports client data from a specified text file. Each line in the file
+<div class="block">Imports customer data from a specified text file. Each line in the file
  is split using various delimiters (semicolon, comma, or pipe)
  and parsed into Client objects.</div>
 <dl class="notes">
@@ -193,7 +193,7 @@ loadScripts(document, 'script');</script>
 <h3>xmlToClient</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Client.html" title="class in model">Client</a>&gt;</span>&nbsp;<span class="element-name">xmlToClient</span>()
                                 throws <span class="exceptions">javax.xml.bind.JAXBException</span></div>
-<div class="block">Imports client data from an XML file using JAXB.</div>
+<div class="block">Imports customer data from an XML file using JAXB.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a list of Client objects imported from the XML file</dd>

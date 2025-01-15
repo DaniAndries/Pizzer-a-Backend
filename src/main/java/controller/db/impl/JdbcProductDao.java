@@ -1,6 +1,5 @@
 package controller.db.impl;
 
-import controller.db.OrderDao;
 import controller.db.ProductDao;
 import model.*;
 import utils.DatabaseConf;
@@ -180,7 +179,7 @@ public class JdbcProductDao implements ProductDao {
             }
 
             saveProductIngredient(ingredient.getId(), productId, conn);
-            addAlergen(ingredient.getAlergens(), ingredient.getId(), conn);
+            addAlergen(ingredient.getAllergens(), ingredient.getId(), conn);
 
             System.out.println("The ingredient: " + ingredient.getId() + " has been created");
         }
@@ -321,11 +320,11 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void updateIngredient(Ingredient ingredient) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(UPDATE_INGREDIENT)) {
-            stmtClient.setString(1, ingredient.getName());
-            stmtClient.setInt(2, ingredient.getId());
+             PreparedStatement stmtCustomer = conn.prepareStatement(UPDATE_INGREDIENT)) {
+            stmtCustomer.setString(1, ingredient.getName());
+            stmtCustomer.setInt(2, ingredient.getId());
 
-            stmtClient.execute();
+            stmtCustomer.execute();
             System.out.println("The ingredient: " + ingredient.getId() + " has been modified");
         }
     }
@@ -341,11 +340,11 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void updateAlergen(String alergen, int id) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(UPDATE_ALERGEN)) {
-            stmtClient.setString(1, alergen);
-            stmtClient.setInt(2, id);
+             PreparedStatement stmtCustomer = conn.prepareStatement(UPDATE_ALERGEN)) {
+            stmtCustomer.setString(1, alergen);
+            stmtCustomer.setInt(2, id);
 
-            stmtClient.execute();
+            stmtCustomer.execute();
             System.out.println("The alergen: " + alergen + " has been modified");
         }
     }
@@ -364,9 +363,9 @@ public class JdbcProductDao implements ProductDao {
             throw new IllegalArgumentException("Invalid or non-existent product");
         }
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(DELETE_PRODUCT)) {
-            stmtClient.setInt(1, product.getId());
-            stmtClient.execute();
+             PreparedStatement stmtCustomer = conn.prepareStatement(DELETE_PRODUCT)) {
+            stmtCustomer.setInt(1, product.getId());
+            stmtCustomer.execute();
             System.out.println("The product: " + product.getId() + " has been deleted");
         }
     }
@@ -381,9 +380,9 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void deleteIngredient(Ingredient ingredient) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(DELETE_INGREDIENT)) {
-            stmtClient.setInt(1, ingredient.getId());
-            stmtClient.execute();
+             PreparedStatement stmtCustomer = conn.prepareStatement(DELETE_INGREDIENT)) {
+            stmtCustomer.setInt(1, ingredient.getId());
+            stmtCustomer.execute();
             System.out.println("The ingredient: " + ingredient.getId() + " has been deleted");
         }
     }
@@ -398,9 +397,9 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void deleteAlergen(int id) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
-             PreparedStatement stmtClient = conn.prepareStatement(DELETE_ALERGEN)) {
-            stmtClient.setInt(1, id);
-            stmtClient.execute();
+             PreparedStatement stmtCustomer = conn.prepareStatement(DELETE_ALERGEN)) {
+            stmtCustomer.setInt(1, id);
+            stmtCustomer.execute();
             System.out.println("The alergen: " + id + " has been deleted");
         }
     }
@@ -480,7 +479,7 @@ public class JdbcProductDao implements ProductDao {
                             rsIngredient.getInt("id"),
                             rsIngredient.getString("ingredient_name")
                     );
-                    ingredient.setAlergens(findAlergensByIngredient(ingredient));
+                    ingredient.setAllergens(findAlergensByIngredient(ingredient));
                     return ingredient;
                 }
             }
@@ -502,16 +501,16 @@ public class JdbcProductDao implements ProductDao {
         Ingredient ingredient;
         try (PreparedStatement stmtIngredient = conn.prepareStatement(SELECT_INGREDIENT_BY_NAME)) {
             stmtIngredient.setString(1, name);
-            try (ResultSet rsClient = stmtIngredient.executeQuery()) {
-                if (rsClient.next()) {
+            try (ResultSet rsCustomer = stmtIngredient.executeQuery()) {
+                if (rsCustomer.next()) {
                     ingredient = new Ingredient(
-                            rsClient.getInt("id"),
-                            rsClient.getString("ingredient_name")
+                            rsCustomer.getInt("id"),
+                            rsCustomer.getString("ingredient_name")
                     );
 
                     List<String> alergens = findAlergensByIngredient(ingredient);
 
-                    ingredient.setAlergens(alergens);
+                    ingredient.setAllergens(alergens);
 
                     return ingredient;
                 }
@@ -564,7 +563,7 @@ public class JdbcProductDao implements ProductDao {
                                     rsIngredient.getString("ingredient_name")
                             )
                     );
-                    ingredients.getLast().setAlergens(findAlergensByIngredient(ingredients.getLast()));
+                    ingredients.getLast().setAllergens(findAlergensByIngredient(ingredients.getLast()));
                 }
             }
             return ingredients;

@@ -81,9 +81,9 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">OrderController.</span><code><a href="../../controller/OrderController.html#selectOrderByState(model.OrderState,model.Client)" class="member-name-link">selectOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Retrieves an order by its state for a specific client.</div>
+<div class="block">Retrieves an order by its state for a specific customer.</div>
 </div>
 </div>
 <div class="caption"><span>Methods in <a href="../../controller/package-summary.html">controller</a> that return types with arguments of type <a href="../Order.html" title="class in model">Order</a></span></div>
@@ -92,9 +92,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">OrderController.</span><code><a href="../../controller/OrderController.html#selectOrdersByClient(model.Client)" class="member-name-link">selectOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">OrderController.</span><code><a href="../../controller/OrderController.html#selectOrdersByClient(model.Client)" class="member-name-link">selectOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 </div>
 </div>
 <div class="caption"><span>Methods in <a href="../../controller/package-summary.html">controller</a> with parameters of type <a href="../Order.html" title="class in model">Order</a></span></div>
@@ -152,9 +152,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">OrderDao.</span><code><a href="../../controller/db/OrderDao.html#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Retrieves an order by its state and associated client.</div>
+<div class="block">Retrieves an order by its state and associated customer.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">OrderDao.</span><code><a href="../../controller/db/OrderDao.html#findtOrder(int)" class="member-name-link">findtOrder</a><wbr>(int&nbsp;id)</code></div>
@@ -168,9 +168,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">OrderDao.</span><code><a href="../../controller/db/OrderDao.html#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">OrderDao.</span><code><a href="../../controller/db/OrderDao.html#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Retrieves a list of orders associated with a specific client.</div>
+<div class="block">Retrieves a list of orders associated with a specific customer.</div>
 </div>
 </div>
 <div class="caption"><span>Methods in <a href="../../controller/db/package-summary.html">controller.db</a> with parameters of type <a href="../Order.html" title="class in model">Order</a></span></div>
@@ -217,9 +217,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">JdbcOrderDao.</span><code><a href="../../controller/db/impl/JdbcOrderDao.html#findOrderByState(model.OrderState,model.Client)" class="member-name-link">findOrderByState</a><wbr>(<a href="../OrderState.html" title="enum class in model">OrderState</a>&nbsp;state,
- <a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+ <a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Selects an order by its state and associated client.</div>
+<div class="block">Selects an order by its state and associated customer.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../Order.html" title="class in model">Order</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">JdbcOrderDao.</span><code><a href="../../controller/db/impl/JdbcOrderDao.html#findtOrder(int)" class="member-name-link">findtOrder</a><wbr>(int&nbsp;id)</code></div>
@@ -233,9 +233,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../Order.html" title="class in model">Order</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">JdbcOrderDao.</span><code><a href="../../controller/db/impl/JdbcOrderDao.html#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">JdbcOrderDao.</span><code><a href="../../controller/db/impl/JdbcOrderDao.html#findOrdersByClient(model.Client)" class="member-name-link">findOrdersByClient</a><wbr>(<a href="../Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Selects all orders for a specific client.</div>
+<div class="block">Selects all orders for a specific customer.</div>
 </div>
 </div>
 <div class="caption"><span>Methods in <a href="../../controller/db/impl/package-summary.html">controller.db.impl</a> with parameters of type <a href="../Order.html" title="class in model">Order</a></span></div>
@@ -283,7 +283,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../Order.html" title="class in model">Order</a>&gt;</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">Client.</span><code><a href="../Client.html#getOrderList()" class="member-name-link">getOrderList</a>()</code></div>
 <div class="col-last even-row-color">
-<div class="block">Gets the list of orders associated with the client.</div>
+<div class="block">Gets the list of orders associated with the customer.</div>
 </div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../package-summary.html">model</a> with type arguments of type <a href="../Order.html" title="class in model">Order</a></span></div>
@@ -294,7 +294,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">Client.</span><code><a href="../Client.html#setOrderList(java.util.List)" class="member-name-link">setOrderList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../Order.html" title="class in model">Order</a>&gt;&nbsp;orderList)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Sets the list of orders associated with the client.</div>
+<div class="block">Sets the list of orders associated with the customer.</div>
 </div>
 </div>
 </section>

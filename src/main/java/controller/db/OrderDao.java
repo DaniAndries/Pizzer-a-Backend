@@ -1,6 +1,6 @@
 package controller.db;
 
-import model.Client;
+import model.Customer;
 import model.Order;
 import model.OrderLine;
 import model.OrderState;
@@ -78,26 +78,26 @@ public interface OrderDao {
      * @return The Order object with the specified ID, or null if not found.
      * @throws SQLException If there is a database access error.
      */
-    Order findtOrder(int id) throws SQLException;
+    Order findOrder(int id) throws SQLException;
 
     /**
-     * Retrieves a list of orders associated with a specific client.
+     * Retrieves a list of orders associated with a specific customer.
      *
-     * @param client The Client whose orders are to be retrieved.
-     * @return A list of Order objects associated with the client.
+     * @param customer The customer whose orders are to be retrieved.
+     * @return A list of Order objects associated with the customer.
      * @throws SQLException If there is a database access error.
      */
-    List<Order> findOrdersByClient(Client client) throws SQLException;
+    List<Order> findOrdersByCustomer(Customer customer) throws SQLException;
 
     /**
-     * Retrieves an order by its state and associated client.
+     * Retrieves an order by its state and associated customer.
      *
      * @param state The OrderState to filter by.
-     * @param client The Client associated with the order.
-     * @return The Order object matching the specified state and client, or null if not found.
+     * @param customer The customer associated with the order.
+     * @return The Order object matching the specified state and customer, or null if not found.
      * @throws SQLException If there is a database access error.
      */
-    List<Order> findOrdersByState(OrderState state, Client client) throws SQLException;
+    List<Order> findOrdersByState(OrderState state, Customer customer) throws SQLException;
 
     /**
      * Retrieves an order line by its ID.

@@ -1,5 +1,6 @@
 package model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -10,9 +11,12 @@ import jakarta.persistence.Enumerated;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class Drink extends Product {
     @Enumerated(EnumType.STRING)
     private Size size; // The size of the drink (e.g., BIG, MEDIUM, SMALL)
+
+    public Drink(){}
 
     /**
      * Constructs a Drink object with the specified parameters.

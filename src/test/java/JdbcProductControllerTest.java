@@ -37,7 +37,7 @@ class JdbcProductControllerTest {
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
     private Pasta pasta2 = new Pasta(2, "Bolognese", 9.5, ingredientList2);
     private Pasta pasta3 = new Pasta(3, "Pesto", 8.0, ingredientList3);
-    private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, "MEDIUM");
+    private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, Size.MEDIUM);
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
 
 
@@ -168,7 +168,7 @@ class JdbcProductControllerTest {
 
         List<String> newAlergens = productController.findAlergensByIngredient(cheese);
 
-        assertEquals(cheese.getAlergens(), newAlergens);
+        assertEquals(cheese.getAllergens(), newAlergens);
     }
 
     /**

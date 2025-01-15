@@ -2,6 +2,7 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,11 +15,14 @@ import java.util.List;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
 public class Pizza extends Product {
-    @Enumerated(EnumType.STRING)
-    private Size size;
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Ingredient> ingredients;
+
+    @OneToMany(mappedBy = "pizza", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Ingredient> ingredients = new ArrayList<>();
+
+    public Pizza() {
+    }
 
     /**
      * Constructs a Pizza with the specified id, name, price, ingredients, and size.
@@ -29,10 +33,9 @@ public class Pizza extends Product {
      * @param ingredients the list of ingredients in the pizza
      * @param size        the size of the pizza as a string
      */
-    public Pizza(int id, String name, double price, List<Ingredient> ingredients, String size) {
-        super(id, name, price);
+    public Pizza(int id, String name, double price, List<Ingredient> ingredients, Size size) {
+        super(id, name, price, size);
         this.ingredients = ingredients;
-        this.size = Size.valueOf(size);
     }
 
     /**
@@ -41,33 +44,13 @@ public class Pizza extends Product {
      * @param id    the unique identifier for the pizza
      * @param name  the name of the pizza
      * @param price the price of the pizza
-     * @param size  the size of the pizza
      */
     public Pizza(int id, String name, double price, Size size) {
-        super(id, name, price);
-        this.size = size;
+        super(id, name, price, size);
     }
 
     public Pizza(int id, String name, double price) {
         super(id, name, price);
-    }
-
-    /**
-     * Gets the size of the pizza.
-     *
-     * @return the size of the pizza
-     */
-    public Size getSize() {
-        return size;
-    }
-
-    /**
-     * Sets the size of the pizza.
-     *
-     * @param size the new size to set for the pizza
-     */
-    public void setSize(Size size) {
-        this.size = size;
     }
 
     /**
@@ -126,7 +109,6 @@ public class Pizza extends Product {
     public String toString() {
         return "Pizza{" +
                 super.toString() +
-                "size=" + size +
                 ", ingredients=" + ingredients +
                 "} ";
     }

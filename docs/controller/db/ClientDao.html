@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">ClientDao</span></div>
 <div class="block">The ClientDao interface defines methods for interacting with the database
- related to client entities. It provides an abstraction layer for CRUD operations
+ related to customer entities. It provides an abstraction layer for CRUD operations
  and facilitates data persistence and retrieval.</div>
 <dl class="notes">
 <dt>Version:</dt>
@@ -117,34 +117,34 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#delete(model.Client)" class="member-name-link">delete</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Deletes an existing client from the database.</div>
+<div class="block">Deletes an existing customer from the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../model/Client.html" title="class in model">Client</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findAll()" class="member-name-link">findAll</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieves a list of all clients from the database.</div>
+<div class="block">Retrieves a list of all customers from the database.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findById(int)" class="member-name-link">findById</a><wbr>(int&nbsp;id)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Finds a client by their unique identifier (ID).</div>
+<div class="block">Finds a customer by their unique identifier (ID).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../model/Client.html" title="class in model">Client</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findByMail(java.lang.String)" class="member-name-link">findByMail</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dni)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Finds a client by their email (DNI).</div>
+<div class="block">Finds a customer by their email (DNI).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#save(model.Client)" class="member-name-link">save</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#save(model.Client)" class="member-name-link">save</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Saves a new client to the database.</div>
+<div class="block">Saves a new customer to the database.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#update(model.Client)" class="member-name-link">update</a><wbr>(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Updates the details of an existing client in the database.</div>
+<div class="block">Updates the details of an existing customer in the database.</div>
 </div>
 </div>
 </div>
@@ -163,12 +163,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="save(model.Client)">
 <h3>save</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Saves a new client to the database.</div>
+<div class="block">Saves a new customer to the database.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object to be saved.</dd>
+<dd><code>customer</code> - The Client object to be saved.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is an error accessing the database.</dd>
 </dl>
@@ -177,12 +177,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="delete(model.Client)">
 <h3>delete</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">delete</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Deletes an existing client from the database.</div>
+<div class="block">Deletes an existing customer from the database.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object to be deleted.</dd>
+<dd><code>customer</code> - The Client object to be deleted.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is an error accessing the database.</dd>
 </dl>
@@ -191,12 +191,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="update(model.Client)">
 <h3>update</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;client)</span>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(<a href="../../model/Client.html" title="class in model">Client</a>&nbsp;customer)</span>
      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Updates the details of an existing client in the database.</div>
+<div class="block">Updates the details of an existing customer in the database.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>client</code> - The Client object containing updated information.</dd>
+<dd><code>customer</code> - The Client object containing updated information.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></code> - If there is an error accessing the database.</dd>
 </dl>
@@ -207,10 +207,10 @@ loadScripts(document, 'script');</script>
 <h3>findById</h3>
 <div class="member-signature"><span class="return-type"><a href="../../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findById</span><wbr><span class="parameters">(int&nbsp;id)</span>
          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their unique identifier (ID).</div>
+<div class="block">Finds a customer by their unique identifier (ID).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>id</code> - The ID of the client to be retrieved.</dd>
+<dd><code>id</code> - The ID of the customer to be retrieved.</dd>
 <dt>Returns:</dt>
 <dd>The Client object associated with the given ID, or null if not found.</dd>
 <dt>Throws:</dt>
@@ -223,10 +223,10 @@ loadScripts(document, 'script');</script>
 <h3>findByMail</h3>
 <div class="member-signature"><span class="return-type"><a href="../../model/Client.html" title="class in model">Client</a></span>&nbsp;<span class="element-name">findByMail</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dni)</span>
            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Finds a client by their email (DNI).</div>
+<div class="block">Finds a customer by their email (DNI).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>dni</code> - The email (DNI) of the client to be retrieved.</dd>
+<dd><code>dni</code> - The email (DNI) of the customer to be retrieved.</dd>
 <dt>Returns:</dt>
 <dd>The Client object associated with the given email, or null if not found.</dd>
 <dt>Throws:</dt>
@@ -239,7 +239,7 @@ loadScripts(document, 'script');</script>
 <h3>findAll</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../model/Client.html" title="class in model">Client</a>&gt;</span>&nbsp;<span class="element-name">findAll</span>()
               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/SQLException.html" title="class or interface in java.sql" class="external-link">SQLException</a></span></div>
-<div class="block">Retrieves a list of all clients from the database.</div>
+<div class="block">Retrieves a list of all customers from the database.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>A list of Client objects.</dd>
