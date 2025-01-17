@@ -16,9 +16,15 @@ import java.util.List;
  * @version 0.1
  */
 @Entity
+@SequenceGenerator(name="customer_seq", sequenceName="hibernate_sequence", allocationSize=1)
 public class Pizza extends Product {
 
-    @OneToMany(mappedBy = "pizza", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Product_Ingredient",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     private List<Ingredient> ingredients = new ArrayList<>();
 
     public Pizza() {

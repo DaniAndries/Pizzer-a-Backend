@@ -18,26 +18,18 @@ import java.util.List;
 @Entity
 public class Ingredient {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
-    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @CsvBindByName
     private int id; // Unique identifier for the ingredient
-    @CsvBindByName
-    private String name; // Name of the ingredient
-    @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
-    @ElementCollection
-    @CollectionTable(name = "allergen")
-    private List<String> allergens = new ArrayList<>(); // List of allergens associated with the ingredient
 
-    @ManyToOne
-    @JoinColumn(name = "pizza_id") // This column will store the relationship
-    private Pizza pizza; // The pizza this ingredient belongs to
-    @ManyToOne
-    @JoinColumn(name = "pasta_id") // This column will store the relationship
-    private Pasta pasta; // The pizza this ingredient belongs to
-    @ManyToOne
-    @JoinColumn(name = "drink_id") // This column will store the relationship
-    private Drink drink; // The pizza this ingredient belongs to
+    @CsvBindByName
+    @Column(unique = true, nullable = false)
+    private String name; // Name of the ingredient
+
+    @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "Ingredient_Alergens", joinColumns = @JoinColumn(name = "ingredient_id"))
+    private List<String> allergens = new ArrayList<>(); // List of allergens associated with the ingredient
 
     /**
      * Constructs an Ingredient with the specified id, name, and allergens.
@@ -135,7 +127,9 @@ public class Ingredient {
     @Override
     public final boolean equals(Object o) {
         if (!(o instanceof Ingredient that)) return false;
-
+        if (this.id == 0 || that.getId() == 0) {
+            return getName().equals(that.getName()) && getAllergens().equals(that.getAllergens());
+        }
         return getId() == that.getId() &&
                 getAllergens().equals(that.getAllergens()) &&
                 getName().equals(that.getName());
@@ -149,12 +143,14 @@ public class Ingredient {
      */
     @Override
     public int hashCode() {
+        if (id == 0) {
+            return 31 * getAllergens().hashCode() + getName().hashCode();
+        }
         int result = getAllergens().hashCode();
         result = 31 * result + getId();
         result = 31 * result + getName().hashCode();
         return result;
     }
-
     /**
      * Returns a string representation of this ingredient, including its id,
      * name, and allergens.

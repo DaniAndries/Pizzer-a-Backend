@@ -16,15 +16,12 @@ import jakarta.persistence.*;
 @Entity
 public abstract class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "next_val")
-    @SequenceGenerator(name = "next_val", sequenceName = "next_val", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @Column(unique = true, nullable = false)
     private String name;
     private double price;
 
-    @Enumerated(EnumType.STRING)
-    private TYPE type;
     @Enumerated(EnumType.STRING)
     private Size size;
 
@@ -93,14 +90,6 @@ public abstract class Product {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    public TYPE getType() {
-        return type;
-    }
-
-    public void setType(TYPE type) {
-        this.type = type;
     }
 
     /**

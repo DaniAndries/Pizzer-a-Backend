@@ -1,9 +1,6 @@
 package model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +17,12 @@ import java.util.List;
  */
 @Entity
 public class Pasta extends Product {
-    @OneToMany(mappedBy = "pasta", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "product_Ingredient",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )    private List<Ingredient> ingredients = new ArrayList<>();
 
     /**
      * Constructs a Pasta object with the specified id, name, and price.

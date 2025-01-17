@@ -10,7 +10,7 @@ package model;
  * @author DaniAndries
  * @version 0.1
  */
-public class PayByCash implements Payable {
+public class PayByCash extends Payable {
 
     /**
      * Constructs a new PayByCash instance.
@@ -31,5 +31,10 @@ public class PayByCash implements Payable {
     @Override
     public void pay(double amount) {
         System.out.println("You have paid: " + amount + "€ in cash");
+    }
+
+    @Override
+    public int paymentMethod() {
+        return 1;
     }
 }

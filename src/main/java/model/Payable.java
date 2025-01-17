@@ -1,5 +1,7 @@
 package model;
 
+import jakarta.persistence.*;
+
 /**
  * Represents a general payment method.
  * <p>
@@ -12,12 +14,19 @@ package model;
  * @author DaniAndries
  * @version 0.1
  */
-public interface Payable {
+@Entity
+public abstract class Payable {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    private int id;
 
     /**
      * Processes a payment for the specified amount.
      *
      * @param amount The amount of money to be paid.
      */
-    void pay(double amount);
+    public abstract  void pay(double amount);
+
+    public abstract int paymentMethod();
 }

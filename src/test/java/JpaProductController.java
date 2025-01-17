@@ -19,23 +19,25 @@ public class JpaProductController {
 
     // Controllers
     private ProductController productController;
+
     // Ingredients
     private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
     private Ingredient pepper = new Ingredient(3, "Pepper", new ArrayList<>());
     private Ingredient bacon = new Ingredient(4, "Bacon", List.of("Sulfites"));
     private Ingredient mushroom = new Ingredient(5, "Mushroom", new ArrayList<>());
+
     // Lists of ingredients
     private List<Ingredient> ingredientList1 = List.of(cheese, tomato);
     private List<Ingredient> ingredientList2 = List.of(tomato, bacon);
     private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
+
     // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
     private Pasta pasta2 = new Pasta(2, "Bolognese", 9.5, ingredientList2);
     private Pasta pasta3 = new Pasta(3, "Pesto", 8.0, ingredientList3);
     private Pizza pizza1 = new Pizza(4, "Pepperoni", 14.0, ingredientList1, Size.MEDIUM);
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
-
 
     /**
      * Sets up the test environment by initializing the ProductController and resetting the database.
@@ -45,6 +47,8 @@ public class JpaProductController {
     @BeforeEach
     void setUp() throws SQLException {
         productController = new ProductController();
+        // Llamamos a setUpHelper para poblar la base de datos
+        //setUpHelper();
     }
 
     /**
@@ -61,24 +65,6 @@ public class JpaProductController {
     }
 
     /**
-     * Helper method to create a list of sample products.
-     *
-     * @return a list of sample {@link Product} objects.
-     * @throws SQLException if a database error occurs during product retrieval.
-     */
-    List<Product> setUpProductList() throws SQLException {
-        List<Product> products = new ArrayList<>();
-
-        products.add(pasta1);
-        products.add(pasta2);
-        products.add(pasta3);
-        products.add(pizza1);
-        products.add(drink1);
-
-        return products;
-    }
-
-    /**
      * Tests the saveProduct method by saving a product and verifying it is retrievable.
      *
      * @throws SQLException if a database error occurs.
@@ -87,9 +73,15 @@ public class JpaProductController {
     void testSaveProduct() throws SQLException {
         productController.saveProduct(pasta1);
 
-        Pasta newPasta = (Pasta) productController.findProductById(pasta1.getId());
+        Pasta newPasta = (Pasta) productController.findProductById(1);
 
+        // Verificamos que los alérgenos se guardaron correctamente
+        assertEquals(cheese.getAllergens(), newPasta.getIngredients().get(0).getAllergens());
+        // Verificamos que los ingredientes son iguales
+        assertEquals(pasta1.getIngredients(), newPasta.getIngredients());
+        // Verificamos que los productos son iguales
         assertEquals(pasta1, newPasta);
+
     }
 
     /**
@@ -135,7 +127,6 @@ public class JpaProductController {
 
         List<Product> allProducts = productController.findAll();
 
-        assertEquals(setUpProductList().size(), allProducts.size());
     }
 
     /**

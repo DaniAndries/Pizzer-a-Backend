@@ -22,8 +22,7 @@ import java.util.Objects;
 @XmlAccessorType(XmlAccessType.FIELD) // Direct access to fields
 public class Customer {
     @Id
-    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id; // Unique identifier for the customer
     @Column(unique = true, nullable = false)
     private String dni; // National identification number of the customer

@@ -17,8 +17,7 @@ import javax.lang.model.element.Name;
 @Table(name = "order_line")
 public class OrderLine {
     @Id
-    @SequenceGenerator(name = "orderline_seq", sequenceName = "orderline_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderline_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @CsvBindByName(column = "IDENTIFICATION")
     private int id;
     @CsvBindByName(column = "QUANTITY")

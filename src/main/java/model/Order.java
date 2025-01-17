@@ -1,5 +1,6 @@
 package model;
 
+import com.mysql.cj.xdevapi.Client;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,11 +19,10 @@ import java.util.List;
 @Table(name = "customer_order")
 public class Order {
     @Id
-    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @Column(name = "order_date")
-    @Temporal(TemporalType.TIMESTAMP) // Changed to TIMESTAMP if time is needed
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
     @Enumerated(EnumType.STRING)
     private OrderState state;
@@ -115,9 +115,8 @@ public class Order {
      * method is recorded.
      *
      * @param payable       the payment strategy used to process the order's payment
-     * @param paymentMethod the method of payment to associate with the order
      */
-    public void finalizeOrder(Payable payable, PaymentMethod paymentMethod) {
+    public void finalizeOrder(Payable payable, Customer customer) {
         payable.pay(getTotalPrice());
         setState(OrderState.FINISHED);
         setPaymentMethod(paymentMethod);

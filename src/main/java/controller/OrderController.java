@@ -208,7 +208,7 @@ public class OrderController {
 
         Payable payable = getPayableForMethod(paymentMethod);
         newOrder.setPaymentMethod(paymentMethod);
-        newOrder.finalizeOrder(payable, paymentMethod);
+        newOrder.finalizeOrder(payable, customer);
         newOrder.setState(OrderState.FINISHED);
 
         orderDao.updateOrder(newOrder);
