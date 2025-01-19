@@ -28,7 +28,7 @@ public class Ingredient {
 
     @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "Ingredient_Alergens", joinColumns = @JoinColumn(name = "ingredient_id"))
+    @CollectionTable(name = "ingredient_alergen")
     private List<String> allergens = new ArrayList<>(); // List of allergens associated with the ingredient
 
     /**
@@ -125,15 +125,24 @@ public class Ingredient {
      * @return true if this ingredient is equal to the specified object; false otherwise
      */
     @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Ingredient that)) return false;
-        if (this.id == 0 || that.getId() == 0) {
-            return getName().equals(that.getName()) && getAllergens().equals(that.getAllergens());
-        }
-        return getId() == that.getId() &&
-                getAllergens().equals(that.getAllergens()) &&
-                getName().equals(that.getName());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ingredient that = (Ingredient) o;
+
+        if (id != that.id) return false;
+        if (!name.equals(that.name)) return false;
+
+        // Comparamos las listas de alérgenos asegurándonos que tengan los mismos elementos
+        if (allergens == null && that.allergens == null) return true;
+        if (allergens == null || that.allergens == null) return false;
+
+        // Comparamos basándonos en los contenidos ignorando el orden
+        return allergens.size() == that.allergens.size() &&
+                allergens.containsAll(that.allergens);
     }
+
 
     /**
      * Returns a hash code value for this ingredient.
@@ -143,14 +152,19 @@ public class Ingredient {
      */
     @Override
     public int hashCode() {
-        if (id == 0) {
-            return 31 * getAllergens().hashCode() + getName().hashCode();
+        // Calculamos hashCode considerando id, nombre y contenido de la lista de alérgenos
+        int result = id;
+        result = 31 * result + name.hashCode();
+
+        if (allergens != null) {
+            // Generamos un hash independiente del orden de los elementos en la lista
+            result = 31 * result + allergens.stream().sorted().hashCode();
         }
-        int result = getAllergens().hashCode();
-        result = 31 * result + getId();
-        result = 31 * result + getName().hashCode();
+
         return result;
     }
+
+
     /**
      * Returns a string representation of this ingredient, including its id,
      * name, and allergens.
@@ -159,10 +173,6 @@ public class Ingredient {
      */
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", allergens=" + allergens +
-                '}';
+        return "Ingredient{" + "id=" + id + ", name='" + name + '\'' + ", allergens=" + allergens + '}';
     }
 }

@@ -12,74 +12,47 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class JpaProductDao implements ProductDao {
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
 
 
     @Override
     public void saveProduct(Product product) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            entityManager.getTransaction().begin();
+            transaction.begin();
 
-            // Process ingredients first if it's a Pizza or Pasta
-            if (product instanceof Pizza pizza || product instanceof Pasta pasta) {
-                List<Ingredient> ingredients = (product instanceof Pizza) ?
-                        ((Pizza) product).getIngredients() :
-                        ((Pasta) product).getIngredients();
-
-                if (ingredients != null && !ingredients.isEmpty()) {
-                    List<Ingredient> managedIngredients = new ArrayList<>();
-
-                    for (Ingredient ingredient : ingredients) {
-                        try {
-                            // Try to find existing ingredient by name
-                            Ingredient existingIngredient = entityManager
-                                    .createQuery("SELECT i FROM Ingredient i WHERE i.name = :name", Ingredient.class)
-                                    .setParameter("name", ingredient.getName())
-                                    .getSingleResult();
-
-                            // Update allergens and merge to ensure changes are persisted
-                            existingIngredient.setAllergens(ingredient.getAllergens());
-                            entityManager.merge(existingIngredient);
-                            managedIngredients.add(existingIngredient);
-
-                        } catch (NoResultException e) {
-                            // If ingredient doesn't exist, persist new one
-                            Ingredient newIngredient = new Ingredient();
-                            newIngredient.setName(ingredient.getName());
-                            newIngredient.setAllergens(ingredient.getAllergens());
-                            entityManager.persist(newIngredient);
-                            managedIngredients.add(newIngredient);
-                        }
-                    }
-
-                    // Update the product with managed ingredients
-                    if (product instanceof Pizza pizza) {
-                        pizza.setIngredients(managedIngredients);
-                    } else if (product instanceof Pasta pasta) {
-                        pasta.setIngredients(managedIngredients);
-                    }
+            Objects.requireNonNull(product, "El producto no puede ser nulo");
+            // Verificar si ya existe un producto con el mismo nombre
+            Product existingProduct = entityManager.createQuery(
+                            "SELECT p FROM Product p WHERE p.name = :name", Product.class)
+                    .setParameter("name", product.getName())
+                    .getResultStream()
+                    .findFirst()
+                    .orElse(null);
+            if (existingProduct != null) {
+                // Si el producto ya existe, actualizamos sus valores en lugar de intentar crearlo nuevamente
+                existingProduct.setPrice(product.getPrice());
+                existingProduct.setSize(product.getSize());
+                if (product instanceof Pizza && existingProduct instanceof Pizza) {
+                    ((Pizza) existingProduct).setIngredients(((Pizza) product).getIngredients());
+                } else if (product instanceof Pasta && existingProduct instanceof Pasta) {
+                    ((Pasta) existingProduct).setIngredients(((Pasta) product).getIngredients());
                 }
-            }
-
-            // Now handle the product
-            if (product.getId() != 0) {
-                entityManager.merge(product);
+                entityManager.merge(existingProduct); // Guardamos los cambios en el producto existente
             } else {
-                entityManager.persist(product);
+                // Si no existe el producto, procedemos a guardarlo
+                entityManager.persist(product); // Usamos persist porque este es un nuevo producto
             }
-
-            entityManager.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            if (entityManager.getTransaction().isActive()) {
-                entityManager.getTransaction().rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
-            throw new RuntimeException("Error while saving the product", e);
+            throw e; // Propagar la excepción para manejarla a otro nivel
         } finally {
             entityManager.close();
         }
@@ -105,10 +78,10 @@ public class JpaProductDao implements ProductDao {
     }
 
     @Override
-    public void saveAlergen(String alergen, int ingredientId, Connection conn) throws SQLException {
+    public void saveAlergen(String allergen, int ingredientId, Connection conn) throws SQLException {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.persist(alergen);
+        entityManager.persist(allergen);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
@@ -160,17 +133,18 @@ public class JpaProductDao implements ProductDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
-
-            // Make sure the customer is managed before removing it
-            int managedCustomer = entityManager.contains(id) ? id : entityManager.merge(id);
-
-            entityManager.remove(managedCustomer);
-            entityManager.getTransaction().commit();
+            String allergen = entityManager.find(String.class, id); // Supongamos que el alérgeno es una entidad gestionada
+            if (allergen != null) {
+                entityManager.remove(allergen);
+                entityManager.getTransaction().commit();
+            } else {
+                throw new SQLException("Allergen with ID " + id + " not found");
+            }
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            throw new SQLException("Error deleting customer: " + id, e);
+            throw new SQLException("Error deleting allergen: " + id, e);
         } finally {
             entityManager.close();
         }
@@ -205,8 +179,7 @@ public class JpaProductDao implements ProductDao {
 
     @Override
     public Product findProductById(int id) throws SQLException {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        try (entityManager) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             Product product = entityManager.find(Product.class, id);
             if (product != null) {
                 if (product instanceof Pizza) {
@@ -215,9 +188,8 @@ public class JpaProductDao implements ProductDao {
                     Hibernate.initialize(((Pasta) product).getIngredients());
                 }
                 return product;
-            } else {
-                return null;
             }
+            return null;
         }
     }
 

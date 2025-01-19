@@ -5,7 +5,6 @@ import controller.ProductController;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.DatabaseConf;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JpaProductController {
 
     // Controllers
-    private ProductController productController;
+    private ProductController productController = new ProductController();
 
     // Ingredients
-    private Ingredient cheese = new Ingredient(1, "Cheese", List.of("Lactose"));
+    private Ingredient cheese = new Ingredient(1, "Cheese", new ArrayList<>());
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
     private Ingredient pepper = new Ingredient(3, "Pepper", new ArrayList<>());
-    private Ingredient bacon = new Ingredient(4, "Bacon", List.of("Sulfites"));
+    private Ingredient bacon = new Ingredient(4, "Bacon", new ArrayList<>(List.of("Sulfites")));
     private Ingredient mushroom = new Ingredient(5, "Mushroom", new ArrayList<>());
 
-    // Lists of ingredients
-    private List<Ingredient> ingredientList1 = List.of(cheese, tomato);
-    private List<Ingredient> ingredientList2 = List.of(tomato, bacon);
-    private List<Ingredient> ingredientList3 = List.of(mushroom, pepper);
+    // Listas de ingredientes
+    private List<Ingredient> ingredientList1 = new ArrayList<>(List.of(cheese, tomato));
+    private List<Ingredient> ingredientList2 = new ArrayList<>(List.of(tomato, bacon));
+    private List<Ingredient> ingredientList3 = new ArrayList<>(List.of(mushroom, pepper));
 
     // Products
     private Pasta pasta1 = new Pasta(1, "Carbonara", 10.5, ingredientList1);
@@ -46,9 +45,7 @@ public class JpaProductController {
      */
     @BeforeEach
     void setUp() throws SQLException {
-        productController = new ProductController();
-        // Llamamos a setUpHelper para poblar la base de datos
-        //setUpHelper();
+
     }
 
     /**
@@ -71,9 +68,16 @@ public class JpaProductController {
      */
     @Test
     void testSaveProduct() throws SQLException {
+        ArrayList<String> allergen = new ArrayList<>();
+        allergen.add("Lactose");
+        cheese.setAllergens(allergen);
+
         productController.saveProduct(pasta1);
+        productController.saveProduct(pizza1);
 
         Pasta newPasta = (Pasta) productController.findProductById(1);
+
+        System.out.println(newPasta);
 
         // Verificamos que los alérgenos se guardaron correctamente
         assertEquals(cheese.getAllergens(), newPasta.getIngredients().get(0).getAllergens());
@@ -196,8 +200,7 @@ public class JpaProductController {
     void shouldThrowExceptionWhenDeletingNonExistentProduct() {
         Pasta nonExistentPasta = new Pasta(99, "Non-Existent", 10.0, ingredientList1);
 
-        assertThrows(IllegalArgumentException.class, () -> productController.deleteProduct(nonExistentPasta),
-                "Expected IllegalArgumentException when attempting to delete a non-existent product");
+        assertThrows(IllegalArgumentException.class, () -> productController.deleteProduct(nonExistentPasta), "Expected IllegalArgumentException when attempting to delete a non-existent product");
     }
 
     /**
@@ -207,8 +210,7 @@ public class JpaProductController {
     void shouldExportIngredientsToCsv() {
         List<Ingredient> ingredientsToExport = List.of(cheese, tomato, pepper);
 
-        assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport),
-                "Exporting ingredients to CSV should not throw an exception");
+        assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport), "Exporting ingredients to CSV should not throw an exception");
     }
 
     /**
@@ -216,8 +218,7 @@ public class JpaProductController {
      */
     @Test
     void shouldImportIngredientsFromCsv() {
-        List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients,
-                "Importing ingredients from CSV should not throw an exception");
+        List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients, "Importing ingredients from CSV should not throw an exception");
 
         assertNotNull(importedIngredients, "Expected imported ingredients list to not be null");
         assertFalse(importedIngredients.isEmpty(), "Expected imported ingredients list to not be empty");
