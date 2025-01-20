@@ -59,7 +59,7 @@ public class OrderController {
      * @param order     the order to which the line item belongs
      * @throws SQLException if a database access error occurs
      */
-    public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
+    public void saveOrderLine(List<OrderLine> orderLine, Order order) throws SQLException {
         orderDao.saveOrderLine(orderLine, order);
     }
 
@@ -184,7 +184,7 @@ public class OrderController {
             order = orders.getFirst();
             order.addOrderLine(orderLine);
             orderDao.updateOrder(order);
-            orderDao.saveOrderLine(orderLine, order);
+            orderDao.saveOrderLine(order.getOrderLines(), order);
         }
     }
 

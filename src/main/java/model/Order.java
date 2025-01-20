@@ -26,7 +26,8 @@ public class Order {
     private Date orderDate;
     @Enumerated(EnumType.STRING)
     private OrderState state;
-    @Enumerated(EnumType.STRING)
+    @OneToOne
+    private Payable payable;
     private PaymentMethod paymentMethod;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderLine> orderLines = new ArrayList<>();
@@ -51,6 +52,26 @@ public class Order {
         this.paymentMethod = paymentMethod;
         this.orderLines = orderLines;
         this.customer = customer;
+    }
+
+    /**
+     * Constructs an Order with the specified parameters.
+     *
+     * @param id            the unique identifier for this order
+     * @param orderDate     the date when the order was placed
+     * @param state         the current state of the order
+     * @param paymentMethod the method used for payment
+     * @param orderLines    the list of order lines associated with this order
+     * @param customer      the customer who placed the order
+     */
+    public Order(int id, Date orderDate, OrderState state, PaymentMethod paymentMethod, List<OrderLine> orderLines, Customer customer, Payable payable) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.state = state;
+        this.paymentMethod = paymentMethod;
+        this.orderLines = orderLines;
+        this.customer = customer;
+        this.payable = payable;
     }
 
     /**
@@ -151,6 +172,14 @@ public class Order {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Payable getPayable() {
+        return payable;
+    }
+
+    public void setPayable(Payable payable) {
+        this.payable = payable;
     }
 
     public void setCustomer(Customer customer) {

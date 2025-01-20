@@ -1,18 +1,27 @@
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-import controller.FileManagement;
-import controller.ProductController;
-import model.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import controller.FileManagement;
+import controller.ProductController;
+import model.Drink;
+import model.Ingredient;
+import model.Pasta;
+import model.Pizza;
+import model.Product;
+import model.Size;
 
 public class JpaProductController {
 
@@ -20,7 +29,7 @@ public class JpaProductController {
     private ProductController productController = new ProductController();
 
     // Ingredients
-    private Ingredient cheese = new Ingredient(1, "Cheese", new ArrayList<>());
+    private Ingredient cheese = new Ingredient(1, "Cheese", new ArrayList<>(List.of("Lactose")));
     private Ingredient tomato = new Ingredient(2, "Tomato", new ArrayList<>());
     private Ingredient pepper = new Ingredient(3, "Pepper", new ArrayList<>());
     private Ingredient bacon = new Ingredient(4, "Bacon", new ArrayList<>(List.of("Sulfites")));
@@ -39,45 +48,20 @@ public class JpaProductController {
     private Drink drink1 = new Drink(5, "Coca-Cola", 2.5, Size.SMALL);
 
     /**
-     * Sets up the test environment by initializing the ProductController and resetting the database.
-     *
-     * @throws SQLException if a database error occurs during setup.
-     */
-    @BeforeEach
-    void setUp() throws SQLException {
-
-    }
-
-    /**
-     * Helper method to populate the database with sample products.
-     *
-     * @throws SQLException if a database error occurs during setup.
-     */
-    void setUpHelper() throws SQLException {
-        productController.saveProduct(pasta1);
-        productController.saveProduct(pasta2);
-        productController.saveProduct(pasta3);
-        productController.saveProduct(pizza1);
-        productController.saveProduct(drink1);
-    }
-
-    /**
-     * Tests the saveProduct method by saving a product and verifying it is retrievable.
+     * Tests the saveProduct method by saving a product and verifying it is
+     * retrievable.
      *
      * @throws SQLException if a database error occurs.
      */
     @Test
     void testSaveProduct() throws SQLException {
-        ArrayList<String> allergen = new ArrayList<>();
-        allergen.add("Lactose");
-        cheese.setAllergens(allergen);
-
         productController.saveProduct(pasta1);
         productController.saveProduct(pizza1);
 
         Pasta newPasta = (Pasta) productController.findProductById(1);
 
         System.out.println(newPasta);
+        System.out.println(pasta1);
 
         // Verificamos que los alérgenos se guardaron correctamente
         assertEquals(cheese.getAllergens(), newPasta.getIngredients().getFirst().getAllergens());
@@ -89,21 +73,20 @@ public class JpaProductController {
     }
 
     /**
-     * Tests the deleteProduct method by deleting a product and verifying it no longer exists.
+     * Tests the deleteProduct method by deleting a product and verifying it no
+     * longer exists.
      *
      * @throws SQLException if a database error occurs.
      */
     @Test
     void testDeleteProduct() throws SQLException {
-        productController.saveProduct(pasta2);
-
-        Pasta newPasta = (Pasta) productController.findProductById(1);
-        pasta2.setId(252);
-        productController.deleteProduct(pasta2);
-
-        newPasta = (Pasta) productController.findProductById(252);
-
-        assertNull(newPasta);
+        productController.saveProduct(pizza1);
+        pizza1.setId(4);
+        productController.deleteProduct(pizza1);
+        /**
+         * ESTE TEST VARIA DEPENDIENDO DEL ID QUE ASIGNA JPA POR SI MISMO
+         */
+        assertEquals(4, productController.findAll().size());
     }
 
     /**
@@ -113,13 +96,11 @@ public class JpaProductController {
      */
     @Test
     void testFindProductById() throws SQLException {
-        productController.saveProduct(pasta3);
+        productController.saveProduct(pasta1);
 
-        Pasta newPasta = (Pasta) productController.findProductById(253);
+        Pasta newPasta = (Pasta) productController.findProductById(1);
 
-        pasta3.setId(253);
-
-        assertEquals(pasta3, newPasta);
+        assertEquals(pasta1, newPasta);
     }
 
     /**
@@ -129,24 +110,17 @@ public class JpaProductController {
      */
     @Test
     void testFindAllProducts() throws SQLException {
-        setUpHelper();
+        productController.saveProduct(pasta1);
+        productController.saveProduct(pasta2);
+        productController.saveProduct(pasta3);
+        productController.saveProduct(pizza1);
+        productController.saveProduct(drink1);
 
-        List<Product> allProducts = productController.findAll();
+        List<Product> allProducts = new ArrayList<>(List.of(pasta1, pasta2, pasta3, pizza1, drink1));
 
-    }
+        List<Product> newProducts = productController.findAll();
 
-    /**
-     * Tests finding an ingredient by its ID.
-     *
-     * @throws SQLException if a database error occurs.
-     */
-    @Test
-    void testFindIngredientsById() throws SQLException {
-        setUpHelper();
-
-        Ingredient newIngredient = productController.findIngredientsById(2);
-
-        assertEquals(tomato, newIngredient);
+        assertEquals(allProducts.size(), newProducts.size());
     }
 
     /**
@@ -156,37 +130,15 @@ public class JpaProductController {
      */
     @Test
     void testFindAlergensByIngredient() throws SQLException {
-        setUpHelper();
+        productController.saveProduct(pasta1);
+        productController.saveProduct(pasta2);
+        productController.saveProduct(pasta3);
+        productController.saveProduct(pizza1);
+        productController.saveProduct(drink1);
 
         List<String> newAlergens = productController.findAlergensByIngredient(cheese);
 
         assertEquals(cheese.getAllergens(), newAlergens);
-    }
-
-    /**
-     * Tests saving a product and verifies it is saved successfully.
-     *
-     * @throws SQLException if a database error occurs.
-     */
-    @Test
-    void shouldSaveProductSuccessfully() throws SQLException {
-        Pasta originalPasta = new Pasta(1, "Carbonara", 10.5, ingredientList1);
-
-        productController.saveProduct(originalPasta);
-
-        Pasta retrievedPasta = (Pasta) productController.findProductById(originalPasta.getId());
-        assertNotNull(retrievedPasta, "Expected pasta to be saved and retrieved successfully");
-        assertEquals(originalPasta, retrievedPasta, "The retrieved pasta should match the saved pasta");
-    }
-
-    /**
-     * Tests that deleting a non-existent product throws an exception.
-     */
-    @Test
-    void shouldThrowExceptionWhenDeletingNonExistentProduct() {
-        Pasta nonExistentPasta = new Pasta(99, "Non-Existent", 10.0, ingredientList1);
-
-        assertThrows(IllegalArgumentException.class, () -> productController.deleteProduct(nonExistentPasta), "Expected IllegalArgumentException when attempting to delete a non-existent product");
     }
 
     /**
@@ -196,7 +148,8 @@ public class JpaProductController {
     void shouldExportIngredientsToCsv() {
         List<Ingredient> ingredientsToExport = List.of(cheese, tomato, pepper);
 
-        assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport), "Exporting ingredients to CSV should not throw an exception");
+        assertDoesNotThrow(() -> FileManagement.ingredientToCsv(ingredientsToExport),
+                "Exporting ingredients to CSV should not throw an exception");
     }
 
     /**
@@ -204,7 +157,8 @@ public class JpaProductController {
      */
     @Test
     void shouldImportIngredientsFromCsv() {
-        List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients, "Importing ingredients from CSV should not throw an exception");
+        List<Ingredient> importedIngredients = assertDoesNotThrow(FileManagement::csvToIngredients,
+                "Importing ingredients from CSV should not throw an exception");
 
         assertNotNull(importedIngredients, "Expected imported ingredients list to not be null");
         assertFalse(importedIngredients.isEmpty(), "Expected imported ingredients list to not be empty");

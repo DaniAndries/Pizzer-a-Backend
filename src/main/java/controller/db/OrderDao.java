@@ -34,7 +34,7 @@ public interface OrderDao {
      * @param order The Order object associated with the order line.
      * @throws SQLException If there is a database access error.
      */
-    void saveOrderLine(OrderLine orderLine, Order order) throws SQLException;
+    void saveOrderLine(List<OrderLine> orderLine, Order order) throws SQLException;
 
 
     void saveOrderLine(OrderLine orderLine, Order order, Connection conn) throws SQLException;

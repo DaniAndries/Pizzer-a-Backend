@@ -1,6 +1,4 @@
 JdbcOrderControllerTest.class
-JpaClientController.class
 JpaProductController.class
 JpaOrderController.class
-JdbcClientControllerTest.class
 JdbcProductControllerTest.class

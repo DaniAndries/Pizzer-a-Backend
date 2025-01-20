@@ -18,7 +18,7 @@ import jakarta.persistence.*;
 public abstract class Payable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;
 
     /**
@@ -29,4 +29,11 @@ public abstract class Payable {
     public abstract  void pay(double amount);
 
     public abstract int paymentMethod();
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 }

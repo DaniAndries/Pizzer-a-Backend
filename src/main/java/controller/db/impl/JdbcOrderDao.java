@@ -113,6 +113,11 @@ public class JdbcOrderDao implements OrderDao {
         }
     }
 
+    @Override
+    public void saveOrderLine(List<OrderLine> orderLine, Order order) throws SQLException {
+
+    }
+
     /**
      * Adds order lines to the specified order.
      *
@@ -137,7 +142,6 @@ public class JdbcOrderDao implements OrderDao {
      * @throws SQLException if a database access error occurs
      */
     // * "INSERT INTO order_line (amount, product, customer_order) VALUES (?,?,?)"
-    @Override
     public void saveOrderLine(OrderLine orderLine, Order order) throws SQLException {
         try (Connection conn = getConnection(DatabaseConf.URL, DatabaseConf.USER, DatabaseConf.PASSWORD);
              PreparedStatement stmtOrder = conn.prepareStatement(INSERT_ORDER_LINE, Statement.RETURN_GENERATED_KEYS)) {

@@ -1,14 +1,23 @@
 package model;
 
-import com.opencsv.bean.CsvBindAndSplitByName;
-import com.opencsv.bean.CsvBindByName;
-import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.bean.CsvBindAndSplitByName;
+import com.opencsv.bean.CsvBindByName;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 /**
- * Represents an ingredient used in products, including its name, unique identifier,
+ * Represents an ingredient used in products, including its name, unique
+ * identifier,
  * and any allergens associated with it. This class is designed to be compatible
  * with CSV serialization and deserialization using OpenCSV.
  *
@@ -28,14 +37,14 @@ public class Ingredient {
 
     @CsvBindAndSplitByName(writeDelimiter = ",", elementType = String.class)
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "ingredient_alergen")
+    @CollectionTable(name = "ingredient_allergen")
     private List<String> allergens = new ArrayList<>(); // List of allergens associated with the ingredient
 
     /**
      * Constructs an Ingredient with the specified id, name, and allergens.
      *
-     * @param id       the unique identifier for this ingredient
-     * @param name     the name of the ingredient
+     * @param id        the unique identifier for this ingredient
+     * @param name      the name of the ingredient
      * @param allergens the list of allergens associated with this ingredient
      */
     public Ingredient(int id, String name, List<String> allergens) {
@@ -122,37 +131,46 @@ public class Ingredient {
      * unique identifier, name, and allergens.
      *
      * @param o the object to compare to
-     * @return true if this ingredient is equal to the specified object; false otherwise
+     * @return true if this ingredient is equal to the specified object; false
+     *         otherwise
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Ingredient that = (Ingredient) o;
 
-        if (id != that.id) return false;
-        if (!name.equals(that.name)) return false;
+        if (id != that.id)
+            return false;
+        if (!name.equals(that.name))
+            return false;
 
-        // Comparamos las listas de alérgenos asegurándonos que tengan los mismos elementos
-        if (allergens == null && that.allergens == null) return true;
-        if (allergens == null || that.allergens == null) return false;
+        // Comparamos las listas de alérgenos asegurándonos que tengan los mismos
+        // elementos
+        if (allergens == null && that.allergens == null)
+            return true;
+        if (allergens == null || that.allergens == null)
+            return false;
 
         // Comparamos basándonos en los contenidos ignorando el orden
         return allergens.size() == that.allergens.size() &&
                 allergens.containsAll(that.allergens);
     }
 
-
     /**
      * Returns a hash code value for this ingredient.
-     * The hash code is calculated based on the unique identifier, name, and allergens.
+     * The hash code is calculated based on the unique identifier, name, and
+     * allergens.
      *
      * @return a hash code value for this ingredient
      */
     @Override
     public int hashCode() {
-        // Calculamos hashCode considerando id, nombre y contenido de la lista de alérgenos
+        // Calculamos hashCode considerando id, nombre y contenido de la lista de
+        // alérgenos
         int result = id;
         result = 31 * result + name.hashCode();
 
@@ -163,7 +181,6 @@ public class Ingredient {
 
         return result;
     }
-
 
     /**
      * Returns a string representation of this ingredient, including its id,
