@@ -26,7 +26,55 @@ public class JpaProductDao implements ProductDao {
             transaction.begin();
 
             Objects.requireNonNull(product, "El producto no puede ser nulo");
-            // Verificar si ya existe un producto con el mismo nombre
+
+            // Procesar ingredientes si el producto es Pizza o Pasta
+            if (product instanceof Pizza) {
+                Pizza pizza = (Pizza) product;
+                List<Ingredient> checkedIngredients = new ArrayList<>();
+                for (Ingredient ingredient : pizza.getIngredients()) {
+                    // Buscar ingrediente por nombre
+                    Ingredient existingIngredient = entityManager.createQuery(
+                                    "SELECT i FROM Ingredient i WHERE i.name = :name", Ingredient.class)
+                            .setParameter("name", ingredient.getName())
+                            .getResultStream()
+                            .findFirst()
+                            .orElse(null);
+
+                    if (existingIngredient != null) {
+                        // Usar ingrediente existente
+                        checkedIngredients.add(existingIngredient);
+                    } else {
+                        // Persistir nuevo ingrediente
+                        entityManager.persist(ingredient);
+                        checkedIngredients.add(ingredient);
+                    }
+                }
+                pizza.setIngredients(checkedIngredients);
+            } else if (product instanceof Pasta) {
+                Pasta pasta = (Pasta) product;
+                List<Ingredient> checkedIngredients = new ArrayList<>();
+                for (Ingredient ingredient : pasta.getIngredients()) {
+                    // Buscar ingrediente por nombre
+                    Ingredient existingIngredient = entityManager.createQuery(
+                                    "SELECT i FROM Ingredient i WHERE i.name = :name", Ingredient.class)
+                            .setParameter("name", ingredient.getName())
+                            .getResultStream()
+                            .findFirst()
+                            .orElse(null);
+
+                    if (existingIngredient != null) {
+                        // Usar ingrediente existente
+                        checkedIngredients.add(existingIngredient);
+                    } else {
+                        // Persistir nuevo ingrediente
+                        entityManager.persist(ingredient);
+                        checkedIngredients.add(ingredient);
+                    }
+                }
+                pasta.setIngredients(checkedIngredients);
+            }
+
+            // Verificar si el producto ya existe
             Product existingProduct = entityManager.createQuery(
                             "SELECT p FROM Product p WHERE p.name = :name", Product.class)
                     .setParameter("name", product.getName())
@@ -34,7 +82,7 @@ public class JpaProductDao implements ProductDao {
                     .findFirst()
                     .orElse(null);
             if (existingProduct != null) {
-                // Si el producto ya existe, actualizamos sus valores en lugar de intentar crearlo nuevamente
+                // Actualizar producto existente
                 existingProduct.setPrice(product.getPrice());
                 existingProduct.setSize(product.getSize());
                 if (product instanceof Pizza && existingProduct instanceof Pizza) {
@@ -42,17 +90,18 @@ public class JpaProductDao implements ProductDao {
                 } else if (product instanceof Pasta && existingProduct instanceof Pasta) {
                     ((Pasta) existingProduct).setIngredients(((Pasta) product).getIngredients());
                 }
-                entityManager.merge(existingProduct); // Guardamos los cambios en el producto existente
+                entityManager.merge(existingProduct);
             } else {
-                // Si no existe el producto, procedemos a guardarlo
-                entityManager.persist(product); // Usamos persist porque este es un nuevo producto
+                // Persistir nuevo producto
+                entityManager.persist(product);
             }
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e; // Propagar la excepción para manejarla a otro nivel
+            throw e;
         } finally {
             entityManager.close();
         }
@@ -92,16 +141,19 @@ public class JpaProductDao implements ProductDao {
         try {
             entityManager.getTransaction().begin();
 
-            // Make sure the customer is managed before removing it
-            Product managedCustomer = entityManager.contains(product) ? product : entityManager.merge(product);
+            Product existingProduct = entityManager.find(Product.class, product.getId());
+            if (existingProduct == null) {
+                throw new IllegalArgumentException("No se ha podido encontrar el producto.");
+            }
 
-            entityManager.remove(managedCustomer);
+            entityManager.remove(existingProduct);
+
             entityManager.getTransaction().commit();
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            throw new SQLException("Error deleting customer: " + product, e);
+            throw new IllegalStateException("Error al eliminar el producto: " + e.getMessage(), e);
         } finally {
             entityManager.close();
         }
