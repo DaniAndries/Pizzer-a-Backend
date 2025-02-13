@@ -1,5 +1,11 @@
 package model;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
  * Represents a payment method where the payment is made using cash.
  * <p>
@@ -10,19 +16,12 @@ package model;
  * @author DaniAndries
  * @version 0.1
  */
+@Entity
+@Data
+@NoArgsConstructor
+//Genera constructor sin parámetros
+@EqualsAndHashCode
 public class PayByCash extends Payable {
-
-    /**
-     * Constructs a new PayByCash instance.
-     * <p>
-     * This constructor is used to create a new payment method
-     * that allows payments to be made in cash.
-     * </p>
-     */
-    public PayByCash() {
-        // Default constructor
-    }
-
     /**
      * Processes a cash payment for the specified amount.
      *

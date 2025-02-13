@@ -1,5 +1,5 @@
-import utils.DatabaseConf;
-import java.sql.SQLException;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * The Main class serves as the entry point for the Pizzeria application.
@@ -11,20 +11,8 @@ import java.sql.SQLException;
  * @author DaniAndries
  * @version 0.1
  */
+@SpringBootApplication
 public class Main {
-
-    /**
-     * Default constructor for the Main class.
-     * <p>
-     * This constructor initializes a new instance of the Main class.
-     * It can be used to create an instance of this class without
-     * any specific parameters.
-     * </p>
-     */
-    public Main() {
-        // Empty constructor
-    }
-
     /**
      * The main method that executes the application.
      * <p>
@@ -35,11 +23,8 @@ public class Main {
      *
      * @param args Command-line arguments passed to the application.
      */
+
     public static void main(String[] args) {
-        try {
-            DatabaseConf.dropAndCreateTables();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        SpringApplication.run(Main.class, args);
     }
 }
