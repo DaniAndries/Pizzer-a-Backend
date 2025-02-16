@@ -17,7 +17,6 @@ service\impl\ProductServiceImpl.class
 controller\CustomerController.class
 model\PayByCard.class
 model\Payable.class
-service\Main.class
 controller\ProductController.class
 model\Order.class
 model\OrderState.class
@@ -25,4 +24,5 @@ service\impl\CustomerServiceImpl.class
 service\CustomerService.class
 model\Pizza.class
 model\OrderLine.class
+main\MainApplication.class
 model\TYPE.class
